@@ -1,13 +1,15 @@
 import React from "react";
-import { CardWithForm } from "./components/CardWithForum";
+import { RouterProvider } from "react-router-dom";
+import router from "@/routing/Router";
+import "./index.css";
+import { ThemeProvider } from "./pages/shared/ThemeProvider";
 
 export default function App() {
   return (
-    <>
-      <React.Fragment>
-        <h1 className="text-5xl text-center font-medium m-3 mb-4">Card Demo</h1>
-        <CardWithForm />
-      </React.Fragment>
-    </>
+    <ThemeProvider defaultTheme="light" storageKey="ui-theme">
+      <React.StrictMode>
+        <RouterProvider router={router}></RouterProvider>
+      </React.StrictMode>
+    </ThemeProvider>
   );
 }

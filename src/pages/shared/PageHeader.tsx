@@ -1,0 +1,34 @@
+import ThemeToggle from "@/components/primitives/ThemeToggle";
+import MainNavigationBar from "@/components/navbar/MainNavigationBar";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Link } from "react-router-dom";
+import MobileNavigationBar from "@/components/navbar/MobileNavigationBar";
+
+export default function PageHeader() {
+  return (
+    <header className="sticky top-0 shadow-sm z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/40">
+      <div className="container flex h-16 max-w-screen-2xl items-center">
+        <MainNavigationBar />
+        <MobileNavigationBar />
+        <div className="flex flex-1 items-center space-x-2 justify-end">
+          <nav className="flex items-center">
+            <ThemeToggle />
+            <Link className="md:block hidden" to="/auth">
+              <Button className="ml-3 " size="sm" variant="outline">
+                <div className="flex gap-3 items-center text-sm font-normal">
+                  <span>Sign in</span>
+                  <Separator
+                    className="h-4 dark:bg-neutral-300"
+                    orientation="vertical"
+                  ></Separator>
+                  <span>Sign up</span>
+                </div>
+              </Button>
+            </Link>
+          </nav>
+        </div>
+      </div>
+    </header>
+  );
+}
