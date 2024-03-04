@@ -13,13 +13,13 @@ const LIGHT_THEME = "light";
 const DARK_THEME = "dark";
 
 export default function ThemeToggle() {
+  const state = useTheme();
   const [currentTheme, setCurrentTheme] = useState<"dark" | "light">(
-    LIGHT_THEME
+    state.theme
   );
-  const { setTheme } = useTheme();
 
   useEffect(() => {
-    setTheme(currentTheme);
+    state.setTheme(currentTheme);
   }, [currentTheme]);
 
   const handleSetTheme = () => {
