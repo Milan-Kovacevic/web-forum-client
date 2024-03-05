@@ -16,6 +16,7 @@ import { useState } from "react";
 import AuthAlternativesSeparator from "@/components/auth/shared/AuthAlternativesSeparator";
 import SocialAuthentication from "@/components/auth/shared/SocialAuthentication";
 import { AuthRouteItems } from "@/routing/route-constants";
+import ReturnToMenuButton from "@/components/primitives/ReturnToMenuButton";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -61,7 +62,10 @@ export default function LoginPage() {
           </div>
 
           <div className="hidden relative lg:flex bg-clip-content bg-gradient basis-4/12">
-            <div className="absolute right-0 top-0 m-6 flex flex-col justify-center items-end gap-3">
+            <div className="absolute right-0 top-0 m-5 flex flex-col justify-center items-end gap-1">
+              <p className="font-semibold dark:text-accent-foreground text-accent text-xs">
+                Are your new here?
+              </p>
               <Button
                 size="sm"
                 className="text-sm"
@@ -71,6 +75,7 @@ export default function LoginPage() {
                 Register / Sign up
               </Button>
             </div>
+            <ReturnToMenuButton className="absolute bottom-0 right-0 m-5 mr-4" />
           </div>
         </Card>
       </div>
