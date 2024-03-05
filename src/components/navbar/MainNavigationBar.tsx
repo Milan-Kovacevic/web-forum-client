@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import appIcon from "@/assets/forum.svg";
 import NavigationLink from "@/components/primitives/NavigationLink";
-import { MainRouteItems, AuthRouteItems } from "@/routing/route-constants";
+import { MainRouteItems } from "@/routing/route-constants";
 
 export default function MainNavigationBar() {
   const location = useLocation();
@@ -14,7 +14,7 @@ export default function MainNavigationBar() {
         className="mr-8 flex items-center space-x-2"
       >
         <img className="h-6 w-6 dark:filter-white" src={appIcon} alt="logo" />
-        <span className="hidden font-bold text-base sm:inline-block">
+        <span className="hidden font-bold text-base lg:inline-block">
           web-forum
         </span>
       </Link>

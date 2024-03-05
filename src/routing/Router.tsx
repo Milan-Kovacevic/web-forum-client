@@ -6,11 +6,12 @@ import HomePage from "@/pages/HomePage";
 import LoginPage from "@/pages/LoginPage";
 import DefaultLayout from "@/layouts/DefaultLayout";
 import { MainRouteItems, AuthRouteItems } from "@/routing/route-constants";
+import RegisterPage from "@/pages/RegisterPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    errorElement: Page404(),
+    errorElement: <Page404 />,
     element: <DefaultLayout />,
     children: [
       {
@@ -37,7 +38,7 @@ const router = createBrowserRouter([
         element: <AuthLayout />,
         children: [
           { path: AuthRouteItems.LOGIN.path, element: <LoginPage /> },
-          { path: AuthRouteItems.REGISTER.path, element: <LoginPage /> },
+          { path: AuthRouteItems.REGISTER.path, element: <RegisterPage /> },
         ],
       },
     ],

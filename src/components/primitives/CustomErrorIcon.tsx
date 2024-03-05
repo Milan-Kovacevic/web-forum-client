@@ -24,7 +24,7 @@ export default function CustomErrorIcon(props: CustomErrorIconProps) {
             )}
           />
         </TooltipTrigger>
-        <TooltipContent>
+        <TooltipContent className="text-wrap max-w-72 z-50">
           <p>{props.body}</p>
         </TooltipContent>
       </Tooltip>
