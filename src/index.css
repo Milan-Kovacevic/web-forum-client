@@ -6,7 +6,8 @@
 
 @layer base {
   :root {
-    --gradient: url("https://gradient.page/samples/beautiful-blue/beautiful-blue-002.jpg");
+    --text-gradient: url("https://gradient.page/samples/beautiful-blue/beautiful-blue-003.jpg");
+    --bg-gradient: url("https://gradient.page/samples/beautiful-blue/beautiful-blue-005.jpg");
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
@@ -30,34 +31,26 @@
   }
 
   .dark {
-    --gradient: url("https://gradient.page/samples/beautiful-blue/beautiful-blue-003.jpg");
+    --text-gradient: url("https://gradient.page/samples/beautiful-blue/beautiful-blue-001.jpg");
+    --bg-gradient: url("https://gradient.page/samples/beautiful-blue/beautiful-blue-003.jpg");
     --background: 210 26% 7.84%;
     --foreground: 210 4% 99.9%;
-
     --muted: 210 20% 29.4%;
     --muted-foreground: 210 4% 59.8%;
-
     --popover: 210 57% 12.74%;
     --popover-foreground: 210 4% 99.9%;
-
     --card: 210 57% 12.74%;
     --card-foreground: 210 4% 99.9%;
-
     --border: 210 20% 29.4%;
     --input: 210 20% 29.4%;
-
     --primary: 210 40% 98%;
     --primary-foreground: 210 4% 9.8%;
-
     --secondary: 210 20% 29.4%;
     --secondary-foreground: 210 4% 99.9%;
-
     --accent: 210 20% 29.4%;
     --accent-foreground: 210 4% 99.9%;
-
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 4% 99.9%;
-
     --ring: 210 40% 98%;
   }
 }
@@ -78,12 +71,12 @@
 }
 
 .bg-gradient {
-  background: var(--gradient);
+  background: var(--bg-gradient);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
 }
 
-.blue-gradient {
-  background: url("https://gradient.page/samples/beautiful-blue/beautiful-blue-006.jpg");
+.text-gradient {
+  background: var(--text-gradient);
 }

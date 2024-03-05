@@ -5,6 +5,7 @@ import Page404 from "@/pages/Page404";
 import HomePage from "@/pages/HomePage";
 import LoginPage from "@/pages/LoginPage";
 import DefaultLayout from "@/layouts/DefaultLayout";
+import { MainRouteItems, AuthRouteItems } from "@/routing/route-constants";
 
 const router = createBrowserRouter([
   {
@@ -13,31 +14,30 @@ const router = createBrowserRouter([
     element: <DefaultLayout />,
     children: [
       {
-        path: "",
+        path: "/",
         element: <MainLayout />,
         children: [
           {
-            path: "docs",
+            path: MainRouteItems.CHAT_ROOMS.path,
             element: <HomePage />,
           },
           {
-            path: "docs/components",
+            path: MainRouteItems.MANAGE_ROOMS.path,
             element: <HomePage />,
           },
           {
-            path: "themes",
+            path: MainRouteItems.MANAGE_USERS.path,
             element: <HomePage />,
           },
         ],
       },
 
       {
-        path: "auth",
+        path: "/",
         element: <AuthLayout />,
         children: [
-          { path: "", element: <LoginPage /> },
-          { path: "login", element: <LoginPage /> },
-          { path: "register", element: <LoginPage /> },
+          { path: AuthRouteItems.LOGIN.path, element: <LoginPage /> },
+          { path: AuthRouteItems.REGISTER.path, element: <LoginPage /> },
         ],
       },
     ],

@@ -3,10 +3,9 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Link, useLocation } from "react-router-dom";
-import { cn } from "@/lib/utils";
 import appIcon from "@/assets/forum.svg";
-import NavigationLink from "../primitives/NavigationLink";
-import RouteConstants from "@/utils/route-constants";
+import NavigationLink from "@/components/primitives/NavigationLink";
+import { MainRouteItems, AuthRouteItems } from "@/routing/route-constants";
 
 export default function MobileNavigationBar() {
   const [open, setOpen] = useState(false);
@@ -56,7 +55,7 @@ export default function MobileNavigationBar() {
       </SheetTrigger>
       <SheetContent side="left" className="pr-0">
         <Link
-          to={RouteConstants.HOME}
+          to={MainRouteItems.CHAT_ROOMS.path}
           className="flex items-center"
           onClick={handleNavLinkClick}
         >
@@ -71,24 +70,24 @@ export default function MobileNavigationBar() {
           <div className="flex flex-col space-y-3">
             <h4 className="text-base font-medium">Main Menu</h4>
             <NavigationLink
-              text="Docs"
-              isActive={location.pathname === "/docs/components"}
-              navigateTo="/"
+              text={MainRouteItems.CHAT_ROOMS.displayName}
+              isActive={location.pathname === MainRouteItems.CHAT_ROOMS.path}
+              navigateTo={MainRouteItems.CHAT_ROOMS.path}
               className="ext-foreground/60 transition-colors hover:text-foreground/80 text-sm"
               onClick={handleNavLinkClick}
             />
             <NavigationLink
-              text="Components"
-              isActive={location.pathname === "/docs/components"}
-              navigateTo="/docs/components"
+              text={MainRouteItems.MANAGE_ROOMS.displayName}
+              isActive={location.pathname === MainRouteItems.MANAGE_ROOMS.path}
+              navigateTo={MainRouteItems.MANAGE_ROOMS.path}
               className="text-foreground/60 transition-colors hover:text-foreground/80 text-sm"
               onClick={handleNavLinkClick}
             ></NavigationLink>
 
             <NavigationLink
-              text="Themes"
-              isActive={location.pathname === "/themes"}
-              navigateTo="/themes"
+              text={MainRouteItems.MANAGE_USERS.displayName}
+              isActive={location.pathname === MainRouteItems.MANAGE_USERS.path}
+              navigateTo={MainRouteItems.MANAGE_USERS.path}
               className="text-foreground/60 transition-colors hover:text-foreground/80 text-sm"
               onClick={handleNavLinkClick}
             ></NavigationLink>
@@ -96,14 +95,14 @@ export default function MobileNavigationBar() {
           <div className="flex flex-col space-y-3 pt-6">
             <h4 className="text-base font-medium">Authentication</h4>
             <NavigationLink
-              text="Login"
-              navigateTo="/auth"
+              text={AuthRouteItems.LOGIN.displayName}
+              navigateTo={AuthRouteItems.LOGIN.path}
               className="text-foreground/60 transition-colors hover:text-foreground/80 text-sm"
               onClick={handleNavLinkClick}
             />
             <NavigationLink
-              text="Register"
-              navigateTo="/auth"
+              text={AuthRouteItems.REGISTER.displayName}
+              navigateTo={AuthRouteItems.REGISTER.path}
               className="text-foreground/60 transition-colors hover:text-foreground/80 text-sm"
               onClick={handleNavLinkClick}
             />
@@ -112,32 +111,4 @@ export default function MobileNavigationBar() {
       </SheetContent>
     </Sheet>
   );
-}
-
-function MobileLink({
-  navigateTo,
-  onOpenChange,
-  className,
-  children,
-  ...props
-}: MobileLinkProps) {
-  return (
-    <Link
-      to={navigateTo}
-      onClick={() => {
-        onOpenChange?.(false);
-      }}
-      className={cn(className)}
-      {...props}
-    >
-      {children}
-    </Link>
-  );
-}
-
-interface MobileLinkProps {
-  navigateTo: string;
-  onOpenChange?: (open: boolean) => void;
-  children: React.ReactNode;
-  className?: string;
 }

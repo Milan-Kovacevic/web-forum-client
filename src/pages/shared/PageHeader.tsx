@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Link } from "react-router-dom";
 import MobileNavigationBar from "@/components/navbar/MobileNavigationBar";
+import { AuthRouteItems } from "@/routing/route-constants";
 
 export default function PageHeader() {
   return (
@@ -14,7 +15,7 @@ export default function PageHeader() {
         <div className="flex flex-1 items-center space-x-2 justify-end">
           <nav className="flex items-center">
             <ThemeToggle />
-            <Link className="md:block hidden" to="/auth">
+            <Link className="md:block hidden" to={AuthRouteItems.LOGIN.path}>
               <Button className="ml-3 " size="sm" variant="outline">
                 <div className="flex gap-3 items-center text-sm font-normal">
                   <span>Sign in</span>

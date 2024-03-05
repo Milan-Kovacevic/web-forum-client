@@ -39,18 +39,13 @@ export default function LoginPage() {
 
   return (
     <>
-      <div className="w-full h-full absolute bg-gradient"></div>
+      <div className="w-full h-full absolute"></div>
       <div className="w-full h-full flex items-center justify-center">
-        <Card className="overflow-clip dark:border border-0 h-auto md:h-[800px] lg:max-w-screen-lg lg:w-full shadow-2xl flex">
-          <div className="backdrop-blur supports-[backdrop-filter]:bg-background/40 bg-background relative dark:border-r flex flex-col md:justify-around basis-7/12 items-center flex-1 p-6 w-auto">
-            <div className="lg:hidden flex flex-col justify-center items-end self-end pb-3">
-              <Button size="sm" className="text-sm" variant="ghost">
-                Login / Sign in
-              </Button>
-            </div>
-            <div className="flex flex-wrap flex-col gap-5 lg:w-auto md:w-[500px] p-6 pt-0">
+        <Card className="overflow-clip dark:border-border rounded-2xl border-muted-foreground border-2 h-auto shadow-2xl flex">
+          <div className="backdrop-blur dark:border-r-2 supports-[backdrop-filter]:bg-background/70 lg:w-[860px] basis-8/12 bg-background relative flex flex-col p-4 sm:p-10 md:px-14 flex-1 w-auto">
+            <div className="flex flex-wrap z-10 flex-col gap-5 lg:w-auto md:my-3 p-6">
               <div className="flex flex-col gap-2 justify-center items-center mb-5">
-                <h1 className="sm:text-4xl text-3xl font-bold text-center tracking-tight">
+                <h1 className="sm:text-4xl text-3xl font-bold text-center tracking-tighter text-gradient !bg-clip-text text-transparent !bg-cover !bg-center">
                   Create an account
                 </h1>
                 <p className="text-center text-xs sm:text-sm text-muted-foreground">
@@ -101,7 +96,7 @@ export default function LoginPage() {
 
                   <Button
                     size="sm"
-                    variant="secondary"
+                    variant="default"
                     type="submit"
                     className="w-full mt-8 font-semibold"
                   >
@@ -113,7 +108,7 @@ export default function LoginPage() {
               <div className="flex flex-row w-full gap-1 items-center">
                 <span className="w-full border-t flex-1" />
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="!bg-clip-text bg-background px-2 text-white">
+                  <span className="!bg-clip-text bg-background font-semibold px-2 text-accent-foreground">
                     Or continue with
                   </span>
                 </div>
@@ -175,8 +170,9 @@ export default function LoginPage() {
               </div>
             </div>
           </div>
-          <div className="hidden relative lg:flex bg-clip-content blue-gradient opacity-90 dark:border-r basis-5/12">
-            <div className="absolute right-0 top-0 m-8 flex flex-col justify-center items-end gap-3">
+
+          <div className="hidden relative lg:flex bg-clip-content bg-gradient basis-4/12">
+            <div className="absolute right-0 top-0 m-6 flex flex-col justify-center items-end gap-3">
               <Button size="sm" className="text-sm" variant="outline">
                 Login / Sign in
               </Button>
