@@ -23,7 +23,7 @@ export default function RegisterForm(props: RegisterFormProps) {
           control={props.form.control}
           name="displayName"
           display="Display Name"
-          description="This is your public display name."
+          description="Other users will be able to see this."
           placeholder="forum user"
         />
         <FormFieldItem

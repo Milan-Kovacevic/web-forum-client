@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { MainRouteItems } from "@/routing/route-constants";
+import { MainRouteItems } from "@/utils/constants";
 import { Link } from "react-router-dom";
 
 export default function Page404() {

@@ -4,42 +4,49 @@ import AuthAlternativesSeparator from "@/components/auth/shared/AuthAlternatives
 import SocialAuthentication from "@/components/auth/shared/SocialAuthentication";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { AuthRouteItems } from "@/routing/route-constants";
+import { AuthRouteItems, MainRouteItems } from "@/utils/constants";
 import {
   RegisterFormDefaultValues,
   RegisterFormSchema,
 } from "@/schemas/register-form-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { z as zod } from "zod";
-import { toast } from "sonner";
 import ReturnToMenuButton from "@/components/primitives/ReturnToMenuButton";
+import { useApiRegister } from "@/services/hooks/use-authentication";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 export default function RegisterPage() {
+  const { isLoading, response, register } = useApiRegister();
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const form = useForm<zod.infer<typeof RegisterFormSchema>>({
     resolver: zodResolver(RegisterFormSchema),
     defaultValues: RegisterFormDefaultValues,
   });
 
   function navigateToLogin() {
-    toast.success("Event has been created", {
-      description: "Sunday, December 03, 2023 at 9:00 AM",
-    });
     navigate(AuthRouteItems.LOGIN.path);
   }
 
   async function handleRegister(data: zod.infer<typeof RegisterFormSchema>) {
-    console.log(data.username);
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
+    register({
+      displayName: data.displayName,
+      username: data.username,
+      email: data.email,
+      password: data.password,
+    });
   }
+
+  useEffect(() => {
+    if (response?.status === 200) {
+      toast.success("Registration request accepted", {
+        description:
+          "Check your e-mail periodically to see the status of your request",
+      });
+    }
+  }, [response]);
 
   return (
     <div className="w-full h-full flex items-center justify-center">

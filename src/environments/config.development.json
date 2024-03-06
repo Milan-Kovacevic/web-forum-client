@@ -1,0 +1,4 @@
+{
+  "baseApiPath": "https://localhost:7500",
+  "apiResourcePrefix": "/api"
+}

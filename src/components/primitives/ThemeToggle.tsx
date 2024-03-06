@@ -7,7 +7,7 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@/components/ui/tooltip";
-import { useTheme } from "@/pages/shared/ThemeProvider";
+import { useTheme } from "@/hooks/use-theme";
 
 const LIGHT_THEME = "light";
 const DARK_THEME = "dark";

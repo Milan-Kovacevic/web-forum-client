@@ -1,6 +1,10 @@
-import { createContext, useContext, useEffect, useState } from "react";
-
-type Theme = "light" | "dark";
+import { Theme, ThemeProviderContext } from "@/hooks/use-theme";
+import {
+  APP_THEME_STORAGE_KEY,
+  DARK_THEME,
+  LIGHT_THEME,
+} from "@/utils/constants";
+import { useEffect, useState } from "react";
 
 type ThemeProviderProps = {
   children: React.ReactNode;
@@ -8,22 +12,10 @@ type ThemeProviderProps = {
   storageKey?: string;
 };
 
-type ThemeProviderState = {
-  theme: Theme;
-  setTheme: (theme: Theme) => void;
-};
-
-const initialState: ThemeProviderState = {
-  theme: "light",
-  setTheme: () => null,
-};
-
-const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
-
 export function ThemeProvider({
   children,
-  defaultTheme = "light",
-  storageKey = "ui-theme",
+  defaultTheme = LIGHT_THEME,
+  storageKey = APP_THEME_STORAGE_KEY,
   ...props
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(
@@ -32,7 +24,7 @@ export function ThemeProvider({
 
   useEffect(() => {
     const root = window.document.documentElement;
-    root.classList.remove("light", "dark");
+    root.classList.remove(LIGHT_THEME, DARK_THEME);
     root.classList.add(theme);
   }, [theme]);
 
@@ -50,12 +42,3 @@ export function ThemeProvider({
     </ThemeProviderContext.Provider>
   );
 }
-
-export const useTheme = () => {
-  const context = useContext(ThemeProviderContext);
-
-  if (context === undefined)
-    throw new Error("useTheme must be used within a ThemeProvider");
-
-  return context;
-};

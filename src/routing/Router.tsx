@@ -5,7 +5,7 @@ import Page404 from "@/pages/Page404";
 import HomePage from "@/pages/HomePage";
 import LoginPage from "@/pages/LoginPage";
 import DefaultLayout from "@/layouts/DefaultLayout";
-import { MainRouteItems, AuthRouteItems } from "@/routing/route-constants";
+import { MainRouteItems, AuthRouteItems } from "@/utils/constants";
 import RegisterPage from "@/pages/RegisterPage";
 
 const router = createBrowserRouter([

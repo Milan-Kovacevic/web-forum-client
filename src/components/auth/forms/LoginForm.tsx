@@ -14,37 +14,39 @@ type LoginFormProps = {
 
 export default function LoginForm(props: LoginFormProps) {
   return (
-    <Form {...props.form}>
-      <form
-        onSubmit={props.form.handleSubmit(props.onLogin)}
-        className="flex gap-2 flex-col w-full items-center justify-center"
-      >
-        <FormFieldItem
-          control={props.form.control}
-          name="username"
-          display="Username"
-          placeholder="your username"
-        />
-        <FormFieldItem
-          control={props.form.control}
-          type="password"
-          name="password"
-          display="Password"
-          placeholder="your password"
-        />
-        <Button
-          size="sm"
-          variant="default"
-          type="submit"
-          disabled={props.isLoading}
-          className="w-full mt-8 font-semibold"
+    <div className="">
+      <Form {...props.form}>
+        <form
+          onSubmit={props.form.handleSubmit(props.onLogin)}
+          className="flex gap-2 flex-col w-full items-center justify-center"
         >
-          {props.isLoading && (
-            <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
-          )}
-          Login / Sign In
-        </Button>
-      </form>
-    </Form>
+          <FormFieldItem
+            control={props.form.control}
+            name="username"
+            display="Username"
+            placeholder="ex. user123"
+          />
+          <FormFieldItem
+            control={props.form.control}
+            type="password"
+            name="password"
+            display="Password"
+            placeholder="your password"
+          />
+          <Button
+            size="sm"
+            variant="default"
+            type="submit"
+            disabled={props.isLoading}
+            className="w-full mt-8 font-semibold"
+          >
+            {props.isLoading && (
+              <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
+            )}
+            Login / Sign In
+          </Button>
+        </form>
+      </Form>
+    </div>
   );
 }

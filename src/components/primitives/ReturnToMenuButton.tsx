@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { HomeIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
-import { MainRouteItems } from "@/routing/route-constants";
+import { MainRouteItems } from "@/utils/constants";
 
 type ReturnToMenuButtonProps = {
   className: string;

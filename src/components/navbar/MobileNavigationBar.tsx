@@ -5,7 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Link, useLocation } from "react-router-dom";
 import appIcon from "@/assets/forum.svg";
 import NavigationLink from "@/components/primitives/NavigationLink";
-import { MainRouteItems, AuthRouteItems } from "@/routing/route-constants";
+import { MainRouteItems, AuthRouteItems } from "@/utils/constants";
 
 export default function MobileNavigationBar() {
   const [open, setOpen] = useState(false);

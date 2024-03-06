@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import appIcon from "@/assets/forum.svg";
 import NavigationLink from "@/components/primitives/NavigationLink";
-import { MainRouteItems } from "@/routing/route-constants";
+import { MainRouteItems } from "@/utils/constants";
 
 export default function MainNavigationBar() {
   const location = useLocation();

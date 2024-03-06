@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Link } from "react-router-dom";
 import MobileNavigationBar from "@/components/navbar/MobileNavigationBar";
-import { AuthRouteItems } from "@/routing/route-constants";
+import { AuthRouteItems } from "@/utils/constants";
 
 export default function PageHeader() {
   return (
