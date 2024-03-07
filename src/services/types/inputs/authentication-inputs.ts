@@ -10,3 +10,10 @@ export type RegisterInput = {
   email: string;
   password: string;
 };
+
+export type ExternalProvider = "GitHub" | "Google" | "Facebook";
+
+export type ExternalLoginInput = {
+  code: string;
+  provider: ExternalProvider;
+};

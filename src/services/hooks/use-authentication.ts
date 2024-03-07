@@ -1,9 +1,10 @@
 import axios from "@/lib/axios";
 import {
+  ExternalLoginInput,
   LoginInput,
   RegisterInput,
 } from "@/services/types/inputs/authentication-inputs";
-import { LoginOutput } from "@/services/types/outputs/authentication-output";
+import { LoginOutput } from "@/services/types/outputs/authentication-outputs";
 import {
   ACCESS_TOKEN_STORAGE_KEY,
   REFRESH_TOKEN_STORAGE_KEY,
@@ -23,22 +24,20 @@ export const useLogin = () => {
     localStorage.setItem(REFRESH_TOKEN_STORAGE_KEY, data.refreshToken);
   };
 
-  const { isLoading, data, response, processRequest } = useApiBase<
-    LoginInput,
-    LoginOutput
-  >({
-    url: ApiEndpoints.LOGIN,
-    hasRequestData: true,
-    isSecure: false,
-    method: "POST",
-    onDataReceived: handleDataReceived,
-  });
+  const { isLoading, data, response, processRequest, setIsLoading } =
+    useApiBase<LoginInput, LoginOutput>({
+      url: ApiEndpoints.LOGIN,
+      hasRequestData: true,
+      isSecure: false,
+      method: "POST",
+      onDataReceived: handleDataReceived,
+    });
 
   const login = async (input: LoginInput) => {
     await processRequest(input);
   };
 
-  return { isLoading, data, response, login };
+  return { isLoading, data, response, login, setIsLoading };
 };
 
 export const useApiLogin = () => {

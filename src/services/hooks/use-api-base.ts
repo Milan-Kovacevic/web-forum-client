@@ -50,5 +50,5 @@ export default function useApiBase<TInput, TOutput>(
       });
   };
 
-  return { isLoading, response, data, processRequest };
+  return { isLoading, response, data, processRequest, setIsLoading };
 }

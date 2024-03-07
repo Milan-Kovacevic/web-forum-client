@@ -1,4 +1,3 @@
-import React from "react";
 import { RouterProvider } from "react-router-dom";
 import router from "@/routing/Router";
 import "./index.css";
@@ -11,9 +10,7 @@ export default function App() {
       defaultTheme={LIGHT_THEME}
       storageKey={APP_THEME_STORAGE_KEY}
     >
-      <React.StrictMode>
-        <RouterProvider router={router}></RouterProvider>
-      </React.StrictMode>
+      <RouterProvider router={router}></RouterProvider>
     </ThemeProvider>
   );
 }

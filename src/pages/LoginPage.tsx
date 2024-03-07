@@ -16,7 +16,7 @@ import AuthAlternativesSeparator from "@/components/auth/shared/AuthAlternatives
 import SocialAuthentication from "@/components/auth/shared/SocialAuthentication";
 import { AuthRouteItems, MainRouteItems } from "@/utils/constants";
 import ReturnToMenuButton from "@/components/primitives/ReturnToMenuButton";
-import { useApiLogin, useLogin } from "@/services/hooks/use-authentication";
+import { useLogin } from "@/services/hooks/use-authentication";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import TwoFactorAuthForm from "@/components/auth/forms/TwoFactorAuthForm";
@@ -26,7 +26,7 @@ import {
 } from "@/schemas/two-factor-auth-schema";
 
 export default function LoginPage() {
-  const { isLoading, data, login, response } = useLogin();
+  const { isLoading, data, login, response, setIsLoading } = useLogin();
   const [show2fa, setShow2fa] = useState<boolean>(false);
   const navigate = useNavigate();
   const loginForm = useForm<z.infer<typeof LoginFormSchema>>({
@@ -116,7 +116,10 @@ export default function LoginPage() {
               {!show2fa && (
                 <>
                   <AuthAlternativesSeparator />
-                  <SocialAuthentication isLoading={isLoading} />
+                  <SocialAuthentication
+                    isLoading={isLoading}
+                    updateIsLoading={setIsLoading}
+                  />
                 </>
               )}
             </div>

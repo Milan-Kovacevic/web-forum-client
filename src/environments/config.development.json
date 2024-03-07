@@ -1,4 +1,6 @@
 {
   "baseApiPath": "https://localhost:7500",
-  "apiResourcePrefix": "/api"
+  "apiResourcePrefix": "/api",
+  "githubClientId": "b7983166d26eaa04e923",
+  "githubRedirectUrl": "http://localhost:3000/login"
 }
