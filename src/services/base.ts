@@ -8,7 +8,7 @@ type ApplicationError = {
   type: string;
 };
 
-export const handleApiError = (error: AxiosError) => {
+export const handleAxiosError = (error: AxiosError) => {
   var appError = error.response?.data as ApplicationError;
   console.log("ERROR: " + error);
   if (error.code === "ERR_NETWORK") {

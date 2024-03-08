@@ -13,9 +13,8 @@ export default {
   getAxios: (useAuthentication: boolean) => {
     const instance = axios.create(axiosConfiguration);
     instance.defaults.headers.common["Content-Type"] = "application/json";
-    if (useAuthentication) {
-      const token = localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
-
+    const token = localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
+    if (useAuthentication && !token) {
       instance.interceptors.request.use(
         (requestConfig) => {
           requestConfig.headers.Authorization = `Bearer ${token}`;

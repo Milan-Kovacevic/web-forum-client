@@ -22,7 +22,7 @@ export default function useApiBase<TInput, TOutput>(
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [response, setResponse] = useState<AxiosResponse<TOutput> | null>(null);
 
-  const processRequest = async (input: TInput) => {
+  const processRequest = async (input?: TInput | null) => {
     setIsLoading(true);
     let instance = props.isSecure ? axiosAuthInstance : axiosInstance;
 

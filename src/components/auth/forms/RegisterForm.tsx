@@ -1,4 +1,4 @@
-import FormFieldItem from "@/components/primitives/FormFieldItem";
+import FormInputFieldItem from "@/components/primitives/FormInputFieldItem";
 import { Icons } from "@/components/primitives/Icons";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -19,34 +19,34 @@ export default function RegisterForm(props: RegisterFormProps) {
         onSubmit={props.form.handleSubmit(props.onRegister)}
         className="flex gap-2 flex-col w-full items-center justify-center"
       >
-        <FormFieldItem
+        <FormInputFieldItem
           control={props.form.control}
           name="displayName"
           display="Display Name"
           description="Other users will be able to see this."
           placeholder="forum user"
         />
-        <FormFieldItem
+        <FormInputFieldItem
           control={props.form.control}
           name="username"
           display="Username"
           placeholder="your username"
         />
-        <FormFieldItem
+        <FormInputFieldItem
           control={props.form.control}
           name="email"
           display="E-Mail"
           placeholder="name@example.com"
         />
 
-        <FormFieldItem
+        <FormInputFieldItem
           control={props.form.control}
           type="password"
           name="password"
           display="Password"
           placeholder="your password"
         />
-        <FormFieldItem
+        <FormInputFieldItem
           control={props.form.control}
           type="password"
           name="confirmPassword"

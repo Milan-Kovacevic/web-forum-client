@@ -1,6 +1,5 @@
 import axios from "@/lib/axios";
 import {
-  ExternalLoginInput,
   LoginInput,
   RegisterInput,
 } from "@/services/types/inputs/authentication-inputs";
@@ -16,7 +15,6 @@ import { handleApiError } from "@/services/handle-api-error";
 import useApiBase from "./use-api-base";
 
 const axiosInstance = axios.getAxios(false);
-const axiosAuthInstance = axios.getAxios(true);
 
 export const useLogin = () => {
   const handleDataReceived = (data: LoginOutput) => {

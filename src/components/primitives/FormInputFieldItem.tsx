@@ -7,23 +7,25 @@ import {
 } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 
 type FormFieldItemProps = {
   control: any;
   name: string;
   display?: string;
   description?: string;
-  placeholder: string;
+  placeholder?: string;
   type?: string;
+  className?: string;
 };
 
-export default function FormFieldItem(props: FormFieldItemProps) {
+export default function FormInputFieldItem(props: FormFieldItemProps) {
   return (
     <FormField
       control={props.control}
       name={props.name}
       render={({ field }) => (
-        <FormItem className="w-full space-y-1">
+        <FormItem className={cn("w-full space-y-1.5", props.className)}>
           <div className="flex items-center gap-1">
             {props.display && (
               <Label className="ml-1 font-medium">{props.display}</Label>

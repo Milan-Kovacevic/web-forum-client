@@ -7,6 +7,7 @@ import LoginPage from "@/pages/LoginPage";
 import DefaultLayout from "@/layouts/DefaultLayout";
 import { MainRouteItems, AuthRouteItems } from "@/utils/constants";
 import RegisterPage from "@/pages/RegisterPage";
+import RoomsPage from "@/pages/RoomsPage";
 
 const router = createBrowserRouter([
   {
@@ -20,7 +21,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: MainRouteItems.CHAT_ROOMS.path,
-            element: <HomePage />,
+            element: <RoomsPage />,
           },
           {
             path: MainRouteItems.MANAGE_ROOMS.path,

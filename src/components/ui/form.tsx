@@ -12,13 +12,6 @@ import {
 
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
-import { InfoIcon } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "./tooltip";
 import CustomErrorIcon from "../primitives/CustomErrorIcon";
 
 const Form = FormProvider;
@@ -149,7 +142,7 @@ const FormDescription = React.forwardRef<
 });
 FormDescription.displayName = "FormDescription";
 
-const FormMessage = React.forwardRef<
+const FormDefaultMessage = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, children, ...props }, ref) => {
@@ -161,19 +154,33 @@ const FormMessage = React.forwardRef<
   }
 
   return (
+    <p
+      ref={ref}
+      id={formMessageId}
+      className={cn("text-sm font-medium text-destructive", className)}
+      {...props}
+    >
+      {body}
+    </p>
+  );
+});
+
+const FormMessage = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ children }) => {
+  const { error } = useFormField();
+  const body = error ? String(error?.message) : children;
+
+  if (!body) {
+    return null;
+  }
+
+  return (
     <CustomErrorIcon
       body={body}
-      className="text-sm font-medium text-destructive h-4 w-4"
+      className="text-sm font-medium text-destructive h-5 w-5"
     />
-    // <p
-    //   ref={ref}
-    //   id={formMessageId}
-    //   className={cn("text-sm font-medium text-destructive", className)}
-    //   {...props}
-    // >
-    //   <InfoIcon />
-    //   {body}
-    // </p>
   );
 });
 FormMessage.displayName = "FormMessage";
@@ -186,5 +193,6 @@ export {
   FormControl,
   FormDescription,
   FormMessage,
+  FormDefaultMessage,
   FormField,
 };

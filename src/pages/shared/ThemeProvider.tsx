@@ -1,4 +1,4 @@
-import { Theme, ThemeProviderContext } from "@/hooks/use-theme";
+import { Theme, ThemeProviderContext } from "@/hooks/useTheme";
 import {
   APP_THEME_STORAGE_KEY,
   DARK_THEME,

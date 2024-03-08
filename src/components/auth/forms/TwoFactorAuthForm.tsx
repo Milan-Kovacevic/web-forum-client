@@ -1,4 +1,4 @@
-import FormFieldItem from "@/components/primitives/FormFieldItem";
+import FormInputOtpFieldItem from "@/components/primitives/FormInputOtpFieldItem";
 import { Icons } from "@/components/primitives/Icons";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -22,13 +22,11 @@ export default function TwoFactorAuthForm(props: TwoFactorAuthFormProps) {
         onSubmit={props.form.handleSubmit(props.onCodeSubmit)}
         className="flex gap-3 flex-col w-full justify-center"
       >
-        <FormFieldItem
+        <FormInputOtpFieldItem
           control={props.form.control}
           name="twoFactorCode"
-          type="text"
           display="Authentication Code"
-          placeholder="your one time code"
-          description="Enter the 6-digit code you received on your e-mail."
+          hasDescription
         />
         <div className="flex items-center">
           <p className="text-muted-foreground text-sm -mr-1">
@@ -44,7 +42,7 @@ export default function TwoFactorAuthForm(props: TwoFactorAuthFormProps) {
             Re-send new code
           </Button>
         </div>
-        <div className="w-full mt-6 flex gap-3 items-center">
+        <div className="w-full mt-5 flex gap-3 items-center">
           <Button
             size="sm"
             variant="default"
