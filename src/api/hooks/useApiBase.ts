@@ -1,4 +1,4 @@
-import { AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import { useState } from "react";
 
 import {
@@ -12,6 +12,8 @@ type UseAxiosProps<TData, TResponse> = {
   handleLoading: boolean;
   input?: TData | null;
   handleResponse?: (data?: TResponse) => void;
+  handleError?: (error: AxiosError) => void;
+  delay?: number | null;
 };
 
 export default function useApiBase<TRequest, TResponse>(
@@ -26,9 +28,18 @@ export default function useApiBase<TRequest, TResponse>(
 
   const request = async (props: UseAxiosProps<TRequest, TResponse>) => {
     if (props.handleLoading) setIsLoading(true);
-    sendAxiosRequest<TRequest, TResponse>({
+    setTimeout(async () => {
+      await sendRequestInternal(props);
+    }, props.delay ?? 0);
+  };
+
+  const sendRequestInternal = async (
+    props: UseAxiosProps<TRequest, TResponse>
+  ) => {
+    await sendAxiosRequest<TRequest, TResponse>({
       ...props,
       url: url,
+      data: props.input,
       method: method,
     })
       .then((response) => {
@@ -44,7 +55,10 @@ export default function useApiBase<TRequest, TResponse>(
         if (props.handleResponse) props.handleResponse(response?.data);
         return response;
       })
-      .catch(handleAxiosError)
+      .catch((error) => {
+        if (props.handleError) props.handleError(error);
+        else handleAxiosError(error);
+      })
       .finally(() => {
         if (props.handleLoading) setIsLoading(false);
       });

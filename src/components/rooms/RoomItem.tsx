@@ -1,20 +1,30 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { useState } from "react";
 import { Room } from "@/api/models/responses/rooms";
 import JoinRoomButton from "./JoinRoomButton";
 import ManageRoomPopup from "./ManageRoomPopup";
+import { useState } from "react";
 
 export type RoomItemProps = {
   room: Room;
-  onRoomEdit: () => void;
-  onRoomRemove: () => void;
+  onRoomEdited: (room: Room) => void;
+  onRoomRemoved: (room: Room) => void;
 };
 
 export default function RoomItem(props: RoomItemProps) {
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
   const room = props.room;
+  const [isPopupOpen, setPopupOpen] = useState<boolean>(false);
+
+  const delegateRoomEdited = (room: Room) => {
+    setPopupOpen(false);
+    props.onRoomEdited(room);
+  };
+
+  const delegateRoomRemoved = (room: Room) => {
+    setPopupOpen(false);
+    props.onRoomRemoved(room);
+  };
+
   return (
     <div
       key={room.roomId}
@@ -29,13 +39,15 @@ export default function RoomItem(props: RoomItemProps) {
         <div className="flex flex-col items-center gap-0 w-full">
           <div className="flex flex-row items-center justify-between w-full gap-1">
             <div className="flex items-center gap-2 flex-1">
-              <p className="font-semibold text-xl">{room.name}</p>
+              <p className="font-semibold text-base">{room.name}</p>
             </div>
 
             <ManageRoomPopup
-              onRoomRemove={props.onRoomRemove}
-              isDialogOpen={isEditDialogOpen}
-              setDialogOpen={setIsEditDialogOpen}
+              isOpen={isPopupOpen}
+              setOpen={setPopupOpen}
+              room={room}
+              onRoomRemove={delegateRoomRemoved}
+              onRoomEdit={delegateRoomEdited}
             />
           </div>
           <div className="flex w-full flex-col">
@@ -47,12 +59,8 @@ export default function RoomItem(props: RoomItemProps) {
           </div>
         </div>
       </div>
-      <div className="text-xs hidden sm:flex gap-3 items-center self-start mt-4">
-        <span className="text-muted-foreground">last comment</span>
-        <Separator orientation="vertical" className="h-3" />
-        <span className="text-foreground ">5 months ago</span>
-      </div>
-      <div className="flex items-center justify-between gap-2 mt-0 w-full">
+
+      <div className="flex items-center justify-between gap-2 mt-1 w-full">
         <div className="hidden sm:flex items-center justify-start gap-2 flex-1">
           <Badge
             variant="outline"

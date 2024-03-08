@@ -17,20 +17,20 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
 import FormInputFieldItem from "@/components/primitives/FormInputFieldItem";
-import { ReactNode, useEffect } from "react";
-import { useCreateRoom } from "@/services/hooks/use-rooms";
+import { ReactNode } from "react";
 import { Icons } from "@/components/primitives/Icons";
-import { RoomOutput } from "@/services/types/outputs/room-outputs";
+import { useCreateRoom } from "@/api/hooks/useRooms";
+import { Room } from "@/api/models/responses/rooms";
 
 type CreateRoomDialogProps = {
   children: ReactNode;
   isOpen: boolean;
   onOpenChange: (value: boolean) => void;
-  onRoomCreated: (room: RoomOutput) => void;
+  onRoomCreated: (room?: Room) => void;
 };
 
 export default function CreateRoomDialog(props: CreateRoomDialogProps) {
-  const { room, isLoading, createRoom } = useCreateRoom();
+  const { isLoading, createRoom } = useCreateRoom();
   const submitRoomForm = useForm<zod.infer<typeof SubmitRoomFormSchema>>({
     resolver: zodResolver(SubmitRoomFormSchema),
     defaultValues: SubmitRoomFormDefaultValues,
@@ -39,14 +39,8 @@ export default function CreateRoomDialog(props: CreateRoomDialogProps) {
   const handleSaveRoomChanges = async (
     formData: Zod.infer<typeof SubmitRoomFormSchema>
   ) => {
-    await createRoom({ ...formData });
+    await createRoom({ ...formData }, props.onRoomCreated);
   };
-
-  useEffect(() => {
-    if (room == null) return;
-
-    props.onRoomCreated(room);
-  }, [room]);
 
   return (
     <Dialog

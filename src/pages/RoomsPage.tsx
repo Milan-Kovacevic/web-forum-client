@@ -10,25 +10,46 @@ import { Button } from "@/components/ui/button";
 import CreateRoomDialog from "@/components/rooms/dialogs/CreateRoomDialog";
 import { Room } from "@/api/models/responses/rooms";
 import { useGetRooms } from "@/api/hooks/useRooms";
+import { toast } from "sonner";
 
 export default function RoomsPage() {
   const { isLoading, rooms, getRooms } = useGetRooms();
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [roomItems, setRoomItems] = useState<Room[]>([]);
 
   useEffect(() => {
-    getRooms();
-  }, []);
+    if (rooms) {
+      setRoomItems(rooms);
+    } else {
+      getRooms();
+    }
+  }, [rooms]);
 
-  const handleRoomCreated = () => {
-    console.log("CREATED ROOM");
+  const handleRoomCreated = (room?: Room) => {
+    if (!room) return;
+    roomItems.push(room);
+    setIsDialogOpen(false);
   };
 
-  const handleEditRoom = () => {
-    console.log("UPDATED ROOM");
+  const handleRoomEdited = (room: Room) => {
+    var id = roomItems.findIndex((r) => r.roomId === room.roomId);
+    if (id === -1 || id === undefined) return;
+
+    const newRoomItems = roomItems.map((item) => {
+      if (item.roomId === room.roomId) return room;
+      return item;
+    });
+    setRoomItems(newRoomItems);
+    toast.success(`Chat room was updated successfully.`);
   };
 
-  const handleRemoveRoom = () => {
-    console.log("REMOVED ROOM");
+  const handleRoomRemoved = (room: Room) => {
+    const id = roomItems?.findIndex((r) => r.roomId === room.roomId);
+    if (id === -1 || id === undefined) return;
+
+    var newRoomItems = roomItems?.filter((r) => r.roomId !== room.roomId);
+    setRoomItems(newRoomItems);
+    toast.success(`Chat room '${room.name}' was removed successfully.`);
   };
 
   return (
@@ -75,16 +96,15 @@ export default function RoomsPage() {
           <ScrollArea className="h-screen my-4">
             <div className="grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 flex-wrap gap-4">
               {isLoading &&
-                rooms &&
-                [...Array(10)].map((id) => <RoomItemSkeleton key={id} />)}
+                [...Array(15)].map((id) => <RoomItemSkeleton key={id} />)}
               {!isLoading &&
-                rooms &&
-                rooms.map((item: Room) => (
+                roomItems &&
+                roomItems.map((item: Room) => (
                   <RoomItem
                     key={item.roomId}
                     room={item}
-                    onRoomEdit={handleEditRoom}
-                    onRoomRemove={handleRemoveRoom}
+                    onRoomEdited={handleRoomEdited}
+                    onRoomRemoved={handleRoomRemoved}
                   />
                 ))}
             </div>

@@ -25,6 +25,7 @@ export const ApiEndpoints = {
   REGISTER: `${API_PREFIX}/Register`,
   EXTERNAL_LOGIN: `${API_PREFIX}/ExternalLogin`,
   ROOMS: `${API_PREFIX}/Rooms`,
+  SINGLE_ROOM: `${API_PREFIX}/Rooms/{roomId}`,
 };
 
 export const ExternalAuthEndpoints = {

@@ -4,30 +4,36 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontalIcon, PencilIcon } from "lucide-react";
-import SubmitRoomDialog from "@/components/rooms/SubmitRoomDialog";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import { MoreHorizontalIcon, PencilIcon, Trash2Icon } from "lucide-react";
+import { Room } from "@/api/models/responses/rooms";
+import RemoveRoomDialog from "./dialogs/RemoveRoomDialog";
+import EditRoomDialog from "./dialogs/EditRoomDialog";
+import { useState } from "react";
 
 type ManageRoomPopupProps = {
-  onRoomRemove: () => void;
-  isDialogOpen: boolean;
-  setDialogOpen: (value: boolean) => void;
+  onRoomRemove: (room: Room) => void;
+  onRoomEdit: (room: Room) => void;
+  room: Room;
+  isOpen: boolean;
+  setOpen: (value: boolean) => void;
 };
 
 export default function ManageRoomPopup(props: ManageRoomPopupProps) {
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
+
+  const delegateRoomEdit = (room?: Room) => {
+    if (!room) return;
+    setIsEditDialogOpen(false);
+    props.onRoomEdit(room);
+  };
+
+  const delegateRoomRemove = (room: Room) => {
+    props.onRoomRemove(room);
+  };
+
   return (
     <div className="self-end block">
-      <Popover>
+      <Popover onOpenChange={props.setOpen} open={props.isOpen}>
         <PopoverTrigger asChild>
           <Button variant="ghost" size="sm" className="p-2">
             <MoreHorizontalIcon className="h-5" />
@@ -39,42 +45,27 @@ export default function ManageRoomPopup(props: ManageRoomPopupProps) {
               Manage chat room
             </h4>
             <div className="space-x-2">
-              <SubmitRoomDialog
-                isDialogOpen={props.isDialogOpen}
-                onDialogOpenChange={props.setDialogOpen}
-                onSaveChanges={(_) => {}}
+              <EditRoomDialog
+                room={props.room}
+                onRoomEdited={delegateRoomEdit}
+                isOpen={isEditDialogOpen}
+                onOpenChange={setIsEditDialogOpen}
               >
                 <Button size="sm" variant="secondary">
                   <PencilIcon className="h-4" />
                   <span className="font-medium mx-1">Edit</span>
                 </Button>
-              </SubmitRoomDialog>
+              </EditRoomDialog>
 
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button size="sm" variant="outline">
-                    <PencilIcon className="h-4" />
-                    <span className="font-medium mx-1">Remove</span>
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Are you absolutely sure?
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      selected chat room and all comments in it.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter className="mt-3">
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={props.onRoomRemove}>
-                      Continue
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+              <RemoveRoomDialog
+                room={props.room}
+                onRoomRemove={delegateRoomRemove}
+              >
+                <Button size="sm" variant="outline">
+                  <Trash2Icon className="h-4" />
+                  <span className="font-medium mx-1">Remove</span>
+                </Button>
+              </RemoveRoomDialog>
             </div>
           </div>
         </PopoverContent>
