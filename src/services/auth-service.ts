@@ -21,7 +21,7 @@ const login = async (input: LoginInput) => {
     data: input,
   }).then((response: AxiosResponse<Tokens>) => {
     handleUserAuthenticated(response.data);
-    return response;
+    return { data: response.data, status: response.status };
   });
 };
 
@@ -33,7 +33,7 @@ const externalLogin = async (input: ExternalLoginInput) => {
     data: input,
   }).then((response: AxiosResponse<Tokens>) => {
     handleUserAuthenticated(response.data);
-    return response;
+    return { data: response.data, status: response.status };
   });
 };
 
@@ -43,6 +43,8 @@ const register = async (input: RegisterInput) => {
     method: RequestMethods.POST,
     requireAuth: false,
     data: input,
+  }).then((response) => {
+    return { data: response.data, status: response.status };
   });
 };
 

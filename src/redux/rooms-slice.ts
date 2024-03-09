@@ -40,6 +40,7 @@ const roomsSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(loadRooms.pending, (state) => {
       state.loading = true;
+      return state;
     });
     builder.addCase(createRoom.pending, (state) => {
       state.loadingDialog = true;
@@ -52,16 +53,17 @@ const roomsSlice = createSlice({
     });
 
     builder.addCase(loadRooms.fulfilled, (state, action) => {
-      state.rooms = action.payload.data;
+      state.rooms = action.payload;
       state.loading = false;
+      return state;
     });
     builder.addCase(createRoom.fulfilled, (state, action) => {
-      state.singleRoom = action.payload.data;
+      state.singleRoom = action.payload;
       state.performedAction = "Create";
       state.loadingDialog = false;
     });
     builder.addCase(editRoom.fulfilled, (state, action) => {
-      state.singleRoom = action.payload.data;
+      state.singleRoom = action.payload;
       state.performedAction = "Edit";
       state.loadingDialog = false;
     });

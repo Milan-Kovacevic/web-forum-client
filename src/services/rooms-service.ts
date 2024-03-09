@@ -8,7 +8,7 @@ const getAllRooms = async () => {
     url: ApiEndpoints.ROOMS,
     method: RequestMethods.GET,
     requireAuth: true,
-  });
+  }).then((response) => response.data);
 };
 
 const createRoom = async (input: CreateRoomInput) => {
@@ -17,7 +17,7 @@ const createRoom = async (input: CreateRoomInput) => {
     method: RequestMethods.POST,
     requireAuth: true,
     data: input,
-  });
+  }).then((response) => response.data);
 };
 
 const editRoom = async (input: EditRoomInput) => {
@@ -26,7 +26,7 @@ const editRoom = async (input: EditRoomInput) => {
     method: RequestMethods.PUT,
     requireAuth: true,
     data: input,
-  });
+  }).then((response) => response.data);
 };
 
 const removeRoom = async (roomId: string) => {
@@ -34,7 +34,7 @@ const removeRoom = async (roomId: string) => {
     url: ApiEndpoints.SINGLE_ROOM.replace("{roomId}", roomId),
     method: RequestMethods.DELETE,
     requireAuth: true,
-  });
+  }).then((response) => response.data);
 };
 
 export default { getAllRooms, createRoom, editRoom, removeRoom };
