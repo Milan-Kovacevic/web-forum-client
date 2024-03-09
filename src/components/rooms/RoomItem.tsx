@@ -28,10 +28,10 @@ export default function RoomItem(props: RoomItemProps) {
   return (
     <div
       key={room.roomId}
-      className="flex flex-col items-start gap-2 rounded-lg border py-4 px-4 text-left text-sm transition-colors hover:bg-muted"
+      className="flex flex-col items-start gap-2 rounded-lg border py-3 px-3 text-left text-sm transition-colors hover:bg-muted"
     >
       <div className="flex w-full flex-row gap-3">
-        <Avatar className="hidden sm:block text-sm ml-1 mt-1 w-12 h-12 rounded-full border border-muted-foreground">
+        <Avatar className="hidden sm:block text-sm ml-1 mt-1 w-12 h-12 rounded-full border-2 border-muted-foreground">
           <AvatarImage />
           <AvatarFallback>WFR</AvatarFallback>
         </Avatar>

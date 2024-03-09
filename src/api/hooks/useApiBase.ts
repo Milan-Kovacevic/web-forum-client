@@ -5,6 +5,8 @@ import {
   handleAxiosError,
   sendAxiosRequest,
 } from "@/api/services/base-service";
+import { useNavigate } from "react-router-dom";
+import { AuthRouteItems } from "@/utils/constants";
 
 type UseAxiosProps<TData, TResponse> = {
   params?: any;
@@ -14,33 +16,35 @@ type UseAxiosProps<TData, TResponse> = {
   handleResponse?: (data?: TResponse) => void;
   handleError?: (error: AxiosError) => void;
   delay?: number | null;
+  url?: string;
+  method?: string;
 };
 
-export default function useApiBase<TRequest, TResponse>(
-  url: string,
-  method: string
-) {
+export default function useApiBase<TResponse>(url: string, method: string) {
+  const navigate = useNavigate();
   const [data, setData] = useState<TResponse | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [response, setResponse] = useState<AxiosResponse<TResponse> | null>(
     null
   );
 
-  const request = async (props: UseAxiosProps<TRequest, TResponse>) => {
+  const request = async <TRequest>(
+    props: UseAxiosProps<TRequest, TResponse>
+  ) => {
     if (props.handleLoading) setIsLoading(true);
     setTimeout(async () => {
       await sendRequestInternal(props);
     }, props.delay ?? 0);
   };
 
-  const sendRequestInternal = async (
+  const sendRequestInternal = async <TRequest>(
     props: UseAxiosProps<TRequest, TResponse>
   ) => {
     await sendAxiosRequest<TRequest, TResponse>({
-      ...props,
       url: url,
       data: props.input,
       method: method,
+      ...props,
     })
       .then((response) => {
         setResponse(response);
@@ -57,7 +61,12 @@ export default function useApiBase<TRequest, TResponse>(
       })
       .catch((error) => {
         if (props.handleError) props.handleError(error);
-        else handleAxiosError(error);
+        else {
+          handleAxiosError(error);
+          if (error.response && error.response.status === 401) {
+            navigate(AuthRouteItems.LOGIN.path);
+          }
+        }
       })
       .finally(() => {
         if (props.handleLoading) setIsLoading(false);

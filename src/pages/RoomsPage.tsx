@@ -96,7 +96,9 @@ export default function RoomsPage() {
           <ScrollArea className="h-screen my-4">
             <div className="grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 flex-wrap gap-4">
               {isLoading &&
-                [...Array(15)].map((id) => <RoomItemSkeleton key={id} />)}
+                [...Array(15).map((i) => `${i}`)].map((x: string) => (
+                  <RoomItemSkeleton key={x} />
+                ))}
               {!isLoading &&
                 roomItems &&
                 roomItems.map((item: Room) => (

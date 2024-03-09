@@ -7,13 +7,13 @@ import {
 } from "../models/requests/rooms-request";
 
 export const useGetRooms = () => {
-  const { isLoading, data, request, setIsLoading } = useApiBase<void, Room[]>(
+  const { isLoading, data, request, setIsLoading } = useApiBase<Room[]>(
     ApiEndpoints.ROOMS,
     "GET"
   );
 
   const getRooms = async () => {
-    await request({
+    await request<void>({
       requireAuth: false,
       handleLoading: true,
       delay: 1500,
@@ -24,7 +24,7 @@ export const useGetRooms = () => {
 };
 
 export const useCreateRoom = () => {
-  const { isLoading, data, request } = useApiBase<CreateRoomRequest, Room>(
+  const { isLoading, data, request } = useApiBase<Room>(
     ApiEndpoints.ROOMS,
     "POST"
   );
@@ -46,7 +46,7 @@ export const useCreateRoom = () => {
 };
 
 export const useEditRoom = (roomId: string) => {
-  const { isLoading, data, request } = useApiBase<EditRoomRequest, Room>(
+  const { isLoading, data, request } = useApiBase<Room>(
     ApiEndpoints.SINGLE_ROOM.replace("{roomId}", roomId),
     "PUT"
   );
@@ -67,21 +67,18 @@ export const useEditRoom = (roomId: string) => {
   return { isLoading, room: data, editRoom };
 };
 
-export const useRemoveRoom = (
-  room: Room,
-  onRoomRemoved: (room: Room) => void
-) => {
-  const { isLoading, request } = useApiBase<void, void>(
+export const useRemoveRoom = (room: Room) => {
+  const { isLoading, request } = useApiBase<void>(
     ApiEndpoints.SINGLE_ROOM.replace("{roomId}", room.roomId),
     "DELETE"
   );
 
-  const removeRoom = async () => {
-    await request({
+  const removeRoom = async (onRoomRemoved: (room: Room) => void) => {
+    await request<void>({
       handleLoading: true,
       requireAuth: true,
       handleResponse: () => onRoomRemoved(room),
-      delay: 0,
+      delay: 2000,
     });
   };
 

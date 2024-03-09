@@ -12,14 +12,13 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { z as zod } from "zod";
 import ReturnToMenuButton from "@/components/primitives/ReturnToMenuButton";
-import { useApiRegister } from "@/services/hooks/use-authentication";
-import { useEffect } from "react";
+import { useRegister } from "@/api/hooks/useAuthentication";
 import { toast } from "sonner";
 import AuthAlternativesSeparator from "@/components/auth/shared/AuthAlternativesSeparator";
 import SocialAuthentication from "@/components/auth/shared/SocialAuthentication";
 
 export default function RegisterPage() {
-  const { isLoading, response, register } = useApiRegister();
+  const { isLoading, register } = useRegister();
   const navigate = useNavigate();
   const registerForm = useForm<zod.infer<typeof RegisterFormSchema>>({
     resolver: zodResolver(RegisterFormSchema),
@@ -31,24 +30,25 @@ export default function RegisterPage() {
   }
 
   async function handleRegister(data: zod.infer<typeof RegisterFormSchema>) {
-    register({
-      displayName: data.displayName,
-      username: data.username,
-      email: data.email,
-      password: data.password,
-    });
+    register(
+      {
+        displayName: data.displayName,
+        username: data.username,
+        email: data.email,
+        password: data.password,
+      },
+      handleUserRegistered
+    );
   }
 
-  useEffect(() => {
-    if (response?.status === 200) {
-      toast.success("Registration request accepted", {
-        description:
-          "Check your email occasionally for information on the status of your request.",
-        duration: 6000,
-      });
-      registerForm.reset();
-    }
-  }, [response]);
+  function handleUserRegistered() {
+    toast.success("Registration request accepted", {
+      description:
+        "Check your email occasionally for information on the status of your request.",
+      duration: 6000,
+    });
+    registerForm.reset();
+  }
 
   return (
     <div className="w-full h-full flex items-center justify-center">

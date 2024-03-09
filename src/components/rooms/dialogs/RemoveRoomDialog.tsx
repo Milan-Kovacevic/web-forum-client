@@ -1,5 +1,6 @@
 import { useRemoveRoom } from "@/api/hooks/useRooms";
 import { Room } from "@/api/models/responses/rooms";
+import { Icons } from "@/components/primitives/Icons";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,23 +12,27 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 import { ReactNode } from "react";
 
 type RemoveRoomDialogProps = {
   children: ReactNode;
   onRoomRemove: (room: Room) => void;
   room: Room;
+  isOpen: boolean;
+  onOpenChange: (value: boolean) => void;
 };
 
 export default function RemoveRoomDialog(props: RemoveRoomDialogProps) {
-  const { removeRoom } = useRemoveRoom(props.room, props.onRoomRemove);
+  const { isLoading, removeRoom } = useRemoveRoom(props.room);
 
   const handleRoomRemove = async () => {
-    await removeRoom();
+    await removeRoom(props.onRoomRemove);
+    props.onOpenChange(true);
   };
 
   return (
-    <AlertDialog>
+    <AlertDialog open={props.isOpen} onOpenChange={props.onOpenChange}>
       <AlertDialogTrigger asChild>{props.children}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
@@ -39,9 +44,18 @@ export default function RemoveRoomDialog(props: RemoveRoomDialogProps) {
         </AlertDialogHeader>
         <AlertDialogFooter className="mt-3">
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleRoomRemove}>
+          <Button
+            disabled={isLoading}
+            onClick={handleRoomRemove}
+            variant="default"
+            size="sm"
+            type="submit"
+          >
+            {isLoading && (
+              <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
+            )}
             Continue
-          </AlertDialogAction>
+          </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

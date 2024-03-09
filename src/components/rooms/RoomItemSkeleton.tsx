@@ -1,8 +1,15 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function RoomItemSkeleton() {
+type RoomItemSkeletonProps = {
+  key: string;
+};
+
+export default function RoomItemSkeleton(props: RoomItemSkeletonProps) {
   return (
-    <div className="flex flex-col items-start gap-2 border rounded-lg py-4 px-4 text-left text-sm transition-colors">
+    <div
+      key={props.key}
+      className="flex flex-col items-start gap-2 border rounded-lg py-4 px-4 text-left text-sm transition-colors"
+    >
       <div className="flex w-full flex-row gap-3">
         <Skeleton className="hidden sm:block h-12 w-14 rounded-full border" />
         <div className="space-y-2 w-full">

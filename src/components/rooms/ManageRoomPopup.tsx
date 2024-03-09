@@ -19,15 +19,17 @@ type ManageRoomPopupProps = {
 };
 
 export default function ManageRoomPopup(props: ManageRoomPopupProps) {
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
+  const [isEditDialogOpen, setEditDialogOpen] = useState<boolean>(false);
+  const [isRemoveDialogOpen, setRemoveDialogOpen] = useState<boolean>(false);
 
   const delegateRoomEdit = (room?: Room) => {
     if (!room) return;
-    setIsEditDialogOpen(false);
+    setEditDialogOpen(false);
     props.onRoomEdit(room);
   };
 
   const delegateRoomRemove = (room: Room) => {
+    setRemoveDialogOpen(false);
     props.onRoomRemove(room);
   };
 
@@ -49,7 +51,7 @@ export default function ManageRoomPopup(props: ManageRoomPopupProps) {
                 room={props.room}
                 onRoomEdited={delegateRoomEdit}
                 isOpen={isEditDialogOpen}
-                onOpenChange={setIsEditDialogOpen}
+                onOpenChange={setEditDialogOpen}
               >
                 <Button size="sm" variant="secondary">
                   <PencilIcon className="h-4" />
@@ -59,9 +61,15 @@ export default function ManageRoomPopup(props: ManageRoomPopupProps) {
 
               <RemoveRoomDialog
                 room={props.room}
+                isOpen={isRemoveDialogOpen}
+                onOpenChange={setRemoveDialogOpen}
                 onRoomRemove={delegateRoomRemove}
               >
-                <Button size="sm" variant="outline">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setRemoveDialogOpen(true)}
+                >
                   <Trash2Icon className="h-4" />
                   <span className="font-medium mx-1">Remove</span>
                 </Button>

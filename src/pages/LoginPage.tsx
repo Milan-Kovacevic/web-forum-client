@@ -16,7 +16,7 @@ import AuthAlternativesSeparator from "@/components/auth/shared/AuthAlternatives
 import SocialAuthentication from "@/components/auth/shared/SocialAuthentication";
 import { AuthRouteItems, MainRouteItems } from "@/utils/constants";
 import ReturnToMenuButton from "@/components/primitives/ReturnToMenuButton";
-import { useLogin } from "@/services/hooks/use-authentication";
+import { useLogin } from "@/api/hooks/useAuthentication";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import TwoFactorAuthForm from "@/components/auth/forms/TwoFactorAuthForm";
@@ -26,9 +26,10 @@ import {
 } from "@/schemas/two-factor-auth-schema";
 
 export default function LoginPage() {
-  const { isLoading, data, login, response, setIsLoading } = useLogin();
+  const { isLoading, data, response, login } = useLogin();
   const [show2fa, setShow2fa] = useState<boolean>(false);
   const navigate = useNavigate();
+
   const loginForm = useForm<z.infer<typeof LoginFormSchema>>({
     resolver: zodResolver(LoginFormSchema),
     defaultValues: LoginFormDefaultValues,
@@ -42,14 +43,14 @@ export default function LoginPage() {
     navigate(AuthRouteItems.REGISTER.path);
   }
 
-  async function handleOnLogin(formData: zod.infer<typeof LoginFormSchema>) {
+  async function handleLogin(formData: zod.infer<typeof LoginFormSchema>) {
     await login({
       username: formData.username,
       password: formData.password,
     });
   }
 
-  async function handleOnCodeVerify(
+  async function handleCodeVerify(
     formData: zod.infer<typeof TwoFactorAuthSchema>
   ) {
     await login({
@@ -59,11 +60,11 @@ export default function LoginPage() {
     });
   }
 
-  function handleOn2faCancel() {
+  function handle2faCancel() {
     setShow2fa(false);
   }
 
-  async function handleOnResendCode() {
+  async function handleResendCode() {
     await login({
       username: loginForm.getValues().username,
       password: loginForm.getValues().password,
@@ -74,7 +75,10 @@ export default function LoginPage() {
     if (response?.status === 204) {
       setShow2fa(true);
     } else if (response?.status === 200 && data !== null) {
-      toast.success("Welcome", { description: "Login successfull." });
+      toast.success("Welcome", {
+        description: "Login successfull.",
+        position: "top-center",
+      });
       setTimeout(() => navigate(MainRouteItems.CHAT_ROOMS.path), 1000);
     }
   }, [response]);
@@ -94,9 +98,9 @@ export default function LoginPage() {
                   />
                   <TwoFactorAuthForm
                     form={twoFactorForm}
-                    onCodeSubmit={handleOnCodeVerify}
-                    onCancel={handleOn2faCancel}
-                    onResendCode={handleOnResendCode}
+                    onCodeSubmit={handleCodeVerify}
+                    onCancel={handle2faCancel}
+                    onResendCode={handleResendCode}
                     isLoading={isLoading}
                   />
                 </>
@@ -108,7 +112,7 @@ export default function LoginPage() {
                   />
                   <LoginForm
                     form={loginForm}
-                    onLogin={handleOnLogin}
+                    onLogin={handleLogin}
                     isLoading={isLoading}
                   />
                 </>
@@ -116,10 +120,7 @@ export default function LoginPage() {
               {!show2fa && (
                 <>
                   <AuthAlternativesSeparator />
-                  <SocialAuthentication
-                    isLoading={isLoading}
-                    updateIsLoading={setIsLoading}
-                  />
+                  <SocialAuthentication isLoading={isLoading} />
                 </>
               )}
             </div>

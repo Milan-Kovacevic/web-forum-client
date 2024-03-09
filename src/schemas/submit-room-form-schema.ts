@@ -7,7 +7,7 @@ const SubmitRoomFormSchema = zod.object({
     .min(1, {
       message: "Room name is required.",
     })
-    .max(128, {
+    .max(96, {
       message: "Maximum room name length is 128",
     }),
   description: zod

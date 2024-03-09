@@ -1,12 +1,31 @@
-import axios from "axios";
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import environments from "@/environments/config";
 import {
   ACCESS_TOKEN_STORAGE_KEY,
   REFRESH_TOKEN_STORAGE_KEY,
 } from "@/utils/constants";
+import { AuthToken } from "@/api/models/responses/authentication";
+import { handleAxiosError } from "@/api/services/base-service";
 
 const axiosConfiguration = {
   baseURL: environments().baseApiPath,
+};
+
+const refreshUserTokens = async (accessToken: string, refreshToken: string) => {
+  const response = await axios.post<AuthToken>(
+    "/api/Refresh",
+    {
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+    },
+    axiosConfiguration
+  );
+
+  var newTokens = response.data;
+  localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, newTokens.accessToken);
+  localStorage.setItem(REFRESH_TOKEN_STORAGE_KEY, newTokens.refreshToken);
+
+  return newTokens.accessToken;
 };
 
 export default {
@@ -14,7 +33,7 @@ export default {
     const instance = axios.create(axiosConfiguration);
     instance.defaults.headers.common["Content-Type"] = "application/json";
     const token = localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
-    if (useAuthentication && !token) {
+    if (useAuthentication && token !== null) {
       instance.interceptors.request.use(
         (requestConfig) => {
           requestConfig.headers.Authorization = `Bearer ${token}`;
@@ -23,34 +42,25 @@ export default {
         (error) => Promise.reject(error)
       );
       instance.interceptors.response.use(
-        (response) => response,
-        async (error) => {
+        (response: AxiosResponse) => response,
+        async (error: AxiosError) => {
           const originalRequest = error.config;
-
-          // If the error status is 401 and there is no originalRequest._retry flag,
-          // it means the token has expired and we need to refresh it
-          if (error.response.status === 401 && !originalRequest._retry) {
-            originalRequest._retry = true;
-
+          // If the error status is 401 it means the token has expired and we need to refresh it
+          if (originalRequest && error.response?.status == 401) {
             try {
               const refreshToken = localStorage.getItem(
                 REFRESH_TOKEN_STORAGE_KEY
               );
-              const response = await axios.post("/api/Refresh", {
-                refreshToken,
-              });
-              const { token } = response.data;
-
-              localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, token);
-
-              // Retry the original request with the new token
-              originalRequest.headers.Authorization = `Bearer ${token}`;
-              return axios(originalRequest);
-            } catch (error) {
-              // Redirecting to login page if unable to fetch new access token
-            }
+              if (refreshToken !== null && refreshToken !== undefined) {
+                var newAccessToken = await refreshUserTokens(
+                  token,
+                  refreshToken
+                );
+                originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+                return axios.request(originalRequest);
+              }
+            } catch (error) {}
           }
-
           return Promise.reject(error);
         }
       );

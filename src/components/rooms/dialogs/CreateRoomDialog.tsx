@@ -21,6 +21,7 @@ import { ReactNode } from "react";
 import { Icons } from "@/components/primitives/Icons";
 import { useCreateRoom } from "@/api/hooks/useRooms";
 import { Room } from "@/api/models/responses/rooms";
+import FormTextareaFieldItem from "@/components/primitives/FormTextareaFieldItem";
 
 type CreateRoomDialogProps = {
   children: ReactNode;
@@ -69,7 +70,7 @@ export default function CreateRoomDialog(props: CreateRoomDialogProps) {
                 name="name"
                 placeholder="room name"
               />
-              <FormInputFieldItem
+              <FormTextareaFieldItem
                 className="col-span-3"
                 control={submitRoomForm.control}
                 display="Description"

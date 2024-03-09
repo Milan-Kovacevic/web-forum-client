@@ -1,6 +1,7 @@
 import { useEditRoom } from "@/api/hooks/useRooms";
 import { Room } from "@/api/models/responses/rooms";
 import FormInputFieldItem from "@/components/primitives/FormInputFieldItem";
+import FormTextareaFieldItem from "@/components/primitives/FormTextareaFieldItem";
 import { Icons } from "@/components/primitives/Icons";
 import { Button } from "@/components/ui/button";
 import {
@@ -72,7 +73,7 @@ export default function EditRoomDialog(props: EditRoomDialogProps) {
                 name="name"
                 placeholder="room name"
               />
-              <FormInputFieldItem
+              <FormTextareaFieldItem
                 className="col-span-3"
                 control={editRoomForm.control}
                 display="Description"

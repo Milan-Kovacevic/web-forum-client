@@ -9,6 +9,7 @@ import {
 import {
   InputOTP,
   InputOTPGroup,
+  InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 
@@ -38,11 +39,19 @@ export default function FormInputOtpFieldItem(props: FormFieldItemProps) {
             <InputOTP
               maxLength={6}
               render={({ slots }) => (
-                <InputOTPGroup>
-                  {slots.map((slot, index) => (
-                    <InputOTPSlot key={index} {...slot} />
-                  ))}{" "}
-                </InputOTPGroup>
+                <>
+                  <InputOTPGroup>
+                    {slots.slice(0, 3).map((slot, index) => (
+                      <InputOTPSlot key={index} {...slot} />
+                    ))}{" "}
+                  </InputOTPGroup>
+                  <InputOTPSeparator />
+                  <InputOTPGroup>
+                    {slots.slice(3).map((slot, index) => (
+                      <InputOTPSlot key={index + 3} {...slot} />
+                    ))}
+                  </InputOTPGroup>
+                </>
               )}
               {...field}
             />
