@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Room } from "@/api/models/responses/rooms";
+import { Room } from "@/models/responses/rooms";
 import JoinRoomButton from "./JoinRoomButton";
 import ManageRoomPopup from "./ManageRoomPopup";
 import { useState } from "react";

@@ -8,47 +8,37 @@ import RoomItemSkeleton from "@/components/rooms/RoomItemSkeleton";
 import RoomItem from "@/components/rooms/RoomItem";
 import { Button } from "@/components/ui/button";
 import CreateRoomDialog from "@/components/rooms/dialogs/CreateRoomDialog";
-import { Room } from "@/api/models/responses/rooms";
-import { useGetRooms } from "@/api/hooks/useRooms";
+import { Room } from "@/models/responses/rooms";
+import { useGetRooms } from "@/hooks/useRooms";
 import { toast } from "sonner";
 
 export default function RoomsPage() {
   const { isLoading, rooms, getRooms } = useGetRooms();
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-  const [roomItems, setRoomItems] = useState<Room[]>([]);
 
   useEffect(() => {
-    if (rooms) {
-      setRoomItems(rooms);
-    } else {
-      getRooms();
-    }
-  }, [rooms]);
+    getRooms();
+  }, []);
 
   const handleRoomCreated = (room?: Room) => {
     if (!room) return;
-    roomItems.push(room);
+    rooms?.push(room);
     setIsDialogOpen(false);
   };
 
   const handleRoomEdited = (room: Room) => {
-    var id = roomItems.findIndex((r) => r.roomId === room.roomId);
-    if (id === -1 || id === undefined) return;
+    var id = rooms?.findIndex((r) => r.roomId === room.roomId);
+    if (!rooms || id === -1 || id === undefined) return;
 
-    const newRoomItems = roomItems.map((item) => {
-      if (item.roomId === room.roomId) return room;
-      return item;
-    });
-    setRoomItems(newRoomItems);
+    rooms[id] = room;
     toast.success(`Chat room was updated successfully.`);
   };
 
   const handleRoomRemoved = (room: Room) => {
-    const id = roomItems?.findIndex((r) => r.roomId === room.roomId);
+    const id = rooms?.findIndex((r) => r.roomId === room.roomId);
     if (id === -1 || id === undefined) return;
 
-    var newRoomItems = roomItems?.filter((r) => r.roomId !== room.roomId);
-    setRoomItems(newRoomItems);
+    rooms?.splice(id, 1);
     toast.success(`Chat room '${room.name}' was removed successfully.`);
   };
 
@@ -97,11 +87,11 @@ export default function RoomsPage() {
             <div className="grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 flex-wrap gap-4">
               {isLoading &&
                 [...Array(15).map((i) => `${i}`)].map((x: string) => (
-                  <RoomItemSkeleton key={x} />
+                  <RoomItemSkeleton keyId={x} key={x} />
                 ))}
               {!isLoading &&
-                roomItems &&
-                roomItems.map((item: Room) => (
+                rooms &&
+                rooms.map((item: Room) => (
                   <RoomItem
                     key={item.roomId}
                     room={item}

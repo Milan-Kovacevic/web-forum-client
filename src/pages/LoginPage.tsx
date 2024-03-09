@@ -5,21 +5,21 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useNavigate } from "react-router-dom";
-import AuthFormHeader from "@/components/auth/shared/AuthFormHeader";
-import LoginForm from "@/components/auth/forms/LoginForm";
+import AuthFormHeader from "@/components/auth/AuthFormHeader";
+import LoginForm from "@/components/forms/LoginForm";
 import {
   LoginFormDefaultValues,
   LoginFormSchema,
 } from "@/schemas/login-form-schema";
 import { z as zod } from "zod";
-import AuthAlternativesSeparator from "@/components/auth/shared/AuthAlternativesSeparator";
-import SocialAuthentication from "@/components/auth/shared/SocialAuthentication";
+import AuthAlternativesSeparator from "@/components/auth/AuthAlternativesSeparator";
+import SocialAuthentication from "@/components/auth/SocialAuthentication";
 import { AuthRouteItems, MainRouteItems } from "@/utils/constants";
 import ReturnToMenuButton from "@/components/primitives/ReturnToMenuButton";
-import { useLogin } from "@/api/hooks/useAuthentication";
+import { useLogin } from "@/hooks/useAuthentication";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
-import TwoFactorAuthForm from "@/components/auth/forms/TwoFactorAuthForm";
+import TwoFactorAuthForm from "@/components/forms/TwoFactorAuthForm";
 import {
   TwoFactorAuthFormDefaultValues,
   TwoFactorAuthSchema,

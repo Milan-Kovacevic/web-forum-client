@@ -4,13 +4,13 @@ import {
   ApiEndpoints,
   AUTH_XSRF_TOKEN_STORAGE_KEY,
 } from "@/utils/constants";
-import useApiBase from "@/api/hooks/useApiBase";
-import { AuthToken } from "@/api/models/responses/authentication";
+import useApiBase from "@/hooks/useApiBase";
+import { AuthToken } from "@/models/responses/authentication";
 import {
   ExternalLoginRequest,
   LoginRequest,
   RegisterRequest,
-} from "@/api/models/requests/auth-request";
+} from "@/models/requests/auth-request";
 import { useEffect } from "react";
 import { toast } from "sonner";
 

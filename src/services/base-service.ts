@@ -1,5 +1,5 @@
 import axios from "@/lib/axios";
-import { ApplicationError } from "@/api/models/responses/application-errors";
+import { ApplicationError } from "@/models/responses/application-errors";
 import { AxiosError, AxiosResponse } from "axios";
 import { toast } from "sonner";
 import { AuthRouteItems } from "@/utils/constants";

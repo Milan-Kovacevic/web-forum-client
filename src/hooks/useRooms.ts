@@ -1,6 +1,6 @@
-import useApiBase from "@/api/hooks/useApiBase";
+import useApiBase from "@/hooks/useApiBase";
 import { ApiEndpoints } from "@/utils/constants";
-import { Room } from "@/api/models/responses/rooms";
+import { Room } from "@/models/responses/rooms";
 import {
   CreateRoomRequest,
   EditRoomRequest,

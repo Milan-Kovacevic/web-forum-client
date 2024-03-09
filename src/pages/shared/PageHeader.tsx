@@ -1,9 +1,9 @@
 import ThemeToggle from "@/components/primitives/ThemeToggle";
-import MainNavigationBar from "@/components/navbar/MainNavigationBar";
+import MainNavigationBar from "@/components/navigation-bar/MainNavigationBar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Link } from "react-router-dom";
-import MobileNavigationBar from "@/components/navbar/MobileNavigationBar";
+import MobileNavigationBar from "@/components/navigation-bar/MobileNavigationBar";
 import { AuthRouteItems } from "@/utils/constants";
 
 export default function PageHeader() {

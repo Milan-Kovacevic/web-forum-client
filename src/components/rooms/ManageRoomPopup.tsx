@@ -5,7 +5,7 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontalIcon, PencilIcon, Trash2Icon } from "lucide-react";
-import { Room } from "@/api/models/responses/rooms";
+import { Room } from "@/models/responses/rooms";
 import RemoveRoomDialog from "./dialogs/RemoveRoomDialog";
 import EditRoomDialog from "./dialogs/EditRoomDialog";
 import { useState } from "react";

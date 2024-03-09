@@ -1,5 +1,5 @@
-import RegisterForm from "@/components/auth/forms/RegisterForm";
-import AuthFormHeader from "@/components/auth/shared/AuthFormHeader";
+import RegisterForm from "@/components/forms/RegisterForm";
+import AuthFormHeader from "@/components/auth/AuthFormHeader";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { AuthRouteItems } from "@/utils/constants";
@@ -12,10 +12,10 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { z as zod } from "zod";
 import ReturnToMenuButton from "@/components/primitives/ReturnToMenuButton";
-import { useRegister } from "@/api/hooks/useAuthentication";
+import { useRegister } from "@/hooks/useAuthentication";
 import { toast } from "sonner";
-import AuthAlternativesSeparator from "@/components/auth/shared/AuthAlternativesSeparator";
-import SocialAuthentication from "@/components/auth/shared/SocialAuthentication";
+import AuthAlternativesSeparator from "@/components/auth/AuthAlternativesSeparator";
+import SocialAuthentication from "@/components/auth/SocialAuthentication";
 
 export default function RegisterPage() {
   const { isLoading, register } = useRegister();

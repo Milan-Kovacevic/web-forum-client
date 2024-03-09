@@ -1,10 +1,7 @@
 import { AxiosError, AxiosResponse } from "axios";
 import { useState } from "react";
 
-import {
-  handleAxiosError,
-  sendAxiosRequest,
-} from "@/api/services/base-service";
+import { handleAxiosError, sendAxiosRequest } from "@/services/base-service";
 import { useNavigate } from "react-router-dom";
 import { AuthRouteItems } from "@/utils/constants";
 

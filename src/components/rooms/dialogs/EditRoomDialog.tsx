@@ -1,5 +1,5 @@
-import { useEditRoom } from "@/api/hooks/useRooms";
-import { Room } from "@/api/models/responses/rooms";
+import { useEditRoom } from "@/hooks/useRooms";
+import { Room } from "@/models/responses/rooms";
 import FormInputFieldItem from "@/components/primitives/FormInputFieldItem";
 import FormTextareaFieldItem from "@/components/primitives/FormTextareaFieldItem";
 import { Icons } from "@/components/primitives/Icons";
@@ -18,6 +18,7 @@ import { SubmitRoomFormSchema } from "@/schemas/submit-room-form-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReactNode } from "react";
 import { useForm } from "react-hook-form";
+import SubmitRoomForm from "@/components/forms/SubmitRoomForm";
 
 type EditRoomDialogProps = {
   room: Room;
@@ -60,44 +61,11 @@ export default function EditRoomDialog(props: EditRoomDialogProps) {
             Create a new room for conversation. Click save when you're done.
           </DialogDescription>
         </DialogHeader>
-        <Form {...editRoomForm}>
-          <form
-            onSubmit={editRoomForm.handleSubmit(handleSaveRoomChanges)}
-            className="flex gap-3 flex-col w-full justify-center"
-          >
-            <div className="grid gap-2 py-4">
-              <FormInputFieldItem
-                className="col-span-3"
-                control={editRoomForm.control}
-                display="Name"
-                name="name"
-                placeholder="room name"
-              />
-              <FormTextareaFieldItem
-                className="col-span-3"
-                control={editRoomForm.control}
-                display="Description"
-                name="description"
-                description="Enter a short description about room topic"
-                placeholder="room description"
-              />
-            </div>
-
-            <DialogFooter>
-              <Button
-                disabled={isLoading}
-                variant="default"
-                size="sm"
-                type="submit"
-              >
-                {isLoading && (
-                  <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
-                )}
-                Save changes
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
+        <SubmitRoomForm
+          form={editRoomForm}
+          onFormSubmit={handleSaveRoomChanges}
+          isLoading={isLoading}
+        />
       </DialogContent>
     </Dialog>
   );

@@ -1,13 +1,13 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
 type RoomItemSkeletonProps = {
-  key: string;
+  keyId: string;
 };
 
 export default function RoomItemSkeleton(props: RoomItemSkeletonProps) {
   return (
     <div
-      key={props.key}
+      key={props.keyId}
       className="flex flex-col items-start gap-2 border rounded-lg py-4 px-4 text-left text-sm transition-colors"
     >
       <div className="flex w-full flex-row gap-3">

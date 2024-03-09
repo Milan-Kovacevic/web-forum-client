@@ -1,5 +1,5 @@
-import { useRemoveRoom } from "@/api/hooks/useRooms";
-import { Room } from "@/api/models/responses/rooms";
+import { useRemoveRoom } from "@/hooks/useRooms";
+import { Room } from "@/models/responses/rooms";
 import { Icons } from "@/components/primitives/Icons";
 import {
   AlertDialog,

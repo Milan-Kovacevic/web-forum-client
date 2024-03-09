@@ -2,12 +2,10 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { z as zod } from "zod";
 import { useForm } from "react-hook-form";
 import {
@@ -15,13 +13,10 @@ import {
   SubmitRoomFormSchema,
 } from "@/schemas/submit-room-form-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form } from "@/components/ui/form";
-import FormInputFieldItem from "@/components/primitives/FormInputFieldItem";
 import { ReactNode } from "react";
-import { Icons } from "@/components/primitives/Icons";
-import { useCreateRoom } from "@/api/hooks/useRooms";
-import { Room } from "@/api/models/responses/rooms";
-import FormTextareaFieldItem from "@/components/primitives/FormTextareaFieldItem";
+import { useCreateRoom } from "@/hooks/useRooms";
+import { Room } from "@/models/responses/rooms";
+import SubmitRoomForm from "@/components/forms/SubmitRoomForm";
 
 type CreateRoomDialogProps = {
   children: ReactNode;
@@ -57,44 +52,11 @@ export default function CreateRoomDialog(props: CreateRoomDialogProps) {
             Create a new room for conversation. Click save when you're done.
           </DialogDescription>
         </DialogHeader>
-        <Form {...submitRoomForm}>
-          <form
-            onSubmit={submitRoomForm.handleSubmit(handleSaveRoomChanges)}
-            className="flex gap-3 flex-col w-full justify-center"
-          >
-            <div className="grid gap-2 py-4">
-              <FormInputFieldItem
-                className="col-span-3"
-                control={submitRoomForm.control}
-                display="Name"
-                name="name"
-                placeholder="room name"
-              />
-              <FormTextareaFieldItem
-                className="col-span-3"
-                control={submitRoomForm.control}
-                display="Description"
-                name="description"
-                description="Enter a short description about room topic"
-                placeholder="room description"
-              />
-            </div>
-
-            <DialogFooter>
-              <Button
-                disabled={isLoading}
-                variant="default"
-                size="sm"
-                type="submit"
-              >
-                {isLoading && (
-                  <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
-                )}
-                Save changes
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
+        <SubmitRoomForm
+          form={submitRoomForm}
+          onFormSubmit={handleSaveRoomChanges}
+          isLoading={isLoading}
+        />
       </DialogContent>
     </Dialog>
   );

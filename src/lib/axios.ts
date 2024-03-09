@@ -1,11 +1,10 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import environments from "@/environments/config";
 import {
   ACCESS_TOKEN_STORAGE_KEY,
   REFRESH_TOKEN_STORAGE_KEY,
 } from "@/utils/constants";
-import { AuthToken } from "@/api/models/responses/authentication";
-import { handleAxiosError } from "@/api/services/base-service";
+import { AuthToken } from "@/models/responses/authentication";
 
 const axiosConfiguration = {
   baseURL: environments().baseApiPath,
