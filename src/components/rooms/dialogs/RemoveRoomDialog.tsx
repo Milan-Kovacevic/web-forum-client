@@ -1,9 +1,7 @@
-import { useRemoveRoom } from "@/hooks/useRooms";
-import { Room } from "@/models/responses/rooms";
+import { Room } from "@/types/models/rooms";
 import { Icons } from "@/components/primitives/Icons";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -14,6 +12,9 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { ReactNode } from "react";
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import { removeRoom } from "@/redux/thunks/rooms-thunk";
+import { setSingleRoom } from "@/redux/rooms-slice";
 
 type RemoveRoomDialogProps = {
   children: ReactNode;
@@ -24,11 +25,12 @@ type RemoveRoomDialogProps = {
 };
 
 export default function RemoveRoomDialog(props: RemoveRoomDialogProps) {
-  const { isLoading, removeRoom } = useRemoveRoom(props.room);
+  const { loadingDialog } = useAppSelector((state) => state.rooms);
+  const dispatch = useAppDispatch();
 
   const handleRoomRemove = async () => {
-    await removeRoom(props.onRoomRemove);
-    props.onOpenChange(true);
+    dispatch(setSingleRoom(props.room));
+    dispatch(removeRoom(props.room.roomId));
   };
 
   return (
@@ -45,13 +47,13 @@ export default function RemoveRoomDialog(props: RemoveRoomDialogProps) {
         <AlertDialogFooter className="mt-3">
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <Button
-            disabled={isLoading}
+            disabled={loadingDialog}
             onClick={handleRoomRemove}
             variant="default"
             size="sm"
             type="submit"
           >
-            {isLoading && (
+            {loadingDialog && (
               <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
             Continue

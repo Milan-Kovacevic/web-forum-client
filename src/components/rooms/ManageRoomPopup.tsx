@@ -5,14 +5,14 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontalIcon, PencilIcon, Trash2Icon } from "lucide-react";
-import { Room } from "@/models/responses/rooms";
+import { Room } from "@/types/models//rooms";
 import RemoveRoomDialog from "./dialogs/RemoveRoomDialog";
 import EditRoomDialog from "./dialogs/EditRoomDialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAppSelector } from "@/hooks/useRedux";
 
 type ManageRoomPopupProps = {
   onRoomRemove: (room: Room) => void;
-  onRoomEdit: (room: Room) => void;
   room: Room;
   isOpen: boolean;
   setOpen: (value: boolean) => void;
@@ -21,17 +21,19 @@ type ManageRoomPopupProps = {
 export default function ManageRoomPopup(props: ManageRoomPopupProps) {
   const [isEditDialogOpen, setEditDialogOpen] = useState<boolean>(false);
   const [isRemoveDialogOpen, setRemoveDialogOpen] = useState<boolean>(false);
+  const { performedAction } = useAppSelector((state) => state.rooms);
 
-  const delegateRoomEdit = (room?: Room) => {
-    if (!room) return;
-    setEditDialogOpen(false);
-    props.onRoomEdit(room);
-  };
-
-  const delegateRoomRemove = (room: Room) => {
+  const handleRoomRemoved = async () => {
     setRemoveDialogOpen(false);
-    props.onRoomRemove(room);
   };
+
+  useEffect(() => {
+    if (performedAction === "Edit") {
+      setEditDialogOpen(false);
+    } else if (performedAction == "Delete") {
+      setRemoveDialogOpen(false);
+    }
+  }, [performedAction]);
 
   return (
     <div className="self-end block">
@@ -49,7 +51,6 @@ export default function ManageRoomPopup(props: ManageRoomPopupProps) {
             <div className="space-x-2">
               <EditRoomDialog
                 room={props.room}
-                onRoomEdited={delegateRoomEdit}
                 isOpen={isEditDialogOpen}
                 onOpenChange={setEditDialogOpen}
               >
@@ -63,7 +64,7 @@ export default function ManageRoomPopup(props: ManageRoomPopupProps) {
                 room={props.room}
                 isOpen={isRemoveDialogOpen}
                 onOpenChange={setRemoveDialogOpen}
-                onRoomRemove={delegateRoomRemove}
+                onRoomRemove={handleRoomRemoved}
               >
                 <Button
                   size="sm"

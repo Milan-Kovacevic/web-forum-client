@@ -3,36 +3,46 @@ import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useEffect, useState } from "react";
-
-import RoomItemSkeleton from "@/components/rooms/RoomItemSkeleton";
 import RoomItem from "@/components/rooms/RoomItem";
 import { Button } from "@/components/ui/button";
 import CreateRoomDialog from "@/components/rooms/dialogs/CreateRoomDialog";
-import { Room } from "@/models/responses/rooms";
-import { useGetRooms } from "@/hooks/useRooms";
 import { toast } from "sonner";
+import RoomsPlaceholder from "@/components/rooms/RoomsPlaceholder";
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import { loadRooms } from "@/redux/thunks/rooms-thunk";
+import { clear } from "@/redux/rooms-slice";
+import { Room } from "@/types/models/rooms";
 
 export default function RoomsPage() {
-  const { isLoading, rooms, getRooms } = useGetRooms();
+  const { loading, rooms, performedAction, singleRoom } = useAppSelector(
+    (state) => state.rooms
+  );
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    getRooms();
+    dispatch(loadRooms());
   }, []);
 
-  const handleRoomCreated = (room?: Room) => {
-    if (!room) return;
-    rooms?.push(room);
-    setIsDialogOpen(false);
-  };
-
-  const handleRoomEdited = (room: Room) => {
-    var id = rooms?.findIndex((r) => r.roomId === room.roomId);
-    if (!rooms || id === -1 || id === undefined) return;
-
-    rooms[id] = room;
-    toast.success(`Chat room was updated successfully.`);
-  };
+  useEffect(() => {
+    if (
+      performedAction === null ||
+      performedAction === undefined ||
+      singleRoom === null ||
+      singleRoom === undefined
+    )
+      return;
+    dispatch(loadRooms());
+    dispatch(clear());
+    if (performedAction === "Create") setIsDialogOpen(false);
+    else if (performedAction === "Edit") {
+      toast.success(`Chat room was updated successfully.`);
+    } else if (performedAction === "Delete") {
+      toast.success(
+        `Chat room '${singleRoom?.name}' was removed successfully.`
+      );
+    }
+  }, [performedAction, singleRoom]);
 
   const handleRoomRemoved = (room: Room) => {
     const id = rooms?.findIndex((r) => r.roomId === room.roomId);
@@ -68,7 +78,6 @@ export default function RoomsPage() {
             <CreateRoomDialog
               isOpen={isDialogOpen}
               onOpenChange={setIsDialogOpen}
-              onRoomCreated={handleRoomCreated}
             >
               <Button
                 onClick={() => setIsDialogOpen(true)}
@@ -85,17 +94,13 @@ export default function RoomsPage() {
 
           <ScrollArea className="h-screen my-4">
             <div className="grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 flex-wrap gap-4">
-              {isLoading &&
-                [...Array(15).map((i) => `${i}`)].map((x: string) => (
-                  <RoomItemSkeleton keyId={x} key={x} />
-                ))}
-              {!isLoading &&
+              {loading && <RoomsPlaceholder />}
+              {!loading &&
                 rooms &&
                 rooms.map((item: Room) => (
                   <RoomItem
                     key={item.roomId}
                     room={item}
-                    onRoomEdited={handleRoomEdited}
                     onRoomRemoved={handleRoomRemoved}
                   />
                 ))}

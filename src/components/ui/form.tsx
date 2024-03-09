@@ -168,7 +168,7 @@ const FormDefaultMessage = React.forwardRef<
 const FormMessage = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
->(({ children }) => {
+>(({ children, ...props }, ref) => {
   const { error } = useFormField();
   const body = error ? String(error?.message) : children;
 
@@ -180,6 +180,7 @@ const FormMessage = React.forwardRef<
     <CustomErrorIcon
       body={body}
       className="text-sm font-medium text-destructive h-5 w-5"
+      {...props}
     />
   );
 });

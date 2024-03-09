@@ -1,5 +1,5 @@
 import RegisterForm from "@/components/forms/RegisterForm";
-import AuthFormHeader from "@/components/auth/AuthFormHeader";
+import AuthFormHeader from "@/components/sign-up/AuthFormHeader";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { AuthRouteItems } from "@/utils/constants";
@@ -12,43 +12,46 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { z as zod } from "zod";
 import ReturnToMenuButton from "@/components/primitives/ReturnToMenuButton";
-import { useRegister } from "@/hooks/useAuthentication";
 import { toast } from "sonner";
-import AuthAlternativesSeparator from "@/components/auth/AuthAlternativesSeparator";
-import SocialAuthentication from "@/components/auth/SocialAuthentication";
+import AuthAlternativesSeparator from "@/components/sign-up/AuthAlternativesSeparator";
+import SocialAuthentication from "@/components/sign-up/SocialAuthentication";
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import { register } from "@/redux/thunks/auth-thunk";
+import { useEffect } from "react";
 
 export default function RegisterPage() {
-  const { isLoading, register } = useRegister();
+  const { loading, registered } = useAppSelector((state) => state.auth);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const registerForm = useForm<zod.infer<typeof RegisterFormSchema>>({
     resolver: zodResolver(RegisterFormSchema),
     defaultValues: RegisterFormDefaultValues,
   });
 
-  function navigateToLogin() {
+  const handleNavigateToLoginPage = () => {
     navigate(AuthRouteItems.LOGIN.path);
-  }
+  };
 
   async function handleRegister(data: zod.infer<typeof RegisterFormSchema>) {
-    register(
-      {
+    dispatch(
+      register({
         displayName: data.displayName,
         username: data.username,
         email: data.email,
         password: data.password,
-      },
-      handleUserRegistered
+      })
     );
   }
 
-  function handleUserRegistered() {
-    toast.success("Registration request accepted", {
-      description:
-        "Check your email occasionally for information on the status of your request.",
-      duration: 6000,
-    });
-    registerForm.reset();
-  }
+  useEffect(() => {
+    if (registered) {
+      toast.success("Registration request accepted", {
+        description:
+          "Check your email occasionally for information on the status of your request.",
+        duration: 5000,
+      });
+    }
+  }, [registered]);
 
   return (
     <div className="w-full h-full flex items-center justify-center">
@@ -62,10 +65,10 @@ export default function RegisterPage() {
             <RegisterForm
               form={registerForm}
               onRegister={handleRegister}
-              isLoading={isLoading}
+              isLoading={loading}
             />
             <AuthAlternativesSeparator />
-            <SocialAuthentication isLoading={isLoading} />
+            <SocialAuthentication isLoading={loading} />
           </div>
         </div>
 
@@ -78,7 +81,7 @@ export default function RegisterPage() {
               size="sm"
               className="text-sm"
               variant="outline"
-              onClick={navigateToLogin}
+              onClick={handleNavigateToLoginPage}
             >
               Login / Sign in
             </Button>

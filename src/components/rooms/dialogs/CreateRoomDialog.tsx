@@ -14,35 +14,36 @@ import {
 } from "@/schemas/submit-room-form-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReactNode } from "react";
-import { useCreateRoom } from "@/hooks/useRooms";
-import { Room } from "@/models/responses/rooms";
 import SubmitRoomForm from "@/components/forms/SubmitRoomForm";
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import { createRoom } from "@/redux/thunks/rooms-thunk";
 
 type CreateRoomDialogProps = {
   children: ReactNode;
   isOpen: boolean;
   onOpenChange: (value: boolean) => void;
-  onRoomCreated: (room?: Room) => void;
 };
 
 export default function CreateRoomDialog(props: CreateRoomDialogProps) {
-  const { isLoading, createRoom } = useCreateRoom();
-  const submitRoomForm = useForm<zod.infer<typeof SubmitRoomFormSchema>>({
+  const { loadingDialog } = useAppSelector((state) => state.rooms);
+  const dispatch = useAppDispatch();
+
+  const createRoomForm = useForm<zod.infer<typeof SubmitRoomFormSchema>>({
     resolver: zodResolver(SubmitRoomFormSchema),
     defaultValues: SubmitRoomFormDefaultValues,
   });
 
-  const handleSaveRoomChanges = async (
+  const handleRoomCreate = async (
     formData: Zod.infer<typeof SubmitRoomFormSchema>
   ) => {
-    await createRoom({ ...formData }, props.onRoomCreated);
+    await dispatch(createRoom({ ...formData }));
   };
 
   return (
     <Dialog
       open={props.isOpen}
       onOpenChange={props.onOpenChange}
-      defaultOpen={!isLoading}
+      defaultOpen={!loadingDialog}
     >
       <DialogTrigger asChild>{props.children}</DialogTrigger>
       <DialogContent className="sm:max-w-[460px] px-8 py-7">
@@ -53,9 +54,9 @@ export default function CreateRoomDialog(props: CreateRoomDialogProps) {
           </DialogDescription>
         </DialogHeader>
         <SubmitRoomForm
-          form={submitRoomForm}
-          onFormSubmit={handleSaveRoomChanges}
-          isLoading={isLoading}
+          form={createRoomForm}
+          onFormSubmit={handleRoomCreate}
+          isLoading={loadingDialog}
         />
       </DialogContent>
     </Dialog>

@@ -1,9 +1,9 @@
-export type CreateRoomRequest = {
+export type CreateRoomInput = {
   name: string;
   description?: string;
 };
 
-export type EditRoomRequest = {
+export type EditRoomInput = {
   roomId: string;
   name: string;
   description?: string;

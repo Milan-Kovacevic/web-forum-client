@@ -1,7 +1,7 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
 type RoomItemSkeletonProps = {
-  keyId: string;
+  keyId?: string;
 };
 
 export default function RoomItemSkeleton(props: RoomItemSkeletonProps) {

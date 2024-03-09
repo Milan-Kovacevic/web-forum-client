@@ -1,6 +1,9 @@
 import { Icons } from "@/components/primitives/Icons";
 import { Button } from "@/components/ui/button";
-import { ExternalAuthEndpoints } from "@/utils/constants";
+import {
+  AUTH_XSRF_TOKEN_STORAGE_KEY,
+  ExternalAuthEndpoints,
+} from "@/utils/constants";
 
 import environments from "@/environments/config";
 
@@ -14,7 +17,7 @@ const GITHUB_REDIRECT_URL = environments().githubRedirectUrl;
 export default function SocialAuthentication(props: SocialAuthenticationProps) {
   const onGithubLogin = () => {
     var xsrfToken = crypto.randomUUID();
-    sessionStorage.setItem("forum_xsrf_token", xsrfToken);
+    sessionStorage.setItem(AUTH_XSRF_TOKEN_STORAGE_KEY, xsrfToken);
     parent.window.open(
       `${ExternalAuthEndpoints.GITHUB}?client_id=${GITHUB_CLIENT_ID}&state=${xsrfToken}&redirect_uri=${GITHUB_REDIRECT_URL}`,
       "_parent"

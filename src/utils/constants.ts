@@ -28,6 +28,13 @@ export const ApiEndpoints = {
   SINGLE_ROOM: `${API_PREFIX}/Rooms/{roomId}`,
 };
 
+export const RequestMethods = {
+  GET: "GET",
+  POST: "POST",
+  PUT: "PUT",
+  DELETE: "DELETE",
+};
+
 export const ExternalAuthEndpoints = {
   GITHUB: "https://github.com/login/oauth/authorize",
   GOOGLE: "Google",

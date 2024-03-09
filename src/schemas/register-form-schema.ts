@@ -55,7 +55,7 @@ const RegisterFormDefaultValues: FieldValues = {
   email: "",
   displayName: "",
   password: "",
-  repeatPassword: "",
+  confirmPassword: "",
 };
 
 export { RegisterFormSchema, RegisterFormDefaultValues };

@@ -4,7 +4,7 @@ import "./index.css";
 import { ThemeProvider } from "./pages/shared/ThemeProvider";
 import { APP_THEME_STORAGE_KEY, LIGHT_THEME } from "./utils/constants";
 import { Provider } from "react-redux";
-import store from "@/lib/redux";
+import { store } from "@/lib/redux";
 
 export default function App() {
   return (

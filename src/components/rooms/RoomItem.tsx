@@ -1,29 +1,29 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Room } from "@/models/responses/rooms";
+import { Room } from "@/types/models/rooms";
 import JoinRoomButton from "./JoinRoomButton";
 import ManageRoomPopup from "./ManageRoomPopup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAppSelector } from "@/hooks/useRedux";
 
 export type RoomItemProps = {
   room: Room;
-  onRoomEdited: (room: Room) => void;
   onRoomRemoved: (room: Room) => void;
 };
 
 export default function RoomItem(props: RoomItemProps) {
   const room = props.room;
   const [isPopupOpen, setPopupOpen] = useState<boolean>(false);
+  const { performedAction } = useAppSelector((state) => state.rooms);
 
-  const delegateRoomEdited = (room: Room) => {
+  const handleRoomRemoved = () => {
     setPopupOpen(false);
-    props.onRoomEdited(room);
   };
 
-  const delegateRoomRemoved = (room: Room) => {
-    setPopupOpen(false);
-    props.onRoomRemoved(room);
-  };
+  useEffect(() => {
+    if (performedAction === "Edit" || performedAction === "Delete")
+      setPopupOpen(false);
+  }, [performedAction]);
 
   return (
     <div
@@ -46,8 +46,7 @@ export default function RoomItem(props: RoomItemProps) {
               isOpen={isPopupOpen}
               setOpen={setPopupOpen}
               room={room}
-              onRoomRemove={delegateRoomRemoved}
-              onRoomEdit={delegateRoomEdited}
+              onRoomRemove={handleRoomRemoved}
             />
           </div>
           <div className="flex w-full flex-col">

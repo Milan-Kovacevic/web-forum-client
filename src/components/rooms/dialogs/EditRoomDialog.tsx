@@ -1,35 +1,30 @@
-import { useEditRoom } from "@/hooks/useRooms";
-import { Room } from "@/models/responses/rooms";
-import FormInputFieldItem from "@/components/primitives/FormInputFieldItem";
-import FormTextareaFieldItem from "@/components/primitives/FormTextareaFieldItem";
-import { Icons } from "@/components/primitives/Icons";
-import { Button } from "@/components/ui/button";
+import { Room } from "@/types/models/rooms";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Form } from "@/components/ui/form";
 import { SubmitRoomFormSchema } from "@/schemas/submit-room-form-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import SubmitRoomForm from "@/components/forms/SubmitRoomForm";
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import { editRoom } from "@/redux/thunks/rooms-thunk";
 
 type EditRoomDialogProps = {
   room: Room;
   children: ReactNode;
   isOpen: boolean;
   onOpenChange: (value: boolean) => void;
-  onRoomEdited: (room?: Room) => void;
 };
 
 export default function EditRoomDialog(props: EditRoomDialogProps) {
-  const { isLoading, editRoom } = useEditRoom(props.room.roomId);
+  const { loadingDialog } = useAppSelector((state) => state.rooms);
+  const dispatch = useAppDispatch();
   const editRoomForm = useForm<Zod.infer<typeof SubmitRoomFormSchema>>({
     resolver: zodResolver(SubmitRoomFormSchema),
     defaultValues: {
@@ -41,17 +36,14 @@ export default function EditRoomDialog(props: EditRoomDialogProps) {
   const handleSaveRoomChanges = async (
     formData: Zod.infer<typeof SubmitRoomFormSchema>
   ) => {
-    await editRoom(
-      { ...formData, roomId: props.room.roomId },
-      props.onRoomEdited
-    );
+    await dispatch(editRoom({ ...formData, roomId: props.room.roomId }));
   };
 
   return (
     <Dialog
       open={props.isOpen}
       onOpenChange={props.onOpenChange}
-      defaultOpen={!isLoading}
+      defaultOpen={!loadingDialog}
     >
       <DialogTrigger asChild>{props.children}</DialogTrigger>
       <DialogContent className="sm:max-w-[460px] px-8 py-7">
@@ -64,7 +56,7 @@ export default function EditRoomDialog(props: EditRoomDialogProps) {
         <SubmitRoomForm
           form={editRoomForm}
           onFormSubmit={handleSaveRoomChanges}
-          isLoading={isLoading}
+          isLoading={loadingDialog}
         />
       </DialogContent>
     </Dialog>

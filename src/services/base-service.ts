@@ -2,31 +2,35 @@ import axios from "@/lib/axios";
 import { ApplicationError } from "@/models/responses/application-errors";
 import { AxiosError, AxiosResponse } from "axios";
 import { toast } from "sonner";
-import { AuthRouteItems } from "@/utils/constants";
-import { useNavigate } from "react-router-dom";
 
-type SendAxiosRequestParams<TData> = {
+type SendAxiosRequestParams<TData, TResponse> = {
   url: string;
   method: string;
   requireAuth: boolean;
   data?: TData | null;
   queryParams?: any;
-  onDataReceived?: (data: TData) => void;
+  onResponded?: (data: TResponse) => void;
 };
 
 const sendAxiosRequest = async <TData, TResponse>(
-  params: SendAxiosRequestParams<TData>
+  params: SendAxiosRequestParams<TData, TResponse>
 ) => {
   let instance = params.requireAuth
     ? axios.getAxios(true)
     : axios.getAxios(false);
 
-  return instance.request<TResponse>({
-    method: params.method,
-    url: params.url,
-    data: params.data,
-    params: params.queryParams,
-  });
+  return instance
+    .request<TResponse>({
+      method: params.method,
+      url: params.url,
+      data: params.data,
+      params: params.queryParams,
+    })
+    .then((response) => {
+      if (params.onResponded) params.onResponded(response.data);
+      return response;
+    })
+    .catch(handleAxiosError);
 };
 
 // Global axios error handler
@@ -38,18 +42,17 @@ const handleAxiosError = (error: AxiosError) => {
         "Login required",
         "Your login session is invalid or expired."
       );
-      return;
     } else if (response.status === 403) {
       showErrorToast(
         "Forbidden",
         "Your have insufficient permissions to perform action."
       );
-      return;
-    }
-    var errorReason: ApplicationError | null =
-      response.data as ApplicationError;
-    if (errorReason !== null) {
-      showErrorToast(errorReason.title, errorReason.detail);
+    } else {
+      var errorReason: ApplicationError | null =
+        response.data as ApplicationError;
+      if (errorReason !== null) {
+        showErrorToast(errorReason.title, errorReason.detail);
+      }
     }
   } else {
     if (error.code === AxiosError.ERR_NETWORK) {
@@ -61,6 +64,7 @@ const handleAxiosError = (error: AxiosError) => {
       showErrorToast("Error", "Unknown error. Please, try again later.");
     }
   }
+  return Promise.reject(error);
 };
 
 const showErrorToast = (title: string, description: string) => {
