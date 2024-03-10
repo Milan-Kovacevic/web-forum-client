@@ -4,14 +4,14 @@ import {} from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
-import AuthFormHeader from "@/components/sign-up/AuthFormHeader";
+import AuthFormHeader from "@/components/identity/AuthFormHeader";
 import LoginForm from "@/components/forms/LoginForm";
 import {
   LoginFormDefaultValues,
   LoginFormSchema,
 } from "@/schemas/login-form-schema";
-import AuthAlternativesSeparator from "@/components/sign-up/AuthAlternativesSeparator";
-import SocialAuthentication from "@/components/sign-up/SocialAuthentication";
+import AuthAlternativesSeparator from "@/components/identity/AuthAlternativesSeparator";
+import SocialAuthentication from "@/components/identity/SocialAuthentication";
 import { AUTH_XSRF_TOKEN_STORAGE_KEY, AppRoutes } from "@/utils/constants";
 import ReturnToMenuButton from "@/components/primitives/ReturnToMenuButton";
 import { toast } from "sonner";

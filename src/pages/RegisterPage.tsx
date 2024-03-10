@@ -1,5 +1,5 @@
 import RegisterForm from "@/components/forms/RegisterForm";
-import AuthFormHeader from "@/components/sign-up/AuthFormHeader";
+import AuthFormHeader from "@/components/identity/AuthFormHeader";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { AppRoutes } from "@/utils/constants";
@@ -13,8 +13,8 @@ import { useNavigate } from "react-router-dom";
 import { z as zod } from "zod";
 import ReturnToMenuButton from "@/components/primitives/ReturnToMenuButton";
 import { toast } from "sonner";
-import AuthAlternativesSeparator from "@/components/sign-up/AuthAlternativesSeparator";
-import SocialAuthentication from "@/components/sign-up/SocialAuthentication";
+import AuthAlternativesSeparator from "@/components/identity/AuthAlternativesSeparator";
+import SocialAuthentication from "@/components/identity/SocialAuthentication";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { register } from "@/redux/identity/authThunks";
 import { useEffect } from "react";
