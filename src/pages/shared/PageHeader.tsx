@@ -4,33 +4,25 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useNavigate } from "react-router-dom";
 import MobileNavigationBar from "@/components/navigation-bar/MobileNavigationBar";
-import { AuthRouteItems } from "@/utils/constants";
+import { AppRoutes } from "@/utils/constants";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { logout } from "@/redux/thunks/identity-thunk";
-import { useEffect } from "react";
-import { clearRequireLogin } from "@/redux/identity-slice";
+import { clearIdentity } from "@/redux/identity-slice";
 
 export default function PageHeader() {
-  const { isAuthenticated, requireLogin } = useAppSelector(
-    (state) => state.identity
-  );
+  const { isAuthenticated } = useAppSelector((state) => state.identity);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const handleOnLogout = () => {
+    dispatch(clearIdentity());
     dispatch(logout());
+    navigate(AppRoutes.LOGIN.path);
   };
 
   const handleOnLogin = () => {
-    navigate(AuthRouteItems.LOGIN.path);
+    navigate(AppRoutes.LOGIN.path);
   };
-
-  useEffect(() => {
-    if (requireLogin) {
-      navigate(AuthRouteItems.LOGIN.path);
-      dispatch(clearRequireLogin());
-    }
-  }, [requireLogin]);
 
   return (
     <header className="sticky top-0 shadow-sm z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/40">

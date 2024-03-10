@@ -5,5 +5,5 @@ export type Tokens = {
 
 export type UserInfo = {
   displayName: string;
-  roleId: number;
+  role: number;
 };

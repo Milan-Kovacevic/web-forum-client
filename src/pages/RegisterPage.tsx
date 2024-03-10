@@ -2,7 +2,7 @@ import RegisterForm from "@/components/forms/RegisterForm";
 import AuthFormHeader from "@/components/sign-up/AuthFormHeader";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { AuthRouteItems } from "@/utils/constants";
+import { AppRoutes } from "@/utils/constants";
 import {
   RegisterFormDefaultValues,
   RegisterFormSchema,
@@ -29,18 +29,19 @@ export default function RegisterPage() {
   });
 
   const handleNavigateToLoginPage = () => {
-    navigate(AuthRouteItems.LOGIN.path);
+    navigate(AppRoutes.LOGIN.path);
   };
 
   async function handleRegister(data: zod.infer<typeof RegisterFormSchema>) {
-    dispatch(
-      register({
+    dispatch({
+      type: "REGISTER",
+      register: register({
         displayName: data.displayName,
         username: data.username,
         email: data.email,
         password: data.password,
-      })
-    );
+      }),
+    });
   }
 
   useEffect(() => {

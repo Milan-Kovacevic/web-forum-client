@@ -5,6 +5,7 @@ import JoinRoomButton from "./JoinRoomButton";
 import ManageRoomPopup from "./ManageRoomPopup";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "@/hooks/useRedux";
+import { RootOnly } from "@/utils/constants";
 
 export type RoomItemProps = {
   room: Room;
@@ -14,6 +15,7 @@ export default function RoomItem(props: RoomItemProps) {
   const room = props.room;
   const [isPopupOpen, setPopupOpen] = useState<boolean>(false);
   const { finishedAction } = useAppSelector((state) => state.rooms);
+  const { role } = useAppSelector((state) => state.identity);
 
   useEffect(() => {
     if (finishedAction === "Edit" || finishedAction === "Delete")
@@ -33,15 +35,16 @@ export default function RoomItem(props: RoomItemProps) {
 
         <div className="flex flex-col items-center gap-0 w-full">
           <div className="flex flex-row items-center justify-between w-full gap-1">
-            <div className="flex items-center gap-2 flex-1">
+            <div className="flex items-center gap-2 flex-1 min-h-9">
               <p className="font-semibold text-base">{room.name}</p>
             </div>
-
-            <ManageRoomPopup
-              isOpen={isPopupOpen}
-              setOpen={setPopupOpen}
-              room={room}
-            />
+            {RootOnly.find((r) => r === role) && (
+              <ManageRoomPopup
+                isOpen={isPopupOpen}
+                setOpen={setPopupOpen}
+                room={room}
+              />
+            )}
           </div>
           <div className="flex w-full flex-col">
             <div className="flex flex-row items-start justify-between w-full gap-1">

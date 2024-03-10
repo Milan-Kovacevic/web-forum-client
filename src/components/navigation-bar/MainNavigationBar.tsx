@@ -2,16 +2,21 @@ import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import appIcon from "@/assets/forum.svg";
 import NavigationLink from "@/components/primitives/NavigationLink";
-import { MainRouteItems } from "@/utils/constants";
+import {
+  AdminAndModerator,
+  AdminOnly,
+  AppRoutes,
+  EveryRole,
+} from "@/utils/constants";
 import { useAppSelector } from "@/hooks/useRedux";
 
 export default function MainNavigationBar() {
   const location = useLocation();
-  const { isAuthenticated } = useAppSelector((state) => state.identity);
+  const { isAuthenticated, role } = useAppSelector((state) => state.identity);
   return (
     <div className="mr-4 hidden md:flex">
       <Link
-        to={MainRouteItems.CHAT_ROOMS.path}
+        to={AppRoutes.HOME_PAGE.path}
         className="mr-8 flex items-center space-x-2"
       >
         <img className="h-6 w-6 dark:filter-white" src={appIcon} alt="logo" />
@@ -22,27 +27,29 @@ export default function MainNavigationBar() {
       <nav className="flex items-center gap-6">
         <NavigationLink
           disabled={!isAuthenticated}
-          text={MainRouteItems.CHAT_ROOMS.displayName}
-          isActive={location.pathname === MainRouteItems.CHAT_ROOMS.path}
-          navigateTo={MainRouteItems.CHAT_ROOMS.path}
+          text={AppRoutes.CHAT_ROOMS.displayName}
+          isActive={location.pathname === AppRoutes.CHAT_ROOMS.path}
+          navigateTo={AppRoutes.CHAT_ROOMS.path}
           className="transition-colors hover:text-foreground/80 font-medium text-sm"
         ></NavigationLink>
-
-        <NavigationLink
-          disabled={!isAuthenticated}
-          text={MainRouteItems.MANAGE_ROOMS.displayName}
-          isActive={location.pathname === MainRouteItems.MANAGE_ROOMS.path}
-          navigateTo={MainRouteItems.MANAGE_ROOMS.path}
-          className="transition-colors hover:text-foreground/80 font-medium text-sm"
-        ></NavigationLink>
-
-        <NavigationLink
-          disabled={!isAuthenticated}
-          text={MainRouteItems.MANAGE_USERS.displayName}
-          isActive={location.pathname === MainRouteItems.MANAGE_USERS.path}
-          navigateTo={MainRouteItems.MANAGE_USERS.path}
-          className="transition-colors hover:text-foreground/80 font-medium text-sm"
-        ></NavigationLink>
+        {AdminAndModerator.find((r) => r === role) && (
+          <NavigationLink
+            disabled={!isAuthenticated}
+            text={AppRoutes.MANAGE_ROOMS.displayName}
+            isActive={location.pathname === AppRoutes.MANAGE_ROOMS.path}
+            navigateTo={AppRoutes.MANAGE_ROOMS.path}
+            className="transition-colors hover:text-foreground/80 font-medium text-sm"
+          ></NavigationLink>
+        )}
+        {AdminOnly.find((r) => r === role) && (
+          <NavigationLink
+            disabled={!isAuthenticated}
+            text={AppRoutes.MANAGE_USERS.displayName}
+            isActive={location.pathname === AppRoutes.MANAGE_USERS.path}
+            navigateTo={AppRoutes.MANAGE_USERS.path}
+            className="transition-colors hover:text-foreground/80 font-medium text-sm"
+          ></NavigationLink>
+        )}
       </nav>
     </div>
   );

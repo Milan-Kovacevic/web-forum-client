@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import {} from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AuthFormHeader from "@/components/sign-up/AuthFormHeader";
 import LoginForm from "@/components/forms/LoginForm";
 import {
@@ -12,11 +12,7 @@ import {
 } from "@/schemas/login-form-schema";
 import AuthAlternativesSeparator from "@/components/sign-up/AuthAlternativesSeparator";
 import SocialAuthentication from "@/components/sign-up/SocialAuthentication";
-import {
-  AUTH_XSRF_TOKEN_STORAGE_KEY,
-  AuthRouteItems,
-  MainRouteItems,
-} from "@/utils/constants";
+import { AUTH_XSRF_TOKEN_STORAGE_KEY, AppRoutes } from "@/utils/constants";
 import ReturnToMenuButton from "@/components/primitives/ReturnToMenuButton";
 import { toast } from "sonner";
 import { useEffect } from "react";
@@ -31,12 +27,16 @@ import { cancelVerification, clearSignUp } from "@/redux/signin-slice";
 import { getMyInfo } from "@/redux/thunks/identity-thunk";
 
 export default function LoginPage() {
+  const { isAuthenticated } = useAppSelector((state) => state.identity);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const fromLocation =
+    location.state?.from?.pathname || AppRoutes.HOME_PAGE.path;
+
+  const dispatch = useAppDispatch();
   const { loading, loggedIn, verifyUser } = useAppSelector(
     (state) => state.signin
   );
-  const { isAuthenticated } = useAppSelector((state) => state.identity);
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   const loginForm = useForm<Zod.infer<typeof LoginFormSchema>>({
     resolver: zodResolver(LoginFormSchema),
@@ -48,7 +48,7 @@ export default function LoginPage() {
   });
 
   const handleNavigateToRegisterPage = () => {
-    navigate(AuthRouteItems.REGISTER.path);
+    navigate(AppRoutes.REGISTER.path);
   };
 
   const handleVerificationCancel = () => {
@@ -124,7 +124,7 @@ export default function LoginPage() {
       position: "top-center",
     });
     dispatch(clearSignUp());
-    navigate(MainRouteItems.CHAT_ROOMS.path);
+    navigate(fromLocation, { replace: true });
   }, [isAuthenticated]);
 
   return (

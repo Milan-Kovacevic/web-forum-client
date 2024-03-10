@@ -5,9 +5,18 @@ import Page404 from "@/pages/Page404";
 import HomePage from "@/pages/HomePage";
 import LoginPage from "@/pages/LoginPage";
 import DefaultLayout from "@/layouts/DefaultLayout";
-import { MainRouteItems, AuthRouteItems } from "@/utils/constants";
+import {
+  AdminAndModerator,
+  AdminOnly,
+  AppRoutes,
+  EveryRole,
+} from "@/utils/constants";
 import RegisterPage from "@/pages/RegisterPage";
 import RoomsPage from "@/pages/RoomsPage";
+import RequireAuth from "./RequireAuth";
+import ManageUsersPage from "../ManageUsersPage";
+import ManageRoomsPage from "../ManageRoomsPage";
+import ForbiddenPage from "../ForbiddenPage";
 
 const router = createBrowserRouter([
   {
@@ -16,32 +25,53 @@ const router = createBrowserRouter([
     element: <DefaultLayout />,
     children: [
       {
-        path: "/",
         element: <MainLayout />,
         children: [
           {
-            path: MainRouteItems.CHAT_ROOMS.path,
-            element: <RoomsPage />,
-          },
-          {
-            path: MainRouteItems.MANAGE_ROOMS.path,
+            path: AppRoutes.HOME_PAGE.path,
             element: <HomePage />,
           },
+          // Routes for every role
           {
-            path: MainRouteItems.MANAGE_USERS.path,
-            element: <HomePage />,
+            element: <RequireAuth allowedRoles={EveryRole} />,
+            children: [
+              {
+                path: AppRoutes.CHAT_ROOMS.path,
+                element: <RoomsPage />,
+              },
+            ],
+          },
+          // Routes for admins only
+          {
+            element: <RequireAuth allowedRoles={AdminOnly} />,
+            children: [
+              {
+                path: AppRoutes.MANAGE_USERS.path,
+                element: <ManageUsersPage />,
+              },
+            ],
+          },
+          // Routes for admins and moderators
+          {
+            element: <RequireAuth allowedRoles={AdminAndModerator} />,
+            children: [
+              {
+                path: AppRoutes.MANAGE_ROOMS.path,
+                element: <ManageRoomsPage />,
+              },
+            ],
           },
         ],
       },
-
       {
-        path: "/",
         element: <AuthLayout />,
         children: [
-          { path: AuthRouteItems.LOGIN.path, element: <LoginPage /> },
-          { path: AuthRouteItems.REGISTER.path, element: <RegisterPage /> },
+          { path: AppRoutes.LOGIN.path, element: <LoginPage /> },
+          { path: AppRoutes.REGISTER.path, element: <RegisterPage /> },
         ],
       },
+      { path: AppRoutes.FORBIDDEN.path, element: <ForbiddenPage /> },
+      { path: "*", element: <Page404 /> },
     ],
   },
 ]);

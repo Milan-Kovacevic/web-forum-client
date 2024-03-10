@@ -12,11 +12,13 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { loadRooms } from "@/redux/thunks/rooms-thunk";
 import { clear } from "@/redux/rooms-slice";
 import { Room } from "@/types/models/rooms";
+import { AdminOnly } from "@/utils/constants";
 
 export default function RoomsPage() {
   const { loading, rooms, finishedAction } = useAppSelector(
     (state) => state.rooms
   );
+  const { role } = useAppSelector((state) => state.identity);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
@@ -59,21 +61,23 @@ export default function RoomsPage() {
               />
               <Input placeholder="Search Rooms" className="pl-8" />
             </div>
-            <CreateRoomDialog
-              isOpen={isDialogOpen}
-              onOpenChange={setIsDialogOpen}
-            >
-              <Button
-                onClick={() => setIsDialogOpen(true)}
-                size="sm"
-                variant="default"
+            {AdminOnly.find((r) => r === role) && (
+              <CreateRoomDialog
+                isOpen={isDialogOpen}
+                onOpenChange={setIsDialogOpen}
               >
-                <MessageCirclePlusIcon className="h-5" />
-                <span className="text-sm text-medium hidden sm:block">
-                  Create Room
-                </span>
-              </Button>
-            </CreateRoomDialog>
+                <Button
+                  onClick={() => setIsDialogOpen(true)}
+                  size="sm"
+                  variant="default"
+                >
+                  <MessageCirclePlusIcon className="h-5" />
+                  <span className="text-sm text-medium hidden sm:block">
+                    Create Room
+                  </span>
+                </Button>
+              </CreateRoomDialog>
+            )}
           </div>
 
           <ScrollArea className="h-screen my-4">

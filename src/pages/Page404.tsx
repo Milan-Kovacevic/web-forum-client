@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { MainRouteItems } from "@/utils/constants";
+import { AppRoutes } from "@/utils/constants";
 import { Link } from "react-router-dom";
 
 export default function Page404() {
@@ -11,9 +11,9 @@ export default function Page404() {
         <Separator className="h-8" orientation="vertical"></Separator>
         <p className="text-3xl">Page was not found</p>
       </div>
-      <Link to={MainRouteItems.CHAT_ROOMS.path}>
+      <Link to={AppRoutes.HOME_PAGE.path}>
         <Button className="text-base text-muted-foreground" variant="link">
-          Click here to go main page.
+          Click here to go to home page.
         </Button>
       </Link>
     </div>

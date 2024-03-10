@@ -1,5 +1,6 @@
 import axios from "@/lib/axios";
-import { ApplicationError } from "@/models/responses/application-errors";
+import { AppError } from "@/types/models/application";
+import { AppRoutes } from "@/utils/constants";
 import { AxiosError, AxiosResponse } from "axios";
 import { toast } from "sonner";
 
@@ -47,9 +48,9 @@ const handleAxiosError = (error: AxiosError) => {
         "Forbidden",
         "Your have insufficient permissions to perform action."
       );
+      location.href = AppRoutes.FORBIDDEN.path;
     } else {
-      var errorReason: ApplicationError | null =
-        response.data as ApplicationError;
+      var errorReason: AppError | null = response.data as AppError;
       if (errorReason !== null) {
         showErrorToast(errorReason.title, errorReason.detail);
       }

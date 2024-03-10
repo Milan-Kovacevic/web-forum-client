@@ -9,15 +9,45 @@ export const AUTH_XSRF_TOKEN_STORAGE_KEY = "forum_xsrf_token";
 export const LIGHT_THEME = "light";
 export const DARK_THEME = "dark";
 
-export const MainRouteItems = {
-  CHAT_ROOMS: { displayName: "Chat Rooms", path: "/rooms" },
-  MANAGE_ROOMS: { displayName: "Manage Chat Rooms", path: "/rooms/manage" },
-  MANAGE_USERS: { displayName: "Manage Users", path: "/users/manage" },
-};
+export const EveryRole: UserRole[] = [
+  "Regular",
+  "Moderator",
+  "Admin",
+  "RootAdmin",
+];
 
-export const AuthRouteItems = {
+export const AdminAndModerator: UserRole[] = [
+  "Moderator",
+  "Admin",
+  "RootAdmin",
+];
+
+export const AdminOnly: UserRole[] = ["Admin", "RootAdmin"];
+export const RootOnly: UserRole[] = ["RootAdmin"];
+
+export const AppRoutes: Record<
+  string,
+  { displayName: string; path: string; roles?: UserRole[] }
+> = {
   LOGIN: { displayName: "Login / Sign in", path: "/login" },
   REGISTER: { displayName: "Register / Sign up", path: "/register" },
+  HOME_PAGE: { displayName: "Home Page", path: "/" },
+  FORBIDDEN: { displayName: "Forbidden", path: "/forbidden" },
+  CHAT_ROOMS: {
+    displayName: "Chat Rooms",
+    path: "/rooms",
+    roles: EveryRole,
+  },
+  MANAGE_ROOMS: {
+    displayName: "Manage Chat Rooms",
+    path: "/rooms/manage",
+    roles: ["Moderator", "Admin", "RootAdmin"],
+  },
+  MANAGE_USERS: {
+    displayName: "Manage Users",
+    path: "/users/manage",
+    roles: ["Admin", "RootAdmin"],
+  },
 };
 
 const API_PREFIX = environments().apiResourcePrefix;

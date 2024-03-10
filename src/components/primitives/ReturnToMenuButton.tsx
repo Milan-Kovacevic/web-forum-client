@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { HomeIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
-import { MainRouteItems } from "@/utils/constants";
+import { AppRoutes } from "@/utils/constants";
 
 type ReturnToMenuButtonProps = {
   className: string;
@@ -17,7 +17,7 @@ type ReturnToMenuButtonProps = {
 export default function ReturnToMenuButton(props: ReturnToMenuButtonProps) {
   const navigate = useNavigate();
   function handleClick() {
-    navigate(MainRouteItems.CHAT_ROOMS.path);
+    navigate(AppRoutes.HOME_PAGE.path);
   }
 
   return (

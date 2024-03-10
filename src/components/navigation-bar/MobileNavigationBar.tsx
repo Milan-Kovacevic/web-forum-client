@@ -5,8 +5,9 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Link, useLocation } from "react-router-dom";
 import appIcon from "@/assets/forum.svg";
 import NavigationLink from "@/components/primitives/NavigationLink";
-import { MainRouteItems, AuthRouteItems } from "@/utils/constants";
+import { AppRoutes } from "@/utils/constants";
 import { useAppSelector } from "@/hooks/useRedux";
+import { Icons } from "@/components/primitives/Icons";
 
 export default function MobileNavigationBar() {
   const { isAuthenticated } = useAppSelector((state) => state.identity);
@@ -23,41 +24,13 @@ export default function MobileNavigationBar() {
           variant="ghost"
           className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
         >
-          <svg
-            strokeWidth="1.5"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-          >
-            <path
-              d="M3 5H11"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            ></path>
-            <path
-              d="M3 12H16"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            ></path>
-            <path
-              d="M3 19H21"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            ></path>
-          </svg>
+          <Icons.MainMenu className="h-5 w-5" />
           <span className="sr-only">Toggle Menu</span>
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className="pr-0">
         <Link
-          to={MainRouteItems.CHAT_ROOMS.path}
+          to={AppRoutes.HOME_PAGE.path}
           className="flex items-center"
           onClick={handleNavLinkClick}
         >
@@ -73,26 +46,26 @@ export default function MobileNavigationBar() {
             <h4 className="text-base font-medium">Main Menu</h4>
             <NavigationLink
               disabled={!isAuthenticated}
-              text={MainRouteItems.CHAT_ROOMS.displayName}
-              isActive={location.pathname === MainRouteItems.CHAT_ROOMS.path}
-              navigateTo={MainRouteItems.CHAT_ROOMS.path}
+              text={AppRoutes.CHAT_ROOMS.displayName}
+              isActive={location.pathname === AppRoutes.CHAT_ROOMS.path}
+              navigateTo={AppRoutes.CHAT_ROOMS.path}
               className="ext-foreground/60 transition-colors hover:text-foreground/80 text-sm"
               onClick={handleNavLinkClick}
             />
             <NavigationLink
               disabled={!isAuthenticated}
-              text={MainRouteItems.MANAGE_ROOMS.displayName}
-              isActive={location.pathname === MainRouteItems.MANAGE_ROOMS.path}
-              navigateTo={MainRouteItems.MANAGE_ROOMS.path}
+              text={AppRoutes.MANAGE_ROOMS.displayName}
+              isActive={location.pathname === AppRoutes.MANAGE_ROOMS.path}
+              navigateTo={AppRoutes.MANAGE_ROOMS.path}
               className="text-foreground/60 transition-colors hover:text-foreground/80 text-sm"
               onClick={handleNavLinkClick}
             ></NavigationLink>
 
             <NavigationLink
               disabled={!isAuthenticated}
-              text={MainRouteItems.MANAGE_USERS.displayName}
-              isActive={location.pathname === MainRouteItems.MANAGE_USERS.path}
-              navigateTo={MainRouteItems.MANAGE_USERS.path}
+              text={AppRoutes.MANAGE_USERS.displayName}
+              isActive={location.pathname === AppRoutes.MANAGE_USERS.path}
+              navigateTo={AppRoutes.MANAGE_USERS.path}
               className="text-foreground/60 transition-colors hover:text-foreground/80 text-sm"
               onClick={handleNavLinkClick}
             ></NavigationLink>
@@ -101,15 +74,14 @@ export default function MobileNavigationBar() {
             <div className="flex flex-col space-y-3 pt-6">
               <h4 className="text-base font-medium">Authentication</h4>
               <NavigationLink
-                disabled={isAuthenticated}
-                text={AuthRouteItems.LOGIN.displayName}
-                navigateTo={AuthRouteItems.LOGIN.path}
+                text={AppRoutes.LOGIN.displayName}
+                navigateTo={AppRoutes.LOGIN.path}
                 className="text-foreground/60 transition-colors hover:text-foreground/80 text-sm"
                 onClick={handleNavLinkClick}
               />
               <NavigationLink
-                text={AuthRouteItems.REGISTER.displayName}
-                navigateTo={AuthRouteItems.REGISTER.path}
+                text={AppRoutes.REGISTER.displayName}
+                navigateTo={AppRoutes.REGISTER.path}
                 className="text-foreground/60 transition-colors hover:text-foreground/80 text-sm"
                 onClick={handleNavLinkClick}
               />

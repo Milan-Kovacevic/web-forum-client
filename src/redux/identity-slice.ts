@@ -1,18 +1,18 @@
-import { UserRole } from "@/types/models/application";
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { getMyInfo, logout } from "@/redux/thunks/identity-thunk";
 import { RoleDictionary } from "@/utils/constants";
+import { AxiosResponse } from "axios";
 
 interface IdentityState {
+  forbidden: boolean;
   isAuthenticated: boolean;
-  requireLogin: boolean;
-  role: UserRole | null;
+  role: string | null;
   displayName: string;
 }
 
 const initialState: IdentityState = {
+  forbidden: false,
   isAuthenticated: false,
-  requireLogin: false,
   role: null,
   displayName: "",
 };
@@ -21,29 +21,41 @@ const identitySlice = createSlice({
   name: "identity",
   initialState: initialState,
   reducers: {
-    clearRequireLogin(state) {
-      state.requireLogin = false;
+    clearIdentity(state) {
+      state.isAuthenticated = false;
+      state.forbidden = false;
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getMyInfo.fulfilled, (state, action) => {
+    builder.addCase(getMyInfo.fulfilled, (state: IdentityState, action) => {
       state.isAuthenticated = true;
-      state.requireLogin = false;
-      state.role = RoleDictionary[action.payload.data.roleId];
+      state.role = RoleDictionary[action.payload.data.role];
       state.displayName = action.payload.data.displayName;
     });
     builder.addCase(getMyInfo.rejected, (state) => {
       state.isAuthenticated = false;
-      state.requireLogin = true;
     });
     builder.addCase(logout.fulfilled, (state) => {
-      state.isAuthenticated = false;
-      state.requireLogin = true;
       state.role = null;
       state.displayName = "";
     });
+    builder.addCase(logout.rejected, (state) => {
+      state.forbidden = true;
+    });
+    builder.addMatcher(
+      (action: PayloadAction<AxiosResponse>) => {
+        return (
+          action.type.endsWith("/rejected") &&
+          action.payload &&
+          action.payload.status === 403
+        );
+      },
+      (state) => {
+        state.forbidden = true;
+      }
+    );
   },
 });
 
-export const { clearRequireLogin } = identitySlice.actions;
+export const { clearIdentity } = identitySlice.actions;
 export default identitySlice.reducer;
