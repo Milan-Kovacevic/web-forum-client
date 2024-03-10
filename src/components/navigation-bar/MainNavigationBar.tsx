@@ -2,17 +2,14 @@ import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import appIcon from "@/assets/forum.svg";
 import NavigationLink from "@/components/primitives/NavigationLink";
-import {
-  AdminAndModerator,
-  AdminOnly,
-  AppRoutes,
-  EveryRole,
-} from "@/utils/constants";
+import { AdminAndModerator, AdminOnly, AppRoutes } from "@/utils/constants";
 import { useAppSelector } from "@/hooks/useRedux";
 
 export default function MainNavigationBar() {
   const location = useLocation();
-  const { isAuthenticated, role } = useAppSelector((state) => state.identity);
+  const { authenticated, identity } = useAppSelector((state) => state.identity);
+  const role = identity?.role;
+
   return (
     <div className="mr-4 hidden md:flex">
       <Link
@@ -26,7 +23,7 @@ export default function MainNavigationBar() {
       </Link>
       <nav className="flex items-center gap-6">
         <NavigationLink
-          disabled={!isAuthenticated}
+          disabled={!authenticated}
           text={AppRoutes.CHAT_ROOMS.displayName}
           isActive={location.pathname === AppRoutes.CHAT_ROOMS.path}
           navigateTo={AppRoutes.CHAT_ROOMS.path}
@@ -34,7 +31,7 @@ export default function MainNavigationBar() {
         ></NavigationLink>
         {AdminAndModerator.find((r) => r === role) && (
           <NavigationLink
-            disabled={!isAuthenticated}
+            disabled={!authenticated}
             text={AppRoutes.MANAGE_ROOMS.displayName}
             isActive={location.pathname === AppRoutes.MANAGE_ROOMS.path}
             navigateTo={AppRoutes.MANAGE_ROOMS.path}
@@ -43,7 +40,7 @@ export default function MainNavigationBar() {
         )}
         {AdminOnly.find((r) => r === role) && (
           <NavigationLink
-            disabled={!isAuthenticated}
+            disabled={!authenticated}
             text={AppRoutes.MANAGE_USERS.displayName}
             isActive={location.pathname === AppRoutes.MANAGE_USERS.path}
             navigateTo={AppRoutes.MANAGE_USERS.path}

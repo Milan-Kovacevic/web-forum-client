@@ -1,22 +1,22 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
-import { clearIdentity } from "@/redux/identity-slice";
-import { logout } from "@/redux/thunks/identity-thunk";
+import { clearIdentity } from "@/redux/identity/identitySlice";
+import { logout } from "@/redux/identity/authThunks";
 import { AppRoutes } from "@/utils/constants";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 export default function ForbiddenPage() {
-  const { isAuthenticated } = useAppSelector((state) => state.identity);
+  const { authenticated } = useAppSelector((state) => state.identity);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (authenticated) {
       dispatch(clearIdentity());
       dispatch(logout());
     }
-  }, [isAuthenticated]);
+  }, [authenticated]);
 
   return (
     <div className="w-full h-screen flex flex-col justify-center items-center">

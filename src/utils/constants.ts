@@ -38,15 +38,20 @@ export const AppRoutes: Record<
     path: "/rooms",
     roles: EveryRole,
   },
+  SINGLE_ROOM: {
+    displayName: "Manage Users",
+    path: "/rooms/:id",
+    roles: EveryRole,
+  },
   MANAGE_ROOMS: {
     displayName: "Manage Chat Rooms",
     path: "/rooms/manage",
-    roles: ["Moderator", "Admin", "RootAdmin"],
+    roles: AdminAndModerator,
   },
   MANAGE_USERS: {
     displayName: "Manage Users",
     path: "/users/manage",
-    roles: ["Admin", "RootAdmin"],
+    roles: AdminOnly,
   },
 };
 

@@ -13,7 +13,7 @@ import { ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import SubmitRoomForm from "@/components/forms/SubmitRoomForm";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
-import { editRoom } from "@/redux/thunks/rooms-thunk";
+import { editRoom } from "@/redux/rooms/roomThunks";
 
 type EditRoomDialogProps = {
   room: Room;

@@ -17,6 +17,7 @@ import RequireAuth from "./RequireAuth";
 import ManageUsersPage from "../ManageUsersPage";
 import ManageRoomsPage from "../ManageRoomsPage";
 import ForbiddenPage from "../ForbiddenPage";
+import SingleRoomPage from "../SingleRoomPage";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
               {
                 path: AppRoutes.CHAT_ROOMS.path,
                 element: <RoomsPage />,
+              },
+              {
+                path: AppRoutes.SINGLE_ROOM.path,
+                element: <SingleRoomPage />,
               },
             ],
           },

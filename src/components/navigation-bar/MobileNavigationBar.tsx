@@ -10,7 +10,7 @@ import { useAppSelector } from "@/hooks/useRedux";
 import { Icons } from "@/components/primitives/Icons";
 
 export default function MobileNavigationBar() {
-  const { isAuthenticated } = useAppSelector((state) => state.identity);
+  const { authenticated } = useAppSelector((state) => state.identity);
   const [open, setOpen] = useState(false);
   const location = useLocation();
   const handleNavLinkClick = () => {
@@ -45,7 +45,7 @@ export default function MobileNavigationBar() {
           <div className="flex flex-col space-y-3">
             <h4 className="text-base font-medium">Main Menu</h4>
             <NavigationLink
-              disabled={!isAuthenticated}
+              disabled={!authenticated}
               text={AppRoutes.CHAT_ROOMS.displayName}
               isActive={location.pathname === AppRoutes.CHAT_ROOMS.path}
               navigateTo={AppRoutes.CHAT_ROOMS.path}
@@ -53,7 +53,7 @@ export default function MobileNavigationBar() {
               onClick={handleNavLinkClick}
             />
             <NavigationLink
-              disabled={!isAuthenticated}
+              disabled={!authenticated}
               text={AppRoutes.MANAGE_ROOMS.displayName}
               isActive={location.pathname === AppRoutes.MANAGE_ROOMS.path}
               navigateTo={AppRoutes.MANAGE_ROOMS.path}
@@ -62,7 +62,7 @@ export default function MobileNavigationBar() {
             ></NavigationLink>
 
             <NavigationLink
-              disabled={!isAuthenticated}
+              disabled={!authenticated}
               text={AppRoutes.MANAGE_USERS.displayName}
               isActive={location.pathname === AppRoutes.MANAGE_USERS.path}
               navigateTo={AppRoutes.MANAGE_USERS.path}
@@ -70,7 +70,7 @@ export default function MobileNavigationBar() {
               onClick={handleNavLinkClick}
             ></NavigationLink>
           </div>
-          {!isAuthenticated && (
+          {!authenticated && (
             <div className="flex flex-col space-y-3 pt-6">
               <h4 className="text-base font-medium">Authentication</h4>
               <NavigationLink

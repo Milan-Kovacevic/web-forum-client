@@ -8,15 +8,16 @@ type RequireAuthProps = {
 };
 
 export default function RequireAuth(props: RequireAuthProps) {
-  const { isAuthenticated, role } = useAppSelector((state) => state.identity);
+  const { authenticated, identity } = useAppSelector((state) => state.identity);
   const location = useLocation();
+  const role = identity?.role;
 
-  if (!isAuthenticated)
+  if (!authenticated)
     return (
       <Navigate to={AppRoutes.LOGIN.path} state={{ from: location }} replace />
     );
 
-  return isAuthenticated && props.allowedRoles.find((r) => r === role) ? (
+  return authenticated && props.allowedRoles.find((r) => r === role) ? (
     <Outlet />
   ) : (
     <Navigate

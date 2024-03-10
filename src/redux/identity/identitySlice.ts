@@ -1,20 +1,19 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { getMyInfo, logout } from "@/redux/thunks/identity-thunk";
+import { getMyInfo, logout } from "@/redux/identity/authThunks";
 import { RoleDictionary } from "@/utils/constants";
 import { AxiosResponse } from "axios";
+import { UserIdentity } from "@/types/models/application";
 
-interface IdentityState {
+interface SessionState {
   forbidden: boolean;
-  isAuthenticated: boolean;
-  role: string | null;
-  displayName: string;
+  authenticated: boolean;
+  identity: UserIdentity | null;
 }
 
-const initialState: IdentityState = {
+const initialState: SessionState = {
   forbidden: false,
-  isAuthenticated: false,
-  role: null,
-  displayName: "",
+  authenticated: false,
+  identity: null,
 };
 
 const identitySlice = createSlice({
@@ -22,25 +21,25 @@ const identitySlice = createSlice({
   initialState: initialState,
   reducers: {
     clearIdentity(state) {
-      state.isAuthenticated = false;
+      state.authenticated = false;
       state.forbidden = false;
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getMyInfo.fulfilled, (state: IdentityState, action) => {
-      state.isAuthenticated = true;
-      state.role = RoleDictionary[action.payload.data.role];
-      state.displayName = action.payload.data.displayName;
+    builder.addCase(getMyInfo.fulfilled, (state: SessionState, action) => {
+      state.authenticated = true;
+      var data = action.payload.data;
+      state.identity = {
+        // userId: data.userId,
+        displayName: data.displayName,
+        role: RoleDictionary[action.payload.data.role],
+      };
     });
     builder.addCase(getMyInfo.rejected, (state) => {
-      state.isAuthenticated = false;
+      state.authenticated = false;
     });
     builder.addCase(logout.fulfilled, (state) => {
-      state.role = null;
-      state.displayName = "";
-    });
-    builder.addCase(logout.rejected, (state) => {
-      state.forbidden = true;
+      state.identity = null;
     });
     builder.addMatcher(
       (action: PayloadAction<AxiosResponse>) => {

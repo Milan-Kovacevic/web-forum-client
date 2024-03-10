@@ -7,4 +7,8 @@ export type AppError = {
   type: string;
 };
 
-export type RoomUIState = "Create" | "Update" | "Delete";
+export type UserIdentity = {
+  // userId: string;
+  displayName: string;
+  role: UserRole;
+};

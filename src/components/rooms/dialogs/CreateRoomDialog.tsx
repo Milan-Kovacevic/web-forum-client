@@ -16,7 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ReactNode } from "react";
 import SubmitRoomForm from "@/components/forms/SubmitRoomForm";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
-import { createRoom } from "@/redux/thunks/rooms-thunk";
+import { createRoom } from "@/redux/rooms/roomThunks";
 
 type CreateRoomDialogProps = {
   children: ReactNode;

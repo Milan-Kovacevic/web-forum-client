@@ -10,6 +10,7 @@ import { LogInIcon } from "lucide-react";
 
 type JoinRoomButtonProps = {
   className?: string;
+  onRoomJoinClicked: () => void;
 };
 
 export default function JoinRoomButton(props: JoinRoomButtonProps) {
@@ -18,7 +19,12 @@ export default function JoinRoomButton(props: JoinRoomButtonProps) {
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button variant="ghost" className="hover:bg-background" size="sm">
+            <Button
+              variant="ghost"
+              className="hover:bg-background"
+              size="sm"
+              onClick={props.onRoomJoinClicked}
+            >
               <LogInIcon className="w-5 h-5" />
             </Button>
           </TooltipTrigger>

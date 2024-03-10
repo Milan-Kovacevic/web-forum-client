@@ -5,7 +5,8 @@ import JoinRoomButton from "./JoinRoomButton";
 import ManageRoomPopup from "./ManageRoomPopup";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "@/hooks/useRedux";
-import { RootOnly } from "@/utils/constants";
+import { AppRoutes, RootOnly } from "@/utils/constants";
+import { useNavigate } from "react-router-dom";
 
 export type RoomItemProps = {
   room: Room;
@@ -15,7 +16,12 @@ export default function RoomItem(props: RoomItemProps) {
   const room = props.room;
   const [isPopupOpen, setPopupOpen] = useState<boolean>(false);
   const { finishedAction } = useAppSelector((state) => state.rooms);
-  const { role } = useAppSelector((state) => state.identity);
+  const { identity } = useAppSelector((state) => state.identity);
+  const role = identity?.role;
+  const navigate = useNavigate();
+  const handleJoinRoom = () => {
+    navigate(AppRoutes.SINGLE_ROOM.path.replace(":id", props.room.roomId));
+  };
 
   useEffect(() => {
     if (finishedAction === "Edit" || finishedAction === "Delete")
@@ -71,7 +77,10 @@ export default function RoomItem(props: RoomItemProps) {
             120 Comments
           </Badge>
         </div>
-        <JoinRoomButton className="sm:ml-0 ml-auto" />
+        <JoinRoomButton
+          onRoomJoinClicked={handleJoinRoom}
+          className="sm:ml-0 ml-auto"
+        />
       </div>
     </div>
   );

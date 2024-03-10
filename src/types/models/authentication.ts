@@ -4,6 +4,7 @@ export type Tokens = {
 };
 
 export type UserInfo = {
+  userId: string;
   displayName: string;
   role: number;
 };

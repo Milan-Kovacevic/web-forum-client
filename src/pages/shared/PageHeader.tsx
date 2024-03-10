@@ -6,11 +6,11 @@ import { useNavigate } from "react-router-dom";
 import MobileNavigationBar from "@/components/navigation-bar/MobileNavigationBar";
 import { AppRoutes } from "@/utils/constants";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
-import { logout } from "@/redux/thunks/identity-thunk";
-import { clearIdentity } from "@/redux/identity-slice";
+import { logout } from "@/redux/identity/authThunks";
+import { clearIdentity } from "@/redux/identity/identitySlice";
 
 export default function PageHeader() {
-  const { isAuthenticated } = useAppSelector((state) => state.identity);
+  const { authenticated } = useAppSelector((state) => state.identity);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -31,7 +31,7 @@ export default function PageHeader() {
         <MobileNavigationBar />
         <nav className="flex items-center ml-auto">
           <ThemeToggle />
-          {isAuthenticated ? (
+          {authenticated ? (
             <Button
               className="ml-3 "
               size="sm"

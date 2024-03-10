@@ -22,12 +22,11 @@ import {
   TwoFactorAuthSchema,
 } from "@/schemas/two-factor-auth-schema";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
-import { externalLogin, login } from "@/redux/thunks/signin-thunk";
-import { cancelVerification, clearSignUp } from "@/redux/signin-slice";
-import { getMyInfo } from "@/redux/thunks/identity-thunk";
+import { externalLogin, login, getMyInfo } from "@/redux/identity/authThunks";
+import { cancelVerification, clearSignUp } from "@/redux/identity/authSlice";
 
 export default function LoginPage() {
-  const { isAuthenticated } = useAppSelector((state) => state.identity);
+  const { authenticated } = useAppSelector((state) => state.identity);
   const navigate = useNavigate();
   const location = useLocation();
   const fromLocation =
@@ -35,7 +34,7 @@ export default function LoginPage() {
 
   const dispatch = useAppDispatch();
   const { loading, loggedIn, verifyUser } = useAppSelector(
-    (state) => state.signin
+    (state) => state.auth
   );
 
   const loginForm = useForm<Zod.infer<typeof LoginFormSchema>>({
@@ -118,14 +117,14 @@ export default function LoginPage() {
   }, [loggedIn]);
 
   useEffect(() => {
-    if (!isAuthenticated) return;
+    if (!authenticated) return;
     toast.success("Welcome", {
       description: "Login successfull.",
       position: "top-center",
     });
     dispatch(clearSignUp());
     navigate(fromLocation, { replace: true });
-  }, [isAuthenticated]);
+  }, [authenticated]);
 
   return (
     <>

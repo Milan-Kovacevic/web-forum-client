@@ -9,8 +9,8 @@ import CreateRoomDialog from "@/components/rooms/dialogs/CreateRoomDialog";
 import { toast } from "sonner";
 import RoomsPlaceholder from "@/components/rooms/RoomsPlaceholder";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
-import { loadRooms } from "@/redux/thunks/rooms-thunk";
-import { clear } from "@/redux/rooms-slice";
+import { loadRooms } from "@/redux/rooms/roomThunks";
+import { clear } from "@/redux/rooms/roomSlice";
 import { Room } from "@/types/models/rooms";
 import { AdminOnly } from "@/utils/constants";
 
@@ -18,9 +18,10 @@ export default function RoomsPage() {
   const { loading, rooms, finishedAction } = useAppSelector(
     (state) => state.rooms
   );
-  const { role } = useAppSelector((state) => state.identity);
+  const { identity } = useAppSelector((state) => state.identity);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const dispatch = useAppDispatch();
+  const role = identity?.role;
 
   useEffect(() => {
     dispatch(loadRooms());

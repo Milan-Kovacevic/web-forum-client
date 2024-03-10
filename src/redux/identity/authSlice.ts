@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { externalLogin, login, register } from "@/redux/thunks/signin-thunk";
+import { externalLogin, login, register } from "@/redux/identity/authThunks";
 import { HttpStatusCode } from "axios";
 
 interface AuthState {
@@ -16,8 +16,8 @@ const initialState: AuthState = {
   registered: false,
 };
 
-const signInSlice = createSlice({
-  name: "signin",
+const authSlice = createSlice({
+  name: "auth",
   initialState: initialState,
   reducers: {
     clearSignUp(state) {
@@ -60,19 +60,19 @@ const signInSlice = createSlice({
     });
 
     builder.addMatcher(
-      (action) => action.type.endsWith("signin/pending"),
+      (action) => action.type.endsWith("auth/pending"),
       (state) => {
         state.loading = true;
       }
     );
     builder.addMatcher(
-      (action) => action.type.endsWith("signin/rejected"),
+      (action) => action.type.endsWith("auth/rejected"),
       (state) => {
         state.loading = false;
       }
     );
     builder.addMatcher(
-      (action) => action.type.endsWith("signin/fulfilled"),
+      (action) => action.type.endsWith("auth/fulfilled"),
       (state) => {
         state.loading = false;
       }
@@ -81,5 +81,5 @@ const signInSlice = createSlice({
 });
 
 export const { clearSignUp, cancelVerification, resetRegistration } =
-  signInSlice.actions;
-export default signInSlice.reducer;
+  authSlice.actions;
+export default authSlice.reducer;

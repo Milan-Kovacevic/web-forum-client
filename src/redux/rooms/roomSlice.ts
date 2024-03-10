@@ -5,7 +5,7 @@ import {
   editRoom,
   loadRooms,
   removeRoom,
-} from "@/redux/thunks/rooms-thunk";
+} from "@/redux/rooms/roomThunks";
 
 interface RoomsState {
   loading: boolean;
@@ -23,7 +23,7 @@ const initialState: RoomsState = {
   finishedAction: null,
 };
 
-const roomsSlice = createSlice({
+const roomSlice = createSlice({
   name: "rooms",
   initialState: initialState,
   reducers: {
@@ -84,5 +84,5 @@ const roomsSlice = createSlice({
   },
 });
 
-export const { clear, setRoom } = roomsSlice.actions;
-export default roomsSlice.reducer;
+export const { clear, setRoom } = roomSlice.actions;
+export default roomSlice.reducer;
