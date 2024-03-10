@@ -1,29 +1,30 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { externalLogin, login, register } from "@/redux/thunks/auth-thunk";
+import { externalLogin, login, register } from "@/redux/thunks/signin-thunk";
 import { HttpStatusCode } from "axios";
 
 interface AuthState {
   loading: boolean;
   verifyUser: boolean;
-  authenticated: boolean;
+  loggedIn: boolean;
   registered: boolean;
 }
 
 const initialState: AuthState = {
-  authenticated: false,
+  loggedIn: false,
   verifyUser: false,
   loading: false,
   registered: false,
 };
 
-const authSlice = createSlice({
-  name: "auth",
+const signInSlice = createSlice({
+  name: "signin",
   initialState: initialState,
   reducers: {
-    logout(state) {
+    clearSignUp(state) {
       state.verifyUser = false;
-      state.authenticated = false;
+      state.loggedIn = false;
       state.loading = false;
+      state.registered = false;
     },
     cancelVerification(state) {
       state.verifyUser = false;
@@ -42,7 +43,7 @@ const authSlice = createSlice({
         action.payload.status == HttpStatusCode.Ok &&
         action.payload.data != null
       )
-        state.authenticated = true;
+        state.loggedIn = true;
     });
     builder.addCase(externalLogin.fulfilled, (state, action) => {
       if (action.payload.status == HttpStatusCode.NoContent)
@@ -52,26 +53,26 @@ const authSlice = createSlice({
         action.payload.status == HttpStatusCode.Ok &&
         action.payload.data != null
       )
-        state.authenticated = true;
+        state.loggedIn = true;
     });
     builder.addCase(register.fulfilled, (state) => {
       state.registered = true;
     });
 
     builder.addMatcher(
-      (action) => action.type.endsWith("/pending"),
+      (action) => action.type.endsWith("signin/pending"),
       (state) => {
         state.loading = true;
       }
     );
     builder.addMatcher(
-      (action) => action.type.endsWith("/rejected"),
+      (action) => action.type.endsWith("signin/rejected"),
       (state) => {
         state.loading = false;
       }
     );
     builder.addMatcher(
-      (action) => action.type.endsWith("/fulfilled"),
+      (action) => action.type.endsWith("signin/fulfilled"),
       (state) => {
         state.loading = false;
       }
@@ -79,6 +80,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout, cancelVerification, resetRegistration } =
-  authSlice.actions;
-export default authSlice.reducer;
+export const { clearSignUp, cancelVerification, resetRegistration } =
+  signInSlice.actions;
+export default signInSlice.reducer;

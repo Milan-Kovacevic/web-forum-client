@@ -3,10 +3,11 @@ import { useLocation } from "react-router-dom";
 import appIcon from "@/assets/forum.svg";
 import NavigationLink from "@/components/primitives/NavigationLink";
 import { MainRouteItems } from "@/utils/constants";
+import { useAppSelector } from "@/hooks/useRedux";
 
 export default function MainNavigationBar() {
   const location = useLocation();
-
+  const { isAuthenticated } = useAppSelector((state) => state.identity);
   return (
     <div className="mr-4 hidden md:flex">
       <Link
@@ -20,6 +21,7 @@ export default function MainNavigationBar() {
       </Link>
       <nav className="flex items-center gap-6">
         <NavigationLink
+          disabled={!isAuthenticated}
           text={MainRouteItems.CHAT_ROOMS.displayName}
           isActive={location.pathname === MainRouteItems.CHAT_ROOMS.path}
           navigateTo={MainRouteItems.CHAT_ROOMS.path}
@@ -27,6 +29,7 @@ export default function MainNavigationBar() {
         ></NavigationLink>
 
         <NavigationLink
+          disabled={!isAuthenticated}
           text={MainRouteItems.MANAGE_ROOMS.displayName}
           isActive={location.pathname === MainRouteItems.MANAGE_ROOMS.path}
           navigateTo={MainRouteItems.MANAGE_ROOMS.path}
@@ -34,6 +37,7 @@ export default function MainNavigationBar() {
         ></NavigationLink>
 
         <NavigationLink
+          disabled={!isAuthenticated}
           text={MainRouteItems.MANAGE_USERS.displayName}
           isActive={location.pathname === MainRouteItems.MANAGE_USERS.path}
           navigateTo={MainRouteItems.MANAGE_USERS.path}

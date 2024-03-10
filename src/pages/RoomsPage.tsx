@@ -14,7 +14,7 @@ import { clear } from "@/redux/rooms-slice";
 import { Room } from "@/types/models/rooms";
 
 export default function RoomsPage() {
-  const { loading, rooms, performedAction, singleRoom } = useAppSelector(
+  const { loading, rooms, finishedAction } = useAppSelector(
     (state) => state.rooms
   );
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
@@ -25,32 +25,16 @@ export default function RoomsPage() {
   }, []);
 
   useEffect(() => {
-    if (
-      performedAction === null ||
-      performedAction === undefined ||
-      singleRoom === null ||
-      singleRoom === undefined
-    )
-      return;
+    if (finishedAction === null || finishedAction === undefined) return;
+    if (finishedAction === "Create") setIsDialogOpen(false);
+    else if (finishedAction === "Edit") {
+      toast.success(`Chat room was updated successfully.`);
+    } else if (finishedAction === "Delete") {
+      toast.success(`Chat room was removed successfully.`);
+    }
     dispatch(loadRooms());
     dispatch(clear());
-    if (performedAction === "Create") setIsDialogOpen(false);
-    else if (performedAction === "Edit") {
-      toast.success(`Chat room was updated successfully.`);
-    } else if (performedAction === "Delete") {
-      toast.success(
-        `Chat room '${singleRoom?.name}' was removed successfully.`
-      );
-    }
-  }, [performedAction, singleRoom]);
-
-  const handleRoomRemoved = (room: Room) => {
-    const id = rooms?.findIndex((r) => r.roomId === room.roomId);
-    if (id === -1 || id === undefined) return;
-
-    rooms?.splice(id, 1);
-    toast.success(`Chat room '${room.name}' was removed successfully.`);
-  };
+  }, [finishedAction]);
 
   return (
     <div className="h-full w-full flex max-w-screen-2xl p-8 mx-auto">
@@ -98,11 +82,7 @@ export default function RoomsPage() {
               {!loading &&
                 rooms &&
                 rooms.map((item: Room) => (
-                  <RoomItem
-                    key={item.roomId}
-                    room={item}
-                    onRoomRemoved={handleRoomRemoved}
-                  />
+                  <RoomItem key={item.roomId} room={item} />
                 ))}
             </div>
           </ScrollArea>

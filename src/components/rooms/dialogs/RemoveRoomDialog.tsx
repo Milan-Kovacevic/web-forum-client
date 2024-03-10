@@ -14,11 +14,9 @@ import { Button } from "@/components/ui/button";
 import { ReactNode } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { removeRoom } from "@/redux/thunks/rooms-thunk";
-import { setSingleRoom } from "@/redux/rooms-slice";
 
 type RemoveRoomDialogProps = {
   children: ReactNode;
-  onRoomRemove: (room: Room) => void;
   room: Room;
   isOpen: boolean;
   onOpenChange: (value: boolean) => void;
@@ -29,7 +27,6 @@ export default function RemoveRoomDialog(props: RemoveRoomDialogProps) {
   const dispatch = useAppDispatch();
 
   const handleRoomRemove = async () => {
-    dispatch(setSingleRoom(props.room));
     dispatch(removeRoom(props.room.roomId));
   };
 

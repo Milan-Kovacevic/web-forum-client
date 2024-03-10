@@ -11,7 +11,7 @@ import {
   RequestMethods,
 } from "@/utils/constants";
 import { AxiosResponse } from "axios";
-import { Tokens } from "@/types/models/authentication";
+import { Tokens, UserInfo } from "@/types/models/authentication";
 
 const login = async (input: LoginInput) => {
   return sendAxiosRequest<LoginInput, Tokens>({
@@ -44,7 +44,27 @@ const register = async (input: RegisterInput) => {
     requireAuth: false,
     data: input,
   }).then((response) => {
+    return { status: response.status };
+  });
+};
+
+const getUserInfo = async () => {
+  return sendAxiosRequest<void, UserInfo>({
+    url: ApiEndpoints.USER_INFO,
+    method: RequestMethods.GET,
+    requireAuth: true,
+  }).then((response) => {
     return { data: response.data, status: response.status };
+  });
+};
+
+const logout = async () => {
+  return sendAxiosRequest<void, void>({
+    url: ApiEndpoints.LOGOUT,
+    method: RequestMethods.POST,
+    requireAuth: true,
+  }).then((response) => {
+    return { status: response.status };
   });
 };
 
@@ -53,4 +73,4 @@ const handleUserAuthenticated = (tokens: Tokens) => {
   localStorage.setItem(REFRESH_TOKEN_STORAGE_KEY, tokens.refreshToken);
 };
 
-export default { login, externalLogin, register };
+export default { login, externalLogin, register, getUserInfo, logout };

@@ -26,13 +26,15 @@ import {
   TwoFactorAuthSchema,
 } from "@/schemas/two-factor-auth-schema";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
-import { externalLogin, login } from "@/redux/thunks/auth-thunk";
-import { cancelVerification } from "@/redux/auth-slice";
+import { externalLogin, login } from "@/redux/thunks/signin-thunk";
+import { cancelVerification, clearSignUp } from "@/redux/signin-slice";
+import { getMyInfo } from "@/redux/thunks/identity-thunk";
 
 export default function LoginPage() {
-  const { loading, authenticated, verifyUser } = useAppSelector(
-    (state) => state.auth
+  const { loading, loggedIn, verifyUser } = useAppSelector(
+    (state) => state.signin
   );
+  const { isAuthenticated } = useAppSelector((state) => state.identity);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -110,14 +112,20 @@ export default function LoginPage() {
   }, []);
 
   useEffect(() => {
-    if (authenticated) {
-      toast.success("Welcome", {
-        description: "Login successfull.",
-        position: "top-center",
-      });
-      setTimeout(() => navigate(MainRouteItems.CHAT_ROOMS.path), 1000);
+    if (loggedIn) {
+      dispatch(getMyInfo());
     }
-  }, [authenticated]);
+  }, [loggedIn]);
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    toast.success("Welcome", {
+      description: "Login successfull.",
+      position: "top-center",
+    });
+    dispatch(clearSignUp());
+    navigate(MainRouteItems.CHAT_ROOMS.path);
+  }, [isAuthenticated]);
 
   return (
     <>

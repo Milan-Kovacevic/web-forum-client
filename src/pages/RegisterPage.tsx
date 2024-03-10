@@ -16,11 +16,11 @@ import { toast } from "sonner";
 import AuthAlternativesSeparator from "@/components/sign-up/AuthAlternativesSeparator";
 import SocialAuthentication from "@/components/sign-up/SocialAuthentication";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
-import { register } from "@/redux/thunks/auth-thunk";
+import { register } from "@/redux/thunks/signin-thunk";
 import { useEffect } from "react";
 
 export default function RegisterPage() {
-  const { loading, registered } = useAppSelector((state) => state.auth);
+  const { loading, registered } = useAppSelector((state) => state.signin);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const registerForm = useForm<zod.infer<typeof RegisterFormSchema>>({

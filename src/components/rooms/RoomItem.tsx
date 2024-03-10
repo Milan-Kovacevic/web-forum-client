@@ -8,22 +8,17 @@ import { useAppSelector } from "@/hooks/useRedux";
 
 export type RoomItemProps = {
   room: Room;
-  onRoomRemoved: (room: Room) => void;
 };
 
 export default function RoomItem(props: RoomItemProps) {
   const room = props.room;
   const [isPopupOpen, setPopupOpen] = useState<boolean>(false);
-  const { performedAction } = useAppSelector((state) => state.rooms);
-
-  const handleRoomRemoved = () => {
-    setPopupOpen(false);
-  };
+  const { finishedAction } = useAppSelector((state) => state.rooms);
 
   useEffect(() => {
-    if (performedAction === "Edit" || performedAction === "Delete")
+    if (finishedAction === "Edit" || finishedAction === "Delete")
       setPopupOpen(false);
-  }, [performedAction]);
+  }, [finishedAction]);
 
   return (
     <div
@@ -46,7 +41,6 @@ export default function RoomItem(props: RoomItemProps) {
               isOpen={isPopupOpen}
               setOpen={setPopupOpen}
               room={room}
-              onRoomRemove={handleRoomRemoved}
             />
           </div>
           <div className="flex w-full flex-col">

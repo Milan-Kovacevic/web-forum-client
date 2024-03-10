@@ -11,16 +11,16 @@ interface RoomsState {
   loading: boolean;
   loadingDialog: boolean;
   rooms: Room[];
-  singleRoom?: Room | null;
-  performedAction?: "Create" | "Edit" | "Delete" | null;
+  selectedRoom?: Room | null;
+  finishedAction?: "Create" | "Edit" | "Delete" | null;
 }
 
 const initialState: RoomsState = {
   loading: false,
   loadingDialog: false,
   rooms: [],
-  singleRoom: null,
-  performedAction: null,
+  selectedRoom: null,
+  finishedAction: null,
 };
 
 const roomsSlice = createSlice({
@@ -30,11 +30,11 @@ const roomsSlice = createSlice({
     clear(state) {
       state.loading = false;
       state.loadingDialog = false;
-      state.singleRoom = null;
-      state.performedAction = null;
+      state.selectedRoom = null;
+      state.finishedAction = null;
     },
-    setSingleRoom(state, data: { payload: Room }) {
-      state.singleRoom = data.payload;
+    setRoom(state, data: { payload: Room | null }) {
+      state.selectedRoom = data.payload;
     },
   },
   extraReducers: (builder) => {
@@ -58,17 +58,20 @@ const roomsSlice = createSlice({
       return state;
     });
     builder.addCase(createRoom.fulfilled, (state, action) => {
-      state.singleRoom = action.payload;
-      state.performedAction = "Create";
+      state.finishedAction = "Create";
+      state.rooms.push(action.payload);
       state.loadingDialog = false;
     });
     builder.addCase(editRoom.fulfilled, (state, action) => {
-      state.singleRoom = action.payload;
-      state.performedAction = "Edit";
+      state.finishedAction = "Edit";
+      var id = state.rooms.findIndex((x) => x.roomId === action.payload.roomId);
+      if (id) {
+        state.rooms[id] = action.payload;
+      }
       state.loadingDialog = false;
     });
     builder.addCase(removeRoom.fulfilled, (state) => {
-      state.performedAction = "Delete";
+      state.finishedAction = "Delete";
       state.loadingDialog = false;
     });
     builder.addMatcher(
@@ -81,5 +84,5 @@ const roomsSlice = createSlice({
   },
 });
 
-export const { clear, setSingleRoom } = roomsSlice.actions;
+export const { clear, setRoom } = roomsSlice.actions;
 export default roomsSlice.reducer;

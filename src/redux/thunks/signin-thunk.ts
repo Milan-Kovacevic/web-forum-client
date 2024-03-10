@@ -6,17 +6,20 @@ import {
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "@/services/auth-service";
 
-export const login = createAsyncThunk("login", (input: LoginInput) => {
+export const login = createAsyncThunk("login/signin", (input: LoginInput) => {
   return authService.login(input);
 });
 
 export const externalLogin = createAsyncThunk(
-  "externalLogin",
+  "externalLogin/signin",
   (input: ExternalLoginInput) => {
     return authService.externalLogin(input);
   }
 );
 
-export const register = createAsyncThunk("register", (input: RegisterInput) => {
-  return authService.register(input);
-});
+export const register = createAsyncThunk(
+  "register/signin",
+  (input: RegisterInput) => {
+    return authService.register(input);
+  }
+);

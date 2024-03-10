@@ -12,7 +12,6 @@ import { useEffect, useState } from "react";
 import { useAppSelector } from "@/hooks/useRedux";
 
 type ManageRoomPopupProps = {
-  onRoomRemove: (room: Room) => void;
   room: Room;
   isOpen: boolean;
   setOpen: (value: boolean) => void;
@@ -21,19 +20,15 @@ type ManageRoomPopupProps = {
 export default function ManageRoomPopup(props: ManageRoomPopupProps) {
   const [isEditDialogOpen, setEditDialogOpen] = useState<boolean>(false);
   const [isRemoveDialogOpen, setRemoveDialogOpen] = useState<boolean>(false);
-  const { performedAction } = useAppSelector((state) => state.rooms);
-
-  const handleRoomRemoved = async () => {
-    setRemoveDialogOpen(false);
-  };
+  const { finishedAction } = useAppSelector((state) => state.rooms);
 
   useEffect(() => {
-    if (performedAction === "Edit") {
+    if (finishedAction === "Edit") {
       setEditDialogOpen(false);
-    } else if (performedAction == "Delete") {
+    } else if (finishedAction == "Delete") {
       setRemoveDialogOpen(false);
     }
-  }, [performedAction]);
+  }, [finishedAction]);
 
   return (
     <div className="self-end block">
@@ -64,7 +59,6 @@ export default function ManageRoomPopup(props: ManageRoomPopupProps) {
                 room={props.room}
                 isOpen={isRemoveDialogOpen}
                 onOpenChange={setRemoveDialogOpen}
-                onRoomRemove={handleRoomRemoved}
               >
                 <Button
                   size="sm"

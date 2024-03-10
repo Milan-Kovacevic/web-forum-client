@@ -6,8 +6,10 @@ import { Link, useLocation } from "react-router-dom";
 import appIcon from "@/assets/forum.svg";
 import NavigationLink from "@/components/primitives/NavigationLink";
 import { MainRouteItems, AuthRouteItems } from "@/utils/constants";
+import { useAppSelector } from "@/hooks/useRedux";
 
 export default function MobileNavigationBar() {
+  const { isAuthenticated } = useAppSelector((state) => state.identity);
   const [open, setOpen] = useState(false);
   const location = useLocation();
   const handleNavLinkClick = () => {
@@ -70,6 +72,7 @@ export default function MobileNavigationBar() {
           <div className="flex flex-col space-y-3">
             <h4 className="text-base font-medium">Main Menu</h4>
             <NavigationLink
+              disabled={!isAuthenticated}
               text={MainRouteItems.CHAT_ROOMS.displayName}
               isActive={location.pathname === MainRouteItems.CHAT_ROOMS.path}
               navigateTo={MainRouteItems.CHAT_ROOMS.path}
@@ -77,6 +80,7 @@ export default function MobileNavigationBar() {
               onClick={handleNavLinkClick}
             />
             <NavigationLink
+              disabled={!isAuthenticated}
               text={MainRouteItems.MANAGE_ROOMS.displayName}
               isActive={location.pathname === MainRouteItems.MANAGE_ROOMS.path}
               navigateTo={MainRouteItems.MANAGE_ROOMS.path}
@@ -85,6 +89,7 @@ export default function MobileNavigationBar() {
             ></NavigationLink>
 
             <NavigationLink
+              disabled={!isAuthenticated}
               text={MainRouteItems.MANAGE_USERS.displayName}
               isActive={location.pathname === MainRouteItems.MANAGE_USERS.path}
               navigateTo={MainRouteItems.MANAGE_USERS.path}
@@ -92,21 +97,24 @@ export default function MobileNavigationBar() {
               onClick={handleNavLinkClick}
             ></NavigationLink>
           </div>
-          <div className="flex flex-col space-y-3 pt-6">
-            <h4 className="text-base font-medium">Authentication</h4>
-            <NavigationLink
-              text={AuthRouteItems.LOGIN.displayName}
-              navigateTo={AuthRouteItems.LOGIN.path}
-              className="text-foreground/60 transition-colors hover:text-foreground/80 text-sm"
-              onClick={handleNavLinkClick}
-            />
-            <NavigationLink
-              text={AuthRouteItems.REGISTER.displayName}
-              navigateTo={AuthRouteItems.REGISTER.path}
-              className="text-foreground/60 transition-colors hover:text-foreground/80 text-sm"
-              onClick={handleNavLinkClick}
-            />
-          </div>
+          {!isAuthenticated && (
+            <div className="flex flex-col space-y-3 pt-6">
+              <h4 className="text-base font-medium">Authentication</h4>
+              <NavigationLink
+                disabled={isAuthenticated}
+                text={AuthRouteItems.LOGIN.displayName}
+                navigateTo={AuthRouteItems.LOGIN.path}
+                className="text-foreground/60 transition-colors hover:text-foreground/80 text-sm"
+                onClick={handleNavLinkClick}
+              />
+              <NavigationLink
+                text={AuthRouteItems.REGISTER.displayName}
+                navigateTo={AuthRouteItems.REGISTER.path}
+                className="text-foreground/60 transition-colors hover:text-foreground/80 text-sm"
+                onClick={handleNavLinkClick}
+              />
+            </div>
+          )}
         </ScrollArea>
       </SheetContent>
     </Sheet>

@@ -1,4 +1,5 @@
 import environments from "@/environments/config";
+import { UserRole } from "@/types/models/application";
 
 export const ACCESS_TOKEN_STORAGE_KEY = "forum_access_token";
 export const REFRESH_TOKEN_STORAGE_KEY = "forum_refresh_token";
@@ -24,6 +25,8 @@ export const ApiEndpoints = {
   LOGIN: `${API_PREFIX}/Login`,
   REGISTER: `${API_PREFIX}/Register`,
   EXTERNAL_LOGIN: `${API_PREFIX}/ExternalLogin`,
+  USER_INFO: `${API_PREFIX}/Me`,
+  LOGOUT: `${API_PREFIX}/Logout`,
   ROOMS: `${API_PREFIX}/Rooms`,
   SINGLE_ROOM: `${API_PREFIX}/Rooms/{roomId}`,
 };
@@ -39,4 +42,11 @@ export const ExternalAuthEndpoints = {
   GITHUB: "https://github.com/login/oauth/authorize",
   GOOGLE: "Google",
   FACEBOOK: "Facebook",
+};
+
+export const RoleDictionary: Record<number, UserRole> = {
+  1: "Regular",
+  2: "Moderator",
+  3: "Admin",
+  4: "RootAdmin",
 };
