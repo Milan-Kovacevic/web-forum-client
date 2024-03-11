@@ -39,9 +39,11 @@ export default function NavigationLink(props: NavigationLinkProps) {
             </NavLink>
           </div>
         </TooltipTrigger>
-        <TooltipContent>
-          <p>Login is required.</p>
-        </TooltipContent>
+        {props.disabled && (
+          <TooltipContent>
+            <p>Login is required.</p>
+          </TooltipContent>
+        )}
       </Tooltip>
     </TooltipProvider>
   );

@@ -4,9 +4,10 @@ import { Room } from "@/types/models/rooms";
 import JoinRoomButton from "./JoinRoomButton";
 import ManageRoomPopup from "./ManageRoomPopup";
 import { useEffect, useState } from "react";
-import { useAppSelector } from "@/hooks/useRedux";
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { AppRoutes, RootOnly } from "@/utils/constants";
 import { useNavigate } from "react-router-dom";
+import { setRoom } from "@/redux/rooms/roomSlice";
 
 export type RoomItemProps = {
   room: Room;
@@ -19,7 +20,10 @@ export default function RoomItem(props: RoomItemProps) {
   const { identity } = useAppSelector((state) => state.identity);
   const role = identity?.role;
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
   const handleJoinRoom = () => {
+    dispatch(setRoom(props.room));
     navigate(AppRoutes.SINGLE_ROOM.path.replace(":id", props.room.roomId));
   };
 
@@ -31,10 +35,10 @@ export default function RoomItem(props: RoomItemProps) {
   return (
     <div
       key={room.roomId}
-      className="flex flex-col items-start gap-2 rounded-lg border py-3 px-3 text-left text-sm transition-colors hover:bg-muted"
+      className="flex flex-col items-start gap-2 rounded-lg bg-card border p-3.5 text-left text-sm transition-colors hover:bg-muted hover:border-primary"
     >
       <div className="flex w-full flex-row gap-3">
-        <Avatar className="hidden sm:block text-sm ml-1 mt-1 w-12 h-12 rounded-full border-2 border-muted-foreground">
+        <Avatar className="hidden sm:block text-sm ml-1 mt-1 w-12 h-12 rounded-full dark:border-none border border-muted-foreground">
           <AvatarImage />
           <AvatarFallback>WFR</AvatarFallback>
         </Avatar>
@@ -42,7 +46,7 @@ export default function RoomItem(props: RoomItemProps) {
         <div className="flex flex-col items-center gap-0 w-full">
           <div className="flex flex-row items-center justify-between w-full gap-1">
             <div className="flex items-center gap-2 flex-1 min-h-9">
-              <p className="font-semibold text-base">{room.name}</p>
+              <p className="font-semibold text-lg">{room.name}</p>
             </div>
             {RootOnly.find((r) => r === role) && (
               <ManageRoomPopup

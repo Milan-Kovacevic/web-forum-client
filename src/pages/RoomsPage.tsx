@@ -53,7 +53,7 @@ export default function RoomsPage() {
         </div>
         <Separator className="my-6 w-full" />
 
-        <div className="max-w-screen-2xl ">
+        <div className="max-w-screen-2xl">
           <div className="flex justify-between items-center flex-wrap pb-2 gap-3">
             <div className="relative w-auto flex flex-1 max-w-md">
               <Search
