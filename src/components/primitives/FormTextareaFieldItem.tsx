@@ -16,6 +16,9 @@ type FormTextareaFieldItemProps = {
   description?: string;
   placeholder?: string;
   className?: string;
+  inputClassName?: string;
+  maxLength?: number;
+  disabled?: boolean;
 };
 
 export default function FormTextareaFieldItem(
@@ -23,6 +26,7 @@ export default function FormTextareaFieldItem(
 ) {
   return (
     <FormField
+      disabled={props.disabled}
       control={props.control}
       name={props.name}
       render={({ field }) => (
@@ -34,7 +38,12 @@ export default function FormTextareaFieldItem(
             <FormMessage className="text-xs ml-1" />
           </div>
           <FormControl>
-            <Textarea placeholder={props.placeholder} {...field} />
+            <Textarea
+              maxLength={props.maxLength}
+              placeholder={props.placeholder}
+              className={cn(props.inputClassName)}
+              {...field}
+            />
           </FormControl>
           {props.description && (
             <FormDescription className="text-xs ml-1">

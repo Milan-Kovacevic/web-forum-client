@@ -1,3 +1,4 @@
+import permissionsService from "@/services/permissions-service";
 import roomsService from "@/services/rooms-service";
 import { CreateRoomInput, EditRoomInput } from "@/types/inputs/room-inputs";
 import { createAsyncThunk } from "@reduxjs/toolkit";
@@ -24,5 +25,16 @@ export const removeRoom = createAsyncThunk(
   "removeRoom/rooms",
   (roomId: string) => {
     return roomsService.removeRoom(roomId);
+  }
+);
+
+export const getRoom = createAsyncThunk("getRoom/rooms", (roomId: string) => {
+  return roomsService.getRoom(roomId);
+});
+
+export const getMyRoomPermissions = createAsyncThunk(
+  "getMyRoomPermissions/singleRoom",
+  (roomId: string) => {
+    return permissionsService.getRoomPermissions(roomId);
   }
 );

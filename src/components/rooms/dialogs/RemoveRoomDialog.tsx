@@ -13,7 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ReactNode } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
-import { removeRoom } from "@/redux/rooms/roomThunks";
+import { removeRoom } from "@/redux/rooms/roomsThunks";
 
 type RemoveRoomDialogProps = {
   children: ReactNode;

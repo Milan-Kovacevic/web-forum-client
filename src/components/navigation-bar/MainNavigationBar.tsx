@@ -8,7 +8,7 @@ import { useAppSelector } from "@/hooks/useRedux";
 export default function MainNavigationBar() {
   const location = useLocation();
   const { authenticated, identity } = useAppSelector((state) => state.identity);
-  const role = identity?.role;
+  const role = identity?.roleType;
 
   return (
     <div className="mr-4 hidden md:flex">

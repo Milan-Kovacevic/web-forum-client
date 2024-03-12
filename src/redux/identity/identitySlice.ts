@@ -30,9 +30,11 @@ const identitySlice = createSlice({
       state.authenticated = true;
       var data = action.payload.data;
       state.identity = {
-        // userId: data.userId,
+        userId: data.userId,
         displayName: data.displayName,
-        role: RoleDictionary[action.payload.data.role],
+        roleName: RoleDictionary[data.role].name,
+        roleType: RoleDictionary[data.role].type,
+        roleId: data.role,
       };
     });
     builder.addCase(getMyInfo.rejected, (state) => {

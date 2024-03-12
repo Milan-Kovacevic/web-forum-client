@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { AppRoutes, RootOnly } from "@/utils/constants";
 import { useNavigate } from "react-router-dom";
-import { setRoom } from "@/redux/rooms/roomSlice";
+import { getRoom } from "@/redux/rooms/roomsThunks";
 
 export type RoomItemProps = {
   room: Room;
@@ -23,7 +23,7 @@ export default function RoomItem(props: RoomItemProps) {
   const dispatch = useAppDispatch();
 
   const handleJoinRoom = () => {
-    dispatch(setRoom(props.room));
+    dispatch(getRoom(props.room.roomId));
     navigate(AppRoutes.SINGLE_ROOM.path.replace(":id", props.room.roomId));
   };
 

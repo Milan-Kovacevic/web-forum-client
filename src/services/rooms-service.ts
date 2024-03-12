@@ -37,4 +37,12 @@ const removeRoom = async (roomId: string) => {
   }).then((response) => response.data);
 };
 
-export default { getAllRooms, createRoom, editRoom, removeRoom };
+const getRoom = async (roomId: string) => {
+  return sendAxiosRequest<void, Room>({
+    url: ApiEndpoints.SINGLE_ROOM.replace("{roomId}", roomId),
+    method: RequestMethods.GET,
+    requireAuth: false,
+  }).then((response) => response.data);
+};
+
+export default { getAllRooms, createRoom, editRoom, removeRoom, getRoom };

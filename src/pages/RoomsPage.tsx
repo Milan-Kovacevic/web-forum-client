@@ -9,19 +9,20 @@ import CreateRoomDialog from "@/components/rooms/dialogs/CreateRoomDialog";
 import { toast } from "sonner";
 import RoomsPlaceholder from "@/components/rooms/RoomsPlaceholder";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
-import { loadRooms } from "@/redux/rooms/roomThunks";
-import { clear } from "@/redux/rooms/roomSlice";
+import { loadRooms } from "@/redux/rooms/roomsThunks";
+import { clearRoomsState } from "@/redux/rooms/roomsSlice";
 import { Room } from "@/types/models/rooms";
 import { AdminOnly } from "@/utils/constants";
+import RoomsPageHeader from "@/components/rooms/RoomsPageHeader";
 
 export default function RoomsPage() {
-  const { loading, rooms, finishedAction } = useAppSelector(
+  const { loadingRooms, rooms, finishedAction } = useAppSelector(
     (state) => state.rooms
   );
   const { identity } = useAppSelector((state) => state.identity);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const dispatch = useAppDispatch();
-  const role = identity?.role;
+  const role = identity?.roleType;
 
   useEffect(() => {
     dispatch(loadRooms());
@@ -36,21 +37,13 @@ export default function RoomsPage() {
       toast.success(`Chat room was removed successfully.`);
     }
     dispatch(loadRooms());
-    dispatch(clear());
+    dispatch(clearRoomsState());
   }, [finishedAction]);
 
   return (
-    <div className="h-full w-full flex max-w-screen-2xl p-8 mx-auto">
+    <div className="h-full w-full flex max-w-screen-2xl sm:p-8 py-4 px-2 mx-auto">
       <div className="px-6 flex-1 my-2">
-        <div className="space-y-1">
-          <h2 className="text-xl text-foreground font-semibold">
-            Discover Chat Rooms
-          </h2>
-          <p className="text-muted-foreground text-sm">
-            Find the topics that your are interested in and join along the
-            conversation.
-          </p>
-        </div>
+        <RoomsPageHeader />
         <Separator className="my-6 w-full" />
 
         <div className="max-w-screen-2xl">
@@ -83,12 +76,13 @@ export default function RoomsPage() {
 
           <ScrollArea className="h-screen my-4">
             <div className="grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 flex-wrap gap-4">
-              {loading && <RoomsPlaceholder />}
-              {!loading &&
-                rooms &&
+              {loadingRooms ? (
+                <RoomsPlaceholder />
+              ) : (
                 rooms.map((item: Room) => (
                   <RoomItem key={item.roomId} room={item} />
-                ))}
+                ))
+              )}
             </div>
           </ScrollArea>
         </div>

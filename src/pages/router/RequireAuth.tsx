@@ -1,16 +1,16 @@
 import { useAppSelector } from "@/hooks/useRedux";
-import { UserRole } from "@/types/models/application";
+import { RoleType } from "@/types/models/application";
 import { AppRoutes } from "@/utils/constants";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 type RequireAuthProps = {
-  allowedRoles: UserRole[];
+  allowedRoles: RoleType[];
 };
 
 export default function RequireAuth(props: RequireAuthProps) {
   const { authenticated, identity } = useAppSelector((state) => state.identity);
   const location = useLocation();
-  const role = identity?.role;
+  const role = identity?.roleType;
 
   if (!authenticated)
     return (

@@ -1,4 +1,4 @@
-import roomSlice from "@/redux/rooms/roomSlice";
+import roomsSlice from "@/redux/rooms/roomsSlice";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import storage from "redux-persist/lib/storage";
 import {
@@ -13,6 +13,7 @@ import {
 import identitySlice from "@/redux/identity/identitySlice";
 import persistStore from "redux-persist/es/persistStore";
 import authSlice from "@/redux/identity/authSlice";
+import singleRoomSlice from "@/redux/rooms/singleRoomSlice";
 
 const persistConfig = {
   key: "identity",
@@ -22,7 +23,8 @@ const persistConfig = {
 
 const persistedIdentityReducer = persistReducer(persistConfig, identitySlice);
 const rootReducer = combineReducers({
-  rooms: roomSlice,
+  rooms: roomsSlice,
+  singleRoom: singleRoomSlice,
   auth: authSlice,
   identity: persistedIdentityReducer,
 });
@@ -40,9 +42,3 @@ export const persistor = persistStore(store);
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
-// export type AppThunk<ReturnType = void> = ThunkAction<
-//   ReturnType,
-//   RootState,
-//   unknown,
-//   Action<string>
-// >;

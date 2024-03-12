@@ -9,3 +9,8 @@ export type RoomStats = {
   totalComments: number;
   totalModerators: number;
 };
+
+export type RoomPermission = {
+  permissionId: number;
+  name: string;
+};

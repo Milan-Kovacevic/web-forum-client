@@ -1,5 +1,12 @@
 export type LoginProvider = "GitHub" | "Google" | "Facebook";
-export type UserRole = "Regular" | "Moderator" | "Admin" | "RootAdmin";
+export type RoleType = "Regular" | "Moderator" | "Admin" | "RootAdmin";
+export type PermissionType =
+  | "CreateComment"
+  | "EditComment"
+  | "RemoveComment"
+  | "PostComment"
+  | "BlockComment";
+
 export type AppError = {
   detail: string;
   status: number;
@@ -8,7 +15,21 @@ export type AppError = {
 };
 
 export type UserIdentity = {
-  // userId: string;
+  userId: string;
   displayName: string;
-  role: UserRole;
+  roleId: number;
+  roleName: string;
+  roleType: RoleType;
+};
+
+// Used in dictionary
+export type Role = {
+  type: RoleType;
+  name: string;
+};
+
+export type Permission = {
+  name: string;
+  type: PermissionType;
+  description: string;
 };

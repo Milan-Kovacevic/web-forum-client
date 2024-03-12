@@ -1,5 +1,5 @@
 import environments from "@/environments/config";
-import { UserRole } from "@/types/models/application";
+import { Permission, Role, RoleType } from "@/types/models/application";
 
 export const ACCESS_TOKEN_STORAGE_KEY = "forum_access_token";
 export const REFRESH_TOKEN_STORAGE_KEY = "forum_refresh_token";
@@ -9,25 +9,25 @@ export const AUTH_XSRF_TOKEN_STORAGE_KEY = "forum_xsrf_token";
 export const LIGHT_THEME = "light";
 export const DARK_THEME = "dark";
 
-export const EveryRole: UserRole[] = [
+export const EveryRole: RoleType[] = [
   "Regular",
   "Moderator",
   "Admin",
   "RootAdmin",
 ];
 
-export const AdminAndModerator: UserRole[] = [
+export const AdminAndModerator: RoleType[] = [
   "Moderator",
   "Admin",
   "RootAdmin",
 ];
 
-export const AdminOnly: UserRole[] = ["Admin", "RootAdmin"];
-export const RootOnly: UserRole[] = ["RootAdmin"];
+export const AdminOnly: RoleType[] = ["Admin", "RootAdmin"];
+export const RootOnly: RoleType[] = ["RootAdmin"];
 
 export const AppRoutes: Record<
   string,
-  { displayName: string; path: string; roles?: UserRole[] }
+  { displayName: string; path: string; roles?: RoleType[] }
 > = {
   LOGIN: { displayName: "Login / Sign in", path: "/login" },
   REGISTER: { displayName: "Register / Sign up", path: "/register" },
@@ -64,6 +64,10 @@ export const ApiEndpoints = {
   LOGOUT: `${API_PREFIX}/Logout`,
   ROOMS: `${API_PREFIX}/Rooms`,
   SINGLE_ROOM: `${API_PREFIX}/Rooms/{roomId}`,
+  COMMENTS: `${API_PREFIX}/Comments`,
+  SINGLE_COMMENT: `${API_PREFIX}/Comments/{commentId}`,
+  POSTED_ROOM_COMMENTS: `${API_PREFIX}/Rooms/{roomId}/Comments/Posted`,
+  ROOM_PERMISSIONS: `${API_PREFIX}/Rooms/{roomId}/Permissions`,
 };
 
 export const RequestMethods = {
@@ -79,9 +83,38 @@ export const ExternalAuthEndpoints = {
   FACEBOOK: "Facebook",
 };
 
-export const RoleDictionary: Record<number, UserRole> = {
-  1: "Regular",
-  2: "Moderator",
-  3: "Admin",
-  4: "RootAdmin",
+export const RoleDictionary: Record<number, Role> = {
+  0: { type: "Regular", name: "Unknown User" },
+  1: { type: "Regular", name: "Forum User" },
+  2: { type: "Moderator", name: "Forum Moderator" },
+  3: { type: "Admin", name: "Administrator" },
+  4: { type: "RootAdmin", name: "Administrator" },
+};
+
+export const PermissionDictionary: Record<number, Permission> = {
+  1: {
+    name: "Create Comment",
+    description: "Post a new comment",
+    type: "CreateComment",
+  },
+  2: {
+    name: "Edit Comment",
+    description: "Edit your comment",
+    type: "EditComment",
+  },
+  3: {
+    name: "Remove Comment",
+    description: "Remove posted comment",
+    type: "RemoveComment",
+  },
+  4: {
+    name: "Post Comment",
+    description: "Approve posted comment",
+    type: "PostComment",
+  },
+  5: {
+    name: "Block Comment",
+    description: "Reject posted comment",
+    type: "BlockComment",
+  },
 };

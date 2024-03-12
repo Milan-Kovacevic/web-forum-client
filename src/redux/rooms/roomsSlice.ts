@@ -5,41 +5,35 @@ import {
   editRoom,
   loadRooms,
   removeRoom,
-} from "@/redux/rooms/roomThunks";
+} from "@/redux/rooms/roomsThunks";
 
 interface RoomsState {
-  loading: boolean;
+  loadingRooms: boolean;
   loadingDialog: boolean;
   rooms: Room[];
-  selectedRoom?: Room | null;
   finishedAction?: "Create" | "Edit" | "Delete" | null;
 }
 
 const initialState: RoomsState = {
-  loading: false,
+  loadingRooms: false,
   loadingDialog: false,
   rooms: [],
-  selectedRoom: null,
   finishedAction: null,
 };
 
-const roomSlice = createSlice({
+const roomsSlice = createSlice({
   name: "rooms",
   initialState: initialState,
   reducers: {
-    clear(state) {
-      state.loading = false;
+    clearRoomsState(state) {
+      state.loadingRooms = false;
       state.loadingDialog = false;
-      state.selectedRoom = null;
       state.finishedAction = null;
-    },
-    setRoom(state, data: { payload: Room | null }) {
-      state.selectedRoom = data.payload;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(loadRooms.pending, (state) => {
-      state.loading = true;
+      state.loadingRooms = true;
       return state;
     });
     builder.addCase(createRoom.pending, (state) => {
@@ -51,10 +45,9 @@ const roomSlice = createSlice({
     builder.addCase(removeRoom.pending, (state) => {
       state.loadingDialog = true;
     });
-
     builder.addCase(loadRooms.fulfilled, (state, action) => {
       state.rooms = action.payload;
-      state.loading = false;
+      state.loadingRooms = false;
       return state;
     });
     builder.addCase(createRoom.fulfilled, (state, action) => {
@@ -77,12 +70,12 @@ const roomSlice = createSlice({
     builder.addMatcher(
       (action) => action.type.endsWith("/rejected"),
       (state) => {
-        state.loading = false;
+        state.loadingRooms = false;
         state.loadingDialog = false;
       }
     );
   },
 });
 
-export const { clear, setRoom } = roomSlice.actions;
-export default roomSlice.reducer;
+export const { clearRoomsState } = roomsSlice.actions;
+export default roomsSlice.reducer;
