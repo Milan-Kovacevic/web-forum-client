@@ -2,7 +2,7 @@ import { MessageCirclePlusIcon, Search } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import RoomItem from "@/components/rooms/RoomItem";
 import { Button } from "@/components/ui/button";
 import CreateRoomDialog from "@/components/rooms/dialogs/CreateRoomDialog";
@@ -19,6 +19,8 @@ export default function RoomsPage() {
   const { loadingRooms, rooms, finishedAction } = useAppSelector(
     (state) => state.rooms
   );
+  const [chatRooms, setChatRooms] = useState<Room[]>([]);
+  const [searchText, setSearchText] = useState("");
   const { identity } = useAppSelector((state) => state.identity);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const dispatch = useAppDispatch();
@@ -27,6 +29,12 @@ export default function RoomsPage() {
   useEffect(() => {
     dispatch(loadRooms());
   }, []);
+
+  useEffect(() => {
+    if (rooms.length > 0) {
+      setChatRooms(rooms);
+    }
+  }, [rooms]);
 
   useEffect(() => {
     if (finishedAction === null || finishedAction === undefined) return;
@@ -39,6 +47,24 @@ export default function RoomsPage() {
     dispatch(loadRooms());
     dispatch(clearRoomsState());
   }, [finishedAction]);
+
+  const handleSearchChatRoom = (event: {
+    target: { value: SetStateAction<string> };
+  }) => {
+    setSearchText(event.target.value);
+    if (event.target.value === "") {
+      setChatRooms(rooms);
+    }
+  };
+
+  const handleKeyPressed = (event: { key: string }) => {
+    if (event.key === "Enter") {
+      var filteredRooms = rooms.filter((r) =>
+        r.name.toLowerCase().includes(searchText.toLowerCase())
+      );
+      setChatRooms(filteredRooms);
+    }
+  };
 
   return (
     <div className="h-full w-full flex max-w-screen-2xl sm:p-8 py-4 px-2 mx-auto">
@@ -53,7 +79,13 @@ export default function RoomsPage() {
                 size="sm"
                 className="absolute left-2.5 top-3 h-4 w-4 text-muted-foreground"
               />
-              <Input placeholder="Search Rooms" className="pl-8" />
+              <Input
+                value={searchText}
+                onChange={handleSearchChatRoom}
+                onKeyDown={handleKeyPressed}
+                placeholder="Search Rooms"
+                className="pl-8"
+              />
             </div>
             {AdminOnly.find((r) => r === role) && (
               <CreateRoomDialog
@@ -79,7 +111,7 @@ export default function RoomsPage() {
               {loadingRooms ? (
                 <RoomsPlaceholder />
               ) : (
-                rooms.map((item: Room) => (
+                chatRooms.map((item: Room) => (
                   <RoomItem key={item.roomId} room={item} />
                 ))
               )}

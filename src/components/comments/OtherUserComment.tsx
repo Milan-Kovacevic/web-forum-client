@@ -2,8 +2,8 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { ClockIcon, UserRoundIcon } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Comment } from "@/types/models/comments";
-import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
 import { RoleDictionary } from "@/utils/constants";
+import { formatDateDistance } from "@/utils/utility";
 
 type OtherUserCommentProps = {
   comment: Comment;
@@ -35,10 +35,7 @@ export default function OtherUserComment(props: OtherUserCommentProps) {
                 <span className="text-xs">
                   {!props.comment.datePosted
                     ? "Unknown"
-                    : formatDistanceToNow(new Date(props.comment.datePosted), {
-                        addSuffix: true,
-                        includeSeconds: true,
-                      })}
+                    : formatDateDistance(props.comment.datePosted)}
                 </span>
               </div>
             </div>
@@ -59,9 +56,7 @@ export default function OtherUserComment(props: OtherUserCommentProps) {
         <span className="text-xs text-muted-foreground">Edited ~ </span>
         {props.comment.dateUpdated ? (
           <span className="text-xs font-medium">
-            {formatDistanceToNow(new Date(props.comment.dateUpdated), {
-              addSuffix: true,
-            })}
+            {formatDateDistance(props.comment.dateUpdated)}
           </span>
         ) : (
           <span className="text-xs font-medium text-accent-foreground/80">

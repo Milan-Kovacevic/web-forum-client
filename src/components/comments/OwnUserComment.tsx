@@ -11,11 +11,11 @@ import { Comment } from "@/types/models/comments";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "../ui/textarea";
 import { SetStateAction, useState } from "react";
-import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import RemoveAlertDialog from "../primitives/RemoveAlertDialog";
 import { useAppSelector } from "@/hooks/useRedux";
+import { formatDateDistance } from "@/utils/utility";
 
 type MyCommentProps = {
   comment: Comment;
@@ -88,14 +88,8 @@ export default function OwnUserComment(props: MyCommentProps) {
                 <ClockIcon className="h-2.5 w-2.5 mt-0.5" />
                 <span className="text-xs font-medium text-accent-foreground/80">
                   {!props.comment.datePosted
-                    ? formatDistanceToNow(new Date(props.comment.dateCreated), {
-                        addSuffix: true,
-                        includeSeconds: true,
-                      })
-                    : formatDistanceToNow(new Date(props.comment.datePosted), {
-                        addSuffix: true,
-                        includeSeconds: true,
-                      })}
+                    ? formatDateDistance(props.comment.dateCreated)
+                    : formatDateDistance(props.comment.datePosted)}
                 </span>
               </div>
             </div>
@@ -189,9 +183,7 @@ export default function OwnUserComment(props: MyCommentProps) {
         <span className="text-xs text-muted-foreground">Edited ~ </span>
         {props.comment.dateUpdated ? (
           <span className="text-xs font-medium text-accent-foreground/80">
-            {formatDistanceToNow(new Date(props.comment.dateUpdated), {
-              addSuffix: true,
-            })}
+            {formatDateDistance(props.comment.dateUpdated)}
           </span>
         ) : (
           <span className="text-xs font-medium">Never</span>

@@ -1,6 +1,7 @@
 export type Room = {
   roomId: string;
   name: string;
+  dateCreated: string;
   description?: string;
 };
 

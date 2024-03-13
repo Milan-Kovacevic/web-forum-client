@@ -69,7 +69,7 @@ export default function RoomComments() {
                 return <OtherUserComment key={item.commentId} comment={item} />;
             })
           ) : (
-            <div>There are no comments to show now</div>
+            <div className="ml-2">There are no comments to show now</div>
           )}
         </div>
       )}

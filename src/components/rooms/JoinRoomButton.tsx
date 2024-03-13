@@ -21,7 +21,7 @@ export default function JoinRoomButton(props: JoinRoomButtonProps) {
           <TooltipTrigger asChild>
             <Button
               variant="ghost"
-              className="hover:bg-background"
+              className="hover:bg-background h-8"
               size="sm"
               onClick={props.onRoomJoinClicked}
             >

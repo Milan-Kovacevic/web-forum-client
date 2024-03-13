@@ -44,7 +44,7 @@ export default function RoomPermissionsCard(props: RoomPermissionsProps) {
 
               <div className="flex flex-col gap-0.5 ml-2">
                 {permissions.map((item) => (
-                  <PermissionItem item={item} />
+                  <PermissionItem key={item.permissionId} item={item} />
                 ))}
               </div>
             </div>
@@ -71,7 +71,7 @@ type PermissionItemProps = {
 
 const PermissionItem = (props: PermissionItemProps) => {
   return (
-    <div className="flex gap-2 items-center" key={props.item.permissionId}>
+    <div className="flex gap-2 items-center">
       <span className="flex h-1.5 w-1.5 rounded-full bg-muted-foreground"></span>
       <div className="flex gap-1 items-center">
         <span className="font-medium text-accent-foreground/80 text-sm">

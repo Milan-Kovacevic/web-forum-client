@@ -9,6 +9,7 @@ import { LogOutIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "@/utils/constants";
 import { useAppSelector } from "@/hooks/useRedux";
+import { formatDateDistance } from "@/utils/utility";
 
 export default function RoomNameHeader() {
   const { room } = useAppSelector((state) => state.singleRoom);
@@ -46,10 +47,20 @@ export default function RoomNameHeader() {
               </TooltipProvider>
             </div>
           </div>
+          {!room.description ? (
+            <p className="text-sm text-accent-foreground/70 italic">
+              No room description...
+            </p>
+          ) : (
+            <p className="text-muted-foreground text-sm">{room?.description}</p>
+          )}
 
-          <p className="text-muted-foreground text-sm max-w-screen-lg">
-            {room?.description}
-          </p>
+          <div className="flex-1 flex items-center gap-1 self-end">
+            <span className="text-xs text-muted-foreground/75">Created:</span>
+            <p className="text-xs font-semibold text-accent-foreground/80">
+              {formatDateDistance(room.dateCreated)}
+            </p>
+          </div>
         </div>
       )}
     </>
