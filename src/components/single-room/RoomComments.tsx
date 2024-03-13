@@ -1,7 +1,7 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import OtherUserComment from "@/components/comments/OtherUserComment";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
-import MyComment from "@/components/comments/MyComment";
+import OwnUserComment from "@/components/comments/OwnUserComment";
 import ItemLoader from "../primitives/ItemLoader";
 import { PermissionDictionary } from "@/utils/constants";
 import {
@@ -56,7 +56,7 @@ export default function RoomComments() {
             comments.map((item) => {
               if (item.userId === userId)
                 return (
-                  <MyComment
+                  <OwnUserComment
                     onCommentRemove={handleRemoveComment}
                     onCommentEdit={handleEditComment}
                     canEdit={canEditComment}

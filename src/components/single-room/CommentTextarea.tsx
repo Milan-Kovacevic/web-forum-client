@@ -49,7 +49,6 @@ export default function CommentTextarea() {
     dispatch(
       postNewRoomComment({ roomId: room?.roomId, content: formData.content })
     );
-    // commentForm.setFocus("content");
     commentForm.reset();
   };
 

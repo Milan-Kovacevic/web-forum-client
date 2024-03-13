@@ -10,6 +10,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { RoomPermission } from "@/types/models/rooms";
 
 type RoomPermissionsProps = {
   className?: string;
@@ -25,26 +26,10 @@ export default function RoomPermissionsCard(props: RoomPermissionsProps) {
 
   return (
     <Card className={cn("p-6 w-full mb-6 bg-muted/40", props.className)}>
-      <div className="mb-4">
-        <div className="self-end flex gap-2 items-center">
-          <p className="sm:block hidden text-muted-foreground/90 text-xs">
-            Role
-          </p>
-          <span>|</span>
-          <p className="font-medium text-sm text-accent-foreground/80">
-            {role}
-          </p>
-        </div>
-        <div className="self-end flex gap-2 items-center">
-          <p className="sm:block hidden text-muted-foreground/90 text-xs">
-            Display Name
-          </p>
-          <span>|</span>
-          <p className="font-medium text-sm text-accent-foreground/80">
-            {displayName}
-          </p>
-        </div>
-      </div>
+      {role && displayName && (
+        <UserInfoHeader role={role} displayName={displayName} />
+      )}
+
       {loadingPermissions ? (
         <div className="h-[100px]">
           <ItemLoader />
@@ -59,42 +44,78 @@ export default function RoomPermissionsCard(props: RoomPermissionsProps) {
 
               <div className="flex flex-col gap-0.5 ml-2">
                 {permissions.map((item) => (
-                  <div
-                    className="flex gap-2 items-center"
-                    key={item.permissionId}
-                  >
-                    <span className="flex h-1.5 w-1.5 rounded-full bg-muted-foreground"></span>
-                    <div className="flex gap-1 items-center">
-                      <span className="font-medium text-accent-foreground/80 text-sm">
-                        {PermissionDictionary[item.permissionId].name}
-                      </span>
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <InfoIcon className="cursor-help h-3.5 w-3.5 text-accent-foreground/80" />
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>
-                              {
-                                PermissionDictionary[item.permissionId]
-                                  .description
-                              }
-                            </p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </div>
-                  </div>
+                  <PermissionItem item={item} />
                 ))}
               </div>
             </div>
           ) : (
-            <h3 className="text-accent-foreground/80 text-sm pb-6">
-              You have no permission in this room...
-            </h3>
+            <EmptyPermissionsPlaceholder />
           )}
         </>
       )}
     </Card>
   );
 }
+
+const EmptyPermissionsPlaceholder = () => {
+  return (
+    <h3 className="text-accent-foreground/80 text-sm pb-6">
+      You have no permission in this room...
+    </h3>
+  );
+};
+
+type PermissionItemProps = {
+  item: RoomPermission;
+};
+
+const PermissionItem = (props: PermissionItemProps) => {
+  return (
+    <div className="flex gap-2 items-center" key={props.item.permissionId}>
+      <span className="flex h-1.5 w-1.5 rounded-full bg-muted-foreground"></span>
+      <div className="flex gap-1 items-center">
+        <span className="font-medium text-accent-foreground/80 text-sm">
+          {PermissionDictionary[props.item.permissionId].name}
+        </span>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <InfoIcon className="cursor-help h-3.5 w-3.5 text-accent-foreground/80" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{PermissionDictionary[props.item.permissionId].description}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </div>
+    </div>
+  );
+};
+
+type UserInfoHeaderProps = {
+  role: string;
+  displayName: string;
+};
+
+const UserInfoHeader = (props: UserInfoHeaderProps) => {
+  return (
+    <div className="mb-4">
+      <div className="self-end flex gap-2 items-center">
+        <p className="sm:block hidden text-muted-foreground/90 text-xs">Role</p>
+        <span>|</span>
+        <p className="font-medium text-sm text-accent-foreground/80">
+          {props.role}
+        </p>
+      </div>
+      <div className="self-end flex gap-2 items-center">
+        <p className="sm:block hidden text-muted-foreground/90 text-xs">
+          Display Name
+        </p>
+        <span>|</span>
+        <p className="font-medium text-sm text-accent-foreground/80">
+          {props.displayName}
+        </p>
+      </div>
+    </div>
+  );
+};

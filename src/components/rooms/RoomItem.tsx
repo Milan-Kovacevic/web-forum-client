@@ -69,12 +69,6 @@ export default function RoomItem(props: RoomItemProps) {
       <div className="flex items-center justify-between gap-2 mt-1 w-full">
         <div className="hidden sm:flex items-center justify-start gap-2 flex-1">
           <Badge
-            variant="outline"
-            className="h-6 text-xs font-medium transition-none"
-          >
-            2 Moderators
-          </Badge>
-          <Badge
             variant="secondary"
             className="h-6 text-xs font-medium transition-none"
           >

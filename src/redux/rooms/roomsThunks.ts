@@ -32,8 +32,8 @@ export const getRoom = createAsyncThunk("getRoom/rooms", (roomId: string) => {
   return roomsService.getRoom(roomId);
 });
 
-export const getMyRoomPermissions = createAsyncThunk(
-  "getMyRoomPermissions/singleRoom",
+export const loadMyRoomPermissions = createAsyncThunk(
+  "loadMyRoomPermissions/singleRoom",
   (roomId: string) => {
     return permissionsService.getRoomPermissions(roomId);
   }

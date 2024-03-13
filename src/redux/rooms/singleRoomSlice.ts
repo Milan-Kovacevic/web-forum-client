@@ -1,6 +1,6 @@
 import { Room, RoomPermission } from "@/types/models/rooms";
 import { createSlice } from "@reduxjs/toolkit";
-import { getMyRoomPermissions, getRoom } from "./roomsThunks";
+import { loadMyRoomPermissions, getRoom } from "./roomsThunks";
 import { Comment } from "@/types/models/comments";
 import {
   editRoomComment,
@@ -60,13 +60,13 @@ const singleRoomSlice = createSlice({
       state.loadingComments = false;
     });
 
-    builder.addCase(getMyRoomPermissions.pending, (state) => {
+    builder.addCase(loadMyRoomPermissions.pending, (state) => {
       state.loadingPermissions = true;
     });
-    builder.addCase(getMyRoomPermissions.rejected, (state) => {
+    builder.addCase(loadMyRoomPermissions.rejected, (state) => {
       state.loadingPermissions = false;
     });
-    builder.addCase(getMyRoomPermissions.fulfilled, (state, action) => {
+    builder.addCase(loadMyRoomPermissions.fulfilled, (state, action) => {
       state.permissions = action.payload;
       state.loadingPermissions = false;
     });
