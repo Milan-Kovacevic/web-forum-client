@@ -73,12 +73,34 @@ const singleRoomSlice = createSlice({
 
     builder.addCase(postNewRoomComment.fulfilled, (state) => {
       state.action = "Create";
+      state.loadingComments = false;
     });
     builder.addCase(removeRoomComment.fulfilled, (state) => {
       state.action = "Remove";
+      state.loadingComments = false;
     });
     builder.addCase(editRoomComment.fulfilled, (state) => {
       state.action = "Edit";
+      state.loadingComments = false;
+    });
+
+    builder.addCase(postNewRoomComment.pending, (state) => {
+      state.loadingComments = true;
+    });
+    builder.addCase(removeRoomComment.pending, (state) => {
+      state.loadingComments = true;
+    });
+    builder.addCase(editRoomComment.pending, (state) => {
+      state.loadingComments = true;
+    });
+    builder.addCase(postNewRoomComment.rejected, (state) => {
+      state.loadingComments = false;
+    });
+    builder.addCase(removeRoomComment.rejected, (state) => {
+      state.loadingComments = false;
+    });
+    builder.addCase(editRoomComment.rejected, (state) => {
+      state.loadingComments = false;
     });
   },
 });

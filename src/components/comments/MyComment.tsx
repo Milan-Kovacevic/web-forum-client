@@ -14,6 +14,8 @@ import { SetStateAction, useState } from "react";
 import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback } from "../ui/avatar";
+import RemoveAlertDialog from "../primitives/RemoveAlertDialog";
+import { useAppSelector } from "@/hooks/useRedux";
 
 type MyCommentProps = {
   comment: Comment;
@@ -25,7 +27,9 @@ type MyCommentProps = {
 
 export default function MyComment(props: MyCommentProps) {
   const [isEditing, setEditing] = useState(false);
+  const [removeAlertOpen, setRemoveAlertOpen] = useState(false);
   const [editContent, setEditContent] = useState(props.comment.content);
+  const { loadingComments } = useAppSelector((state) => state.singleRoom);
 
   const handleEditComment = () => {
     if (!isEditing) {
@@ -35,13 +39,16 @@ export default function MyComment(props: MyCommentProps) {
     }
   };
 
-  const handleRemoveComment = () => {
+  const handleCancelEdit = () => {
     if (isEditing) {
       setEditContent(props.comment.content);
       setEditing(false);
-    } else {
-      props.onCommentRemove(props.comment.commentId);
     }
+  };
+
+  const handleRemoveComment = () => {
+    setRemoveAlertOpen(false);
+    props.onCommentRemove(props.comment.commentId);
   };
 
   const handleCommentContentChange = (event: {
@@ -52,7 +59,7 @@ export default function MyComment(props: MyCommentProps) {
 
   return (
     <div className="flex flex-row w-full gap-1">
-      <div className="flex gap-2 xl:w-10/12 lg:w-11/12 md:w-5/6">
+      <div className="flex gap-2 xl:w-10/12 lg:w-11/12 md:w-5/6 w-full">
         <Avatar className="sm:block hidden text-sm ml-1 mt-4 w-11 h-11 rounded-full border shadow-md dark:border-none dark:bg-accent/20 bg-accent/10 border-secondary">
           <AvatarFallback className="dark:bg-muted/10">
             <UserRoundIcon className="text-secondary-foreground h-5 w-5" />
@@ -68,7 +75,9 @@ export default function MyComment(props: MyCommentProps) {
                 <div className="ml-2 h-6 self-end">
                   <span className="text-xs">|</span>
                   <span className="text-xs font-medium text-primary">
-                    Not saved...
+                    {isEditing && editContent === ""
+                      ? "Can't be empty..."
+                      : "Not saved..."}
                   </span>
                 </div>
               )}
@@ -95,7 +104,7 @@ export default function MyComment(props: MyCommentProps) {
                 {!props.comment.datePosted && (
                   <div className="z-50 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2">
                     <span className="flex h-2.5 w-2.5 animate-bounce rounded-full bg-primary mt-0.5"></span>
-                    <p className="text-primary text-sm font-medium text-center">
+                    <p className="text-primary text-xs font-medium text-center sm:text-sm">
                       Waiting for comment approval...
                     </p>
                   </div>
@@ -141,19 +150,37 @@ export default function MyComment(props: MyCommentProps) {
               <SaveIcon className="h-4 w-4 text-primary animate-pulse" />
             )}
           </Button>
-          <Button
-            disabled={!props.canRemove}
-            size="sm"
-            variant="ghost"
-            className="h-8 px-3"
-            onClick={handleRemoveComment}
-          >
-            {!isEditing ? (
-              <Trash2Icon className="h-4 w-4 text-card-foreground/80" />
-            ) : (
-              <XIcon className="h-4 w-4 text-card-foreground/80" />
-            )}
-          </Button>
+          {isEditing ? (
+            <Button
+              disabled={!props.canEdit && !isEditing}
+              size="sm"
+              variant="ghost"
+              className="h-8 px-3"
+              onClick={handleCancelEdit}
+            >
+              {!isEditing ? (
+                <Trash2Icon className="h-4 w-4 text-card-foreground/80" />
+              ) : (
+                <XIcon className="h-4 w-4 text-card-foreground/80" />
+              )}
+            </Button>
+          ) : (
+            <RemoveAlertDialog
+              isLoading={loadingComments}
+              isOpen={removeAlertOpen}
+              onOpenChange={setRemoveAlertOpen}
+              onConfirm={handleRemoveComment}
+            >
+              <Button
+                disabled={!props.canRemove}
+                size="sm"
+                variant="ghost"
+                className="h-8 px-3"
+              >
+                <Trash2Icon className="h-4 w-4 text-card-foreground/80" />
+              </Button>
+            </RemoveAlertDialog>
+          )}
         </div>
       )}
     </div>

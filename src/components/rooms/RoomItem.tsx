@@ -18,7 +18,7 @@ export default function RoomItem(props: RoomItemProps) {
   const [isPopupOpen, setPopupOpen] = useState<boolean>(false);
   const { finishedAction } = useAppSelector((state) => state.rooms);
   const { identity } = useAppSelector((state) => state.identity);
-  const role = identity?.role;
+  const role = identity?.roleType;
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
