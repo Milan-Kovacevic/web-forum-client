@@ -47,7 +47,9 @@ export default function ChatRoomBrowser(props: BrowseOtherRoomsProps) {
                   : "dark:border-muted/60 border-muted hover:bg-muted/60 hover:dark:bg-muted/30"
               )}
             >
-              <p className="ml-3 text-sm">{item.name}</p>
+              <p className="ml-3 text-sm font-medium text-accent-foreground">
+                {item.name}
+              </p>
             </div>
           ))}
       </div>

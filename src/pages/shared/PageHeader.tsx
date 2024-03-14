@@ -25,7 +25,7 @@ export default function PageHeader() {
   };
 
   return (
-    <header className="sticky top-0 shadow-sm z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/40">
+    <header className="sticky top-0 shadow-md z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/40">
       <div className="container flex h-16 max-w-screen-2xl items-center">
         <MainNavigationBar />
         <MobileNavigationBar />

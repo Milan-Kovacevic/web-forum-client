@@ -67,7 +67,7 @@ export default function RoomItem(props: RoomItemProps) {
       </div>
 
       <div className="flex items-center justify-between gap-2 mt-1 w-full">
-        <div className="flex-1 flex items-center gap-1 self-end ml-1">
+        <div className="flex-1 sm:flex hidden items-center gap-1 self-end ml-1">
           {differenceInDays(Date.now(), room.dateCreated) < 1 && (
             <Badge
               variant="default"
@@ -89,11 +89,8 @@ export default function RoomItem(props: RoomItemProps) {
           </Badge>
         </div>
 
-        <div className="hidden sm:flex items-center gap-2 self-end">
-          <JoinRoomButton
-            onRoomJoinClicked={handleJoinRoom}
-            className="sm:ml-0 ml-auto"
-          />
+        <div className="flex items-center gap-2 self-end ml-auto">
+          <JoinRoomButton onRoomJoinClicked={handleJoinRoom} />
         </div>
       </div>
     </div>

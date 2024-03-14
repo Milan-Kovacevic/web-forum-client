@@ -40,9 +40,7 @@ export default function ManageRoomPopup(props: ManageRoomPopupProps) {
         </PopoverTrigger>
         <PopoverContent className="w-auto p-5">
           <div className="grid gap-4">
-            <h4 className="font-semibold leading-none text-sm mb-1">
-              Manage chat room
-            </h4>
+            <h4 className="leading-none text-sm mb-1">Manage chat room</h4>
             <div className="space-x-2">
               <EditRoomDialog
                 room={props.room}
