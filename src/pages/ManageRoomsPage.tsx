@@ -48,21 +48,26 @@ export default function ManageRoomsPage() {
     }
   }, [id]);
 
+  var widerScreenWidth = window.matchMedia("(min-width: 700px)");
+
   return (
     <div className="h-full w-full flex max-w-screen-2xl sm:p-8 py-4 px-2 mx-auto">
       <div className="px-6 flex-1 my-2 h-full">
         <ResizablePanelGroup
-          direction="horizontal"
+          direction={widerScreenWidth.matches ? "horizontal" : "vertical"}
           className="w-full dark:shadow-sm shadow-lg dark:shadow-accent rounded-lg border border-border h-screen"
           style={{ height: undefined }} // reset of radix style
         >
-          <ResizablePanel className="max-w-xl md:min-w-72" defaultSize={25}>
+          <ResizablePanel
+            className="lg:max-w-xl md:min-w-72 !overflow-y-auto"
+            defaultSize={25}
+          >
             <ChatRoomSelectList />
           </ResizablePanel>
           <ResizableHandle withHandle />
           <ResizablePanel className="h-full">
             {!managedRoom && (
-              <div className="z-10 w-full h-full flex justify-center dark:bg-muted/15 bg-muted/30">
+              <div className="z-10 w-full h-full flex justify-center dark:bg-muted/5 bg-muted/10">
                 <div className="flex flex-col gap-0.5 w-full justify-center items-center text-muted-foreground/75">
                   <LockIcon className="w-7 h-7" />
                   <p className="text-base text-center">
@@ -71,15 +76,15 @@ export default function ManageRoomsPage() {
                 </div>
               </div>
             )}
-            <div className="py-6 px-8 flex flex-col h-full">
+            <div className="py-6 px-8 h-full flex flex-col">
               <SelectedChatRoomHeader />
               <RoomPermissionBadges />
-              <Tabs defaultValue="posted" className="flex-1 h-full">
-                <TabsList className="w-auto flex md:inline-block h-auto">
+              <Tabs defaultValue="posted" className="h-full flex flex-col">
+                <TabsList className="w-auto hidden flex-wrap md:inline-block h-auto">
                   <TabsTrigger value="posted">Posted Comments</TabsTrigger>
                   <TabsTrigger value="pending">Pending Comments</TabsTrigger>
                 </TabsList>
-                <ScrollArea className="h-full flex flex-col gap-2">
+                <ScrollArea className="h-full">
                   <PostedCommentsTabContent value="posted" />
                   <PendingCommentsTabContent value="pending" />
                 </ScrollArea>

@@ -3,9 +3,9 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import ItemLoader from "@/components/primitives/ItemLoader";
 import { PermissionDictionary } from "@/utils/constants";
 import {
-  editRoomComment,
+  editAnyRoomComment,
   loadPostedRoomComments,
-  removeRoomComment,
+  removeAnyRoomComment,
 } from "@/redux/rooms/commentThunks";
 import { useEffect } from "react";
 import { clearManageRoomAction } from "@/redux/rooms/manageRoomSlice";
@@ -19,29 +19,29 @@ type PostedCommentsTabContentProps = {
 export default function PostedCommentsTabContent(
   props: PostedCommentsTabContentProps
 ) {
-  const { postedComments, loadingPostedComments, action, managedRoom } =
+  const { postedComments, loadingPostedComments, managedAction, managedRoom } =
     useAppSelector((state) => state.manageRoom);
   const dispatch = useAppDispatch();
 
   const handleRemoveComment = (commentId: string) => {
-    dispatch(removeRoomComment(commentId));
+    dispatch(removeAnyRoomComment(commentId));
   };
 
   const handleEditComment = (commentId: string, content: string) => {
-    dispatch(editRoomComment({ commentId: commentId, newContent: content }));
+    dispatch(editAnyRoomComment({ commentId: commentId, newContent: content }));
   };
 
   useEffect(() => {
-    if (!action || !managedRoom) return;
-    if (action === "Remove" || action === "Edit") {
+    if (!managedAction || !managedRoom) return;
+    if (managedAction === "Remove" || managedAction === "Edit") {
       dispatch(loadPostedRoomComments(managedRoom?.roomId));
       dispatch(clearManageRoomAction());
     }
-  }, [action]);
+  }, [managedAction]);
 
   return (
-    <TabsContent value={props.value}>
-      <div className="flex flex-col gap-2.5 px-1 py-2">
+    <TabsContent value={props.value} className="h-full mb-36">
+      <div className="flex flex-col gap-3 px-1 py-2">
         {postedComments.length == 0 && !loadingPostedComments && (
           <NoPostedComments />
         )}

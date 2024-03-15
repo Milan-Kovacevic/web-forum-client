@@ -8,7 +8,7 @@ export default function SelectedChatRoomHeader() {
     <>
       {managedRoom && (
         <>
-          <div className="space-y-0.5">
+          <div className="space-y-0.5 flex flex-col">
             <h2 className="text-lg text-foreground font-semibold">
               {managedRoom?.name}
             </h2>

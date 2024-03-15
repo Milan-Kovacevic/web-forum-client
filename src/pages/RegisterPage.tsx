@@ -33,15 +33,14 @@ export default function RegisterPage() {
   };
 
   async function handleRegister(data: zod.infer<typeof RegisterFormSchema>) {
-    dispatch({
-      type: "REGISTER",
-      register: register({
+    dispatch(
+      register({
         displayName: data.displayName,
         username: data.username,
         email: data.email,
         password: data.password,
-      }),
-    });
+      })
+    );
   }
 
   useEffect(() => {

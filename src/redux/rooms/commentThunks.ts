@@ -41,8 +41,22 @@ export const removeRoomComment = createAsyncThunk(
   }
 );
 
+export const removeAnyRoomComment = createAsyncThunk(
+  "removeRoomComment/singleRoom",
+  (commentId: string) => {
+    return commentsService.removeComment(commentId);
+  }
+);
+
 export const editRoomComment = createAsyncThunk(
   "editRoomComment/singleRoom",
+  (input: EditCommentInput) => {
+    return commentsService.editComment(input);
+  }
+);
+
+export const editAnyRoomComment = createAsyncThunk(
+  "editAnyRoomComment/singleRoom",
   (input: EditCommentInput) => {
     return commentsService.editComment(input);
   }

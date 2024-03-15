@@ -44,7 +44,7 @@ const register = async (input: RegisterInput) => {
     requireAuth: false,
     data: input,
   }).then((response) => {
-    return { data: response.data, status: response.status };
+    return { status: response.status };
   });
 };
 

@@ -8,9 +8,11 @@ import { Comment } from "@/types/models/comments";
 import {
   approveRoomComment,
   blockRoomComment,
+  editAnyRoomComment,
   editRoomComment,
   loadPendingRoomComments,
   loadPostedRoomComments,
+  removeAnyRoomComment,
   removeRoomComment,
 } from "@/redux/rooms/commentThunks";
 
@@ -23,7 +25,7 @@ interface ManageRoomState {
   loadingRoomPermissions: boolean;
   loadingPostedComments: boolean;
   loadingPendingComments: boolean;
-  action: "Edit" | "Remove" | "Block" | "Post" | null;
+  managedAction: "Edit" | "Remove" | "Block" | "Post" | null;
 }
 
 const initialState: ManageRoomState = {
@@ -35,7 +37,7 @@ const initialState: ManageRoomState = {
   loadingRoomPermissions: false,
   loadingPostedComments: false,
   loadingPendingComments: false,
-  action: null,
+  managedAction: null,
 };
 
 const manageRoomSlice = createSlice({
@@ -43,7 +45,7 @@ const manageRoomSlice = createSlice({
   initialState: initialState,
   reducers: {
     clearManageRoomAction(state) {
-      state.action = null;
+      state.managedAction = null;
     },
   },
   extraReducers: (builder) => {
@@ -91,26 +93,26 @@ const manageRoomSlice = createSlice({
       state.loadingRoomPermissions = false;
     });
 
-    builder.addCase(removeRoomComment.fulfilled, (state) => {
-      state.action = "Remove";
+    builder.addCase(removeAnyRoomComment.fulfilled, (state) => {
+      state.managedAction = "Remove";
       state.loadingPostedComments = false;
     });
-    builder.addCase(editRoomComment.fulfilled, (state) => {
-      state.action = "Edit";
+    builder.addCase(editAnyRoomComment.fulfilled, (state) => {
+      state.managedAction = "Edit";
       state.loadingPostedComments = false;
     });
 
-    builder.addCase(removeRoomComment.pending, (state) => {
+    builder.addCase(removeAnyRoomComment.pending, (state) => {
       state.loadingPostedComments = true;
     });
-    builder.addCase(editRoomComment.pending, (state) => {
+    builder.addCase(editAnyRoomComment.pending, (state) => {
       state.loadingPostedComments = true;
     });
 
-    builder.addCase(removeRoomComment.rejected, (state) => {
+    builder.addCase(removeAnyRoomComment.rejected, (state) => {
       state.loadingPostedComments = false;
     });
-    builder.addCase(editRoomComment.rejected, (state) => {
+    builder.addCase(editAnyRoomComment.rejected, (state) => {
       state.loadingPostedComments = false;
     });
 
@@ -130,11 +132,11 @@ const manageRoomSlice = createSlice({
 
     builder.addCase(approveRoomComment.fulfilled, (state) => {
       state.loadingPendingComments = false;
-      state.action = "Post";
+      state.managedAction = "Post";
     });
     builder.addCase(blockRoomComment.fulfilled, (state) => {
       state.loadingPendingComments = false;
-      state.action = "Block";
+      state.managedAction = "Block";
     });
   },
 });

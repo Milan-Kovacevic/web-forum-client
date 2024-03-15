@@ -20,8 +20,12 @@ type PendingCommentsTabContentProps = {
 export default function PendingCommentsTabContent(
   props: PendingCommentsTabContentProps
 ) {
-  const { pendingComments, loadingPendingComments, action, managedRoom } =
-    useAppSelector((state) => state.manageRoom);
+  const {
+    pendingComments,
+    loadingPendingComments,
+    managedAction,
+    managedRoom,
+  } = useAppSelector((state) => state.manageRoom);
   const dispatch = useAppDispatch();
 
   const handleBlockComment = (commentId: string) => {
@@ -38,17 +42,17 @@ export default function PendingCommentsTabContent(
   };
 
   useEffect(() => {
-    if (!action || !managedRoom) return;
-    if (action === "Block" || action === "Post") {
+    if (!managedAction || !managedRoom) return;
+    if (managedAction === "Block" || managedAction === "Post") {
       dispatch(loadPendingRoomComments(managedRoom?.roomId));
       dispatch(loadPostedRoomComments(managedRoom?.roomId));
       dispatch(clearManageRoomAction());
     }
-  }, [action]);
+  }, [managedAction]);
 
   return (
     <TabsContent value={props.value}>
-      <div className="flex flex-col gap-2.5 px-1 py-2">
+      <div className="flex flex-col gap-3 px-1 py-2">
         {pendingComments.length == 0 && !loadingPendingComments && (
           <NoPendingComments />
         )}

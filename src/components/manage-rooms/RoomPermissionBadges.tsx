@@ -29,7 +29,7 @@ export default function RoomPermissionBadges() {
           <ItemLoader className="justify-start ml-4" />
         </div>
       ) : (
-        <div className="flex flex-row gap-1">
+        <div className="flex flex-row gap-1 flex-wrap">
           {roomPermissions.length > 0 ? (
             roomPermissions.map((item) => (
               <RoomPermissionBadge key={item.permissionId} {...item} />
