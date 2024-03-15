@@ -14,7 +14,6 @@ import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 
 type CommentFormProps = {
-  inputClassName?: string;
   form: UseFormReturn<zod.infer<typeof CommentFormSchema>>;
   onCommentSend: (data: zod.infer<typeof CommentFormSchema>) => void;
   isLoading: boolean;

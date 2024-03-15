@@ -64,6 +64,10 @@ const router = createBrowserRouter([
                 path: AppRoutes.MANAGE_ROOMS.path,
                 element: <ManageRoomsPage />,
               },
+              {
+                path: AppRoutes.MANAGE_SINGLE_ROOM.path,
+                element: <ManageRoomsPage />,
+              },
             ],
           },
         ],

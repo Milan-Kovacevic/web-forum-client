@@ -49,9 +49,9 @@ export default function EditRoomDialog(props: EditRoomDialogProps) {
       <DialogTrigger asChild>{props.children}</DialogTrigger>
       <DialogContent className="sm:max-w-[460px] px-8 py-7">
         <DialogHeader>
-          <DialogTitle className="text-xl">Create New Chat Room</DialogTitle>
+          <DialogTitle className="text-xl">Edit Chat Room</DialogTitle>
           <DialogDescription>
-            Create a new room for conversation. Click save when you're done.
+            Enter a new chat room information. Click save when you're done.
           </DialogDescription>
         </DialogHeader>
         <SubmitRoomForm
