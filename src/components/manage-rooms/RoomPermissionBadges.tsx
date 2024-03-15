@@ -11,28 +11,28 @@ import { RoomPermission } from "@/types/models/rooms";
 import ItemLoader from "@/components/primitives/ItemLoader";
 import { Badge } from "../ui/badge";
 
-export default function ManagingRoomPermissions() {
-  const { permissions, loadingPermissions } = useAppSelector(
-    (state) => state.singleRoom
+export default function RoomPermissionBadges() {
+  const { roomPermissions, loadingRoomPermissions } = useAppSelector(
+    (state) => state.manageRoom
   );
 
   return (
     <div className="mb-5">
-      {(loadingPermissions ||
-        (!loadingPermissions && permissions.length) > 0) && (
+      {(loadingRoomPermissions ||
+        (!loadingRoomPermissions && roomPermissions.length) > 0) && (
         <p className="text-accent-foreground/90 text-sm mb-1.5 ml-0.5">
           Your permissions:{" "}
         </p>
       )}
-      {loadingPermissions ? (
+      {loadingRoomPermissions ? (
         <div className="h-[50px]">
           <ItemLoader className="justify-start ml-4" />
         </div>
       ) : (
         <div className="flex flex-row gap-1">
-          {permissions.length > 0 ? (
-            permissions.map((item) => (
-              <ManagePermissionsItem key={item.permissionId} {...item} />
+          {roomPermissions.length > 0 ? (
+            roomPermissions.map((item) => (
+              <RoomPermissionBadge key={item.permissionId} {...item} />
             ))
           ) : (
             <EmptyPermissionsPlaceholder />
@@ -51,7 +51,7 @@ const EmptyPermissionsPlaceholder = () => {
   );
 };
 
-const ManagePermissionsItem = (item: RoomPermission) => {
+const RoomPermissionBadge = (item: RoomPermission) => {
   const permission = PermissionDictionary[item.permissionId];
 
   return (
@@ -66,7 +66,7 @@ const ManagePermissionsItem = (item: RoomPermission) => {
               <InfoIcon className="cursor-help h-3.5 w-3.5 mt-0.5 text-accent-foreground/80" />
             </TooltipTrigger>
             <TooltipContent>
-              <p>{permission.description}</p>
+              <p className="font-normal">{permission.description}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>

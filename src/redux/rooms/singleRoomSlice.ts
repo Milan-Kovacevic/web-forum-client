@@ -4,7 +4,7 @@ import { loadMyRoomPermissions, getRoom } from "./roomsThunks";
 import { Comment } from "@/types/models/comments";
 import {
   editRoomComment,
-  loadPostedRoomComments,
+  loadUserCommentsForRoom,
   postNewRoomComment,
   removeRoomComment,
 } from "@/redux/rooms/commentThunks";
@@ -49,13 +49,13 @@ const singleRoomSlice = createSlice({
       if (state.comments !== null) state.loadingRoom = false;
     });
 
-    builder.addCase(loadPostedRoomComments.pending, (state) => {
+    builder.addCase(loadUserCommentsForRoom.pending, (state) => {
       state.loadingComments = true;
     });
-    builder.addCase(loadPostedRoomComments.rejected, (state) => {
+    builder.addCase(loadUserCommentsForRoom.rejected, (state) => {
       state.loadingComments = false;
     });
-    builder.addCase(loadPostedRoomComments.fulfilled, (state, action) => {
+    builder.addCase(loadUserCommentsForRoom.fulfilled, (state, action) => {
       state.comments = action.payload;
       state.loadingComments = false;
     });

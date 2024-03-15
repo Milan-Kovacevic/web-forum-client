@@ -8,14 +8,10 @@ import {
   CommentFormSchema,
 } from "@/schemas/comment-form-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  loadPostedRoomComments,
-  postNewRoomComment,
-} from "@/redux/rooms/commentThunks";
-import { clearSingleRoomAction } from "@/redux/rooms/singleRoomSlice";
+import { postNewRoomComment } from "@/redux/rooms/commentThunks";
 
 export default function CommentTextarea() {
-  const { loadingComments, permissions, room, action } = useAppSelector(
+  const { loadingComments, permissions, room } = useAppSelector(
     (state) => state.singleRoom
   );
   const dispatch = useAppDispatch();
@@ -33,14 +29,6 @@ export default function CommentTextarea() {
       ) !== undefined;
     setCanPostComment(canPost);
   }, [permissions]);
-
-  useEffect(() => {
-    if (!action || !room) return;
-    if (action === "Create") {
-      dispatch(loadPostedRoomComments(room?.roomId));
-      dispatch(clearSingleRoomAction());
-    }
-  }, [action]);
 
   const handleCommentPosted = (
     formData: Zod.infer<typeof CommentFormSchema>

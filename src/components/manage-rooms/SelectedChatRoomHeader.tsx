@@ -2,23 +2,23 @@ import { useAppSelector } from "@/hooks/useRedux";
 import { Separator } from "@/components/ui/separator";
 
 export default function SelectedChatRoomHeader() {
-  const { room } = useAppSelector((state) => state.singleRoom);
+  const { managedRoom } = useAppSelector((state) => state.manageRoom);
 
   return (
     <>
-      {room && (
+      {managedRoom && (
         <>
           <div className="space-y-0.5">
             <h2 className="text-lg text-foreground font-semibold">
-              {room?.name}
+              {managedRoom?.name}
             </h2>
-            {!room?.description ? (
+            {!managedRoom?.description ? (
               <p className="text-sm text-accent-foreground/70 italic">
                 No room description...
               </p>
             ) : (
               <p className="text-muted-foreground text-sm">
-                {room?.description}
+                {managedRoom?.description}
               </p>
             )}
           </div>

@@ -4,7 +4,7 @@ import RoomComments from "@/components/single-room/RoomComments";
 import RoomNameHeader from "@/components/single-room/RoomNameHeader";
 import RoomPermissionsCard from "@/components/single-room/RoomPermissionsCard";
 import { useAppDispatch } from "@/hooks/useRedux";
-import { loadPostedRoomComments } from "@/redux/rooms/commentThunks";
+import { loadUserCommentsForRoom } from "@/redux/rooms/commentThunks";
 import { loadMyRoomPermissions } from "@/redux/rooms/roomsThunks";
 import { getRoom } from "@/redux/rooms/roomsThunks";
 import { useEffect } from "react";
@@ -17,7 +17,7 @@ export default function SingleRoomPage() {
   useEffect(() => {
     if (id) {
       dispatch(getRoom(id));
-      dispatch(loadPostedRoomComments(id));
+      dispatch(loadUserCommentsForRoom(id));
       dispatch(loadMyRoomPermissions(id));
     }
   }, [id]);

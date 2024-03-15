@@ -1,6 +1,5 @@
 import { TabsContent } from "@/components/ui/tabs";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
-import ManageCommentItem from "@/components/comments/ManageCommentItem";
 import ItemLoader from "@/components/primitives/ItemLoader";
 import { PermissionDictionary } from "@/utils/constants";
 import {
@@ -9,8 +8,9 @@ import {
   removeRoomComment,
 } from "@/redux/rooms/commentThunks";
 import { useEffect } from "react";
-import { clearSingleRoomAction } from "@/redux/rooms/singleRoomSlice";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { clearManageRoomAction } from "@/redux/rooms/manageRoomSlice";
+import PostedComment from "@/components/comments/PostedComment";
+import { Comment } from "@/types/models/comments";
 
 type PostedCommentsTabContentProps = {
   value: string;
@@ -19,18 +19,9 @@ type PostedCommentsTabContentProps = {
 export default function PostedCommentsTabContent(
   props: PostedCommentsTabContentProps
 ) {
-  const { comments, loadingComments, permissions, action, room } =
-    useAppSelector((state) => state.singleRoom);
+  const { postedComments, loadingPostedComments, action, managedRoom } =
+    useAppSelector((state) => state.manageRoom);
   const dispatch = useAppDispatch();
-
-  var canRemoveComment =
-    permissions.find(
-      (item) => PermissionDictionary[item.permissionId].type == "RemoveComment"
-    ) !== undefined;
-  var canEditComment =
-    permissions.find(
-      (item) => PermissionDictionary[item.permissionId].type == "EditComment"
-    ) !== undefined;
 
   const handleRemoveComment = (commentId: string) => {
     dispatch(removeRoomComment(commentId));
@@ -41,38 +32,73 @@ export default function PostedCommentsTabContent(
   };
 
   useEffect(() => {
-    if (!action || !room) return;
+    if (!action || !managedRoom) return;
     if (action === "Remove" || action === "Edit") {
-      dispatch(loadPostedRoomComments(room?.roomId));
-      dispatch(clearSingleRoomAction());
+      dispatch(loadPostedRoomComments(managedRoom?.roomId));
+      dispatch(clearManageRoomAction());
     }
   }, [action]);
 
   return (
     <TabsContent value={props.value}>
       <div className="flex flex-col gap-2.5 px-1 py-2">
-        {comments.length == 0 && !loadingComments && (
-          <div className="ml-2 mt-1 text-sm text-accent-foreground">
-            There are no comments to show now
-          </div>
+        {postedComments.length == 0 && !loadingPostedComments && (
+          <NoPostedComments />
         )}
-        {loadingComments ? (
-          <div className="w-full h-[200px]">
-            <ItemLoader />
-          </div>
+        {loadingPostedComments ? (
+          <PostedCommentsLoader />
         ) : (
-          comments.map((item) => (
-            <ManageCommentItem
-              key={item.commentId}
-              comment={item}
-              canRemove={canRemoveComment}
-              canEdit={canEditComment}
-              onCommentRemove={handleRemoveComment}
-              onCommentEdit={handleEditComment}
-            />
-          ))
+          <PostedCommentsList
+            items={postedComments}
+            onCommentEdited={handleEditComment}
+            onCommentRemoved={handleRemoveComment}
+          />
         )}
       </div>
     </TabsContent>
   );
 }
+
+type PostedCommentsListProps = {
+  items: Comment[];
+  onCommentEdited: (commentId: string, content: string) => void;
+  onCommentRemoved: (commentId: string) => void;
+};
+
+const PostedCommentsList = (props: PostedCommentsListProps) => {
+  const roomPermissions = useAppSelector(
+    (state) => state.manageRoom.roomPermissions
+  );
+
+  var canEditComment =
+    roomPermissions.find(
+      (item) => PermissionDictionary[item.permissionId].type == "EditComment"
+    ) !== undefined;
+  var canRemoveComment =
+    roomPermissions.find(
+      (item) => PermissionDictionary[item.permissionId].type == "RemoveComment"
+    ) !== undefined;
+
+  return props.items.map((item) => (
+    <PostedComment
+      key={item.commentId}
+      comment={item}
+      canEdit={canEditComment}
+      canRemove={canRemoveComment}
+      onCommentEdited={props.onCommentEdited}
+      onCommentRemoved={props.onCommentRemoved}
+    />
+  ));
+};
+
+const NoPostedComments = (): JSX.Element => (
+  <div className="ml-2 mt-1 text-sm text-accent-foreground">
+    There are no posted comments to show...
+  </div>
+);
+
+const PostedCommentsLoader = (): JSX.Element => (
+  <div className="w-full h-[200px]">
+    <ItemLoader />
+  </div>
+);

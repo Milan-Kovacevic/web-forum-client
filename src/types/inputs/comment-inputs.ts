@@ -7,3 +7,8 @@ export type EditCommentInput = {
   commentId: string;
   newContent: string;
 };
+
+export type PostCommentInput = {
+  commentId: string;
+  updatedContent: string;
+};

@@ -4,7 +4,24 @@ import { ApiEndpoints, RequestMethods } from "@/utils/constants";
 import {
   CreateCommentInput,
   EditCommentInput,
+  PostCommentInput,
 } from "@/types/inputs/comment-inputs";
+
+const getUserCommentsForRoom = async (roomId: string) => {
+  return sendAxiosRequest<void, Comment[]>({
+    url: ApiEndpoints.USER_ROOM_COMMENTS.replace("roomId", roomId),
+    method: RequestMethods.GET,
+    requireAuth: true,
+  }).then((response) => response.data);
+};
+
+const getPendingRoomComments = async (roomId: string) => {
+  return sendAxiosRequest<void, Comment[]>({
+    url: ApiEndpoints.PENDING_ROOM_COMMENTS.replace("roomId", roomId),
+    method: RequestMethods.GET,
+    requireAuth: true,
+  }).then((response) => response.data);
+};
 
 const getPostedRoomComments = async (roomId: string) => {
   return sendAxiosRequest<void, Comment[]>({
@@ -40,9 +57,30 @@ const editComment = async (input: EditCommentInput) => {
   }).then((response) => response.data);
 };
 
+const postComment = async (input: PostCommentInput) => {
+  return sendAxiosRequest<PostCommentInput, Comment>({
+    url: ApiEndpoints.POST_COMMENT.replace("{commentId}", input.commentId),
+    method: RequestMethods.POST,
+    requireAuth: true,
+    data: input,
+  }).then((response) => response.data);
+};
+
+const blockComment = async (commentId: string) => {
+  return sendAxiosRequest<void, Comment>({
+    url: ApiEndpoints.BLOCK_COMMENT.replace("{commentId}", commentId),
+    method: RequestMethods.POST,
+    requireAuth: true,
+  }).then((response) => response.data);
+};
+
 export default {
+  getUserCommentsForRoom,
+  getPendingRoomComments,
   getPostedRoomComments,
   createNewComment,
   removeComment,
   editComment,
+  postComment,
+  blockComment,
 };

@@ -23,7 +23,7 @@ export default function EditCommentForm(props: EditCommentFormProps) {
           control={props.form.control}
           name="content"
           description="Enter the comment message"
-          display="New Message"
+          display="Message"
           maxLength={400}
           className="my-2 space-y-2"
           inputClassName="w-full h-40 mt-1"

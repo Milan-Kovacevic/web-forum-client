@@ -71,8 +71,12 @@ export const ApiEndpoints = {
   SINGLE_ROOM: `${API_PREFIX}/Rooms/{roomId}`,
   COMMENTS: `${API_PREFIX}/Comments`,
   SINGLE_COMMENT: `${API_PREFIX}/Comments/{commentId}`,
+  USER_ROOM_COMMENTS: `${API_PREFIX}/Rooms/{roomId}/Comments`,
   POSTED_ROOM_COMMENTS: `${API_PREFIX}/Rooms/{roomId}/Comments/Posted`,
+  PENDING_ROOM_COMMENTS: `${API_PREFIX}/Rooms/{roomId}/Comments/Pending`,
   ROOM_PERMISSIONS: `${API_PREFIX}/Rooms/{roomId}/Permissions`,
+  POST_COMMENT: `${API_PREFIX}/Comments/{commentId}/Post`,
+  BLOCK_COMMENT: `${API_PREFIX}/Comments/{commentId}/Block`,
 };
 
 export const RequestMethods = {

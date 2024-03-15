@@ -6,7 +6,7 @@ import ItemLoader from "../primitives/ItemLoader";
 import { PermissionDictionary } from "@/utils/constants";
 import {
   editRoomComment,
-  loadPostedRoomComments,
+  loadUserCommentsForRoom,
   removeRoomComment,
 } from "@/redux/rooms/commentThunks";
 import { useEffect } from "react";
@@ -38,8 +38,8 @@ export default function RoomComments() {
 
   useEffect(() => {
     if (!action || !room) return;
-    if (action === "Remove" || action === "Edit") {
-      dispatch(loadPostedRoomComments(room?.roomId));
+    if (action === "Remove" || action === "Edit" || action === "Create") {
+      dispatch(loadUserCommentsForRoom(room?.roomId));
       dispatch(clearSingleRoomAction());
     }
   }, [action]);

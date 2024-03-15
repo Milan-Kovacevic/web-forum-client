@@ -17,6 +17,9 @@ type EditCommentDialogProps = {
   originalComment: Comment;
   children: ReactNode;
   isOpen: boolean;
+  isLoading: boolean;
+  title: string;
+  subtitle: string;
   onOpenChange: (value: boolean) => void;
   onSubmit: (content: string) => void;
 };
@@ -32,6 +35,7 @@ export default function EditCommentDialog(props: EditCommentDialogProps) {
   const handleCommentSend = (formData: Zod.infer<typeof CommentFormSchema>) => {
     props.onSubmit(formData.content);
   };
+
   return (
     <Dialog
       open={props.isOpen}
@@ -41,14 +45,12 @@ export default function EditCommentDialog(props: EditCommentDialogProps) {
       <DialogTrigger asChild>{props.children}</DialogTrigger>
       <DialogContent className="sm:max-w-[460px] px-8 py-7">
         <DialogHeader>
-          <DialogTitle className="text-xl">Edit chat comment</DialogTitle>
-          <DialogDescription>
-            Enter a new message. Click save changes when you're done.
-          </DialogDescription>
+          <DialogTitle className="text-xl">{props.title}</DialogTitle>
+          <DialogDescription>{props.subtitle}</DialogDescription>
         </DialogHeader>
         <EditCommentForm
           form={commentForm}
-          isLoading={false}
+          isLoading={props.isLoading}
           onCommentSend={handleCommentSend}
         />
       </DialogContent>

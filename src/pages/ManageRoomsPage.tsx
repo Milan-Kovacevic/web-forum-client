@@ -1,5 +1,6 @@
-import ChatRoomSelector from "@/components/manage-rooms/ChatRoomSelector";
-import ManagingRoomPermissions from "@/components/manage-rooms/ManagingRoomPermissions";
+import ChatRoomSelectList from "@/components/manage-rooms/ChatRoomSelectList";
+import RoomPermissionBadges from "@/components/manage-rooms/RoomPermissionBadges";
+import PendingCommentsTabContent from "@/components/manage-rooms/PendingCommentsTabContent";
 import PostedCommentsTabContent from "@/components/manage-rooms/PostedCommentsTabContent";
 import SelectedChatRoomHeader from "@/components/manage-rooms/SelectedChatRoomHeader";
 import {
@@ -8,31 +9,41 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
-import { loadPostedRoomComments } from "@/redux/rooms/commentThunks";
-import { getRoom, loadMyRoomPermissions } from "@/redux/rooms/roomsThunks";
+import {
+  loadPendingRoomComments,
+  loadPostedRoomComments,
+} from "@/redux/rooms/commentThunks";
+import {
+  loadManagedRoom,
+  loadMyRoomPermissions,
+} from "@/redux/rooms/roomsThunks";
 import { AppRoutes } from "@/utils/constants";
 import { LockIcon } from "lucide-react";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function ManageRoomsPage() {
-  const { room } = useAppSelector((state) => state.singleRoom);
+  const { managedRoom } = useAppSelector((state) => state.manageRoom);
   const dispatch = useAppDispatch();
-  const { id } = useParams();
   const navigate = useNavigate();
+  const { id } = useParams();
 
   useEffect(() => {
-    if (room) {
-      navigate(AppRoutes.MANAGE_SINGLE_ROOM.path.replace(":id", room.roomId));
+    if (managedRoom) {
+      navigate(
+        AppRoutes.MANAGE_SINGLE_ROOM.path.replace(":id", managedRoom.roomId),
+        { replace: true }
+      );
     }
   }, []);
 
   useEffect(() => {
     if (id) {
-      dispatch(getRoom(id));
+      dispatch(loadManagedRoom(id));
       dispatch(loadPostedRoomComments(id));
+      dispatch(loadPendingRoomComments(id));
       dispatch(loadMyRoomPermissions(id));
     }
   }, [id]);
@@ -46,11 +57,11 @@ export default function ManageRoomsPage() {
           style={{ height: undefined }} // reset of radix style
         >
           <ResizablePanel className="max-w-xl md:min-w-72" defaultSize={25}>
-            <ChatRoomSelector />
+            <ChatRoomSelectList />
           </ResizablePanel>
           <ResizableHandle withHandle />
           <ResizablePanel className="h-full">
-            {!room && (
+            {!managedRoom && (
               <div className="z-10 w-full h-full flex justify-center dark:bg-muted/15 bg-muted/30">
                 <div className="flex flex-col gap-0.5 w-full justify-center items-center text-muted-foreground/75">
                   <LockIcon className="w-7 h-7" />
@@ -62,8 +73,7 @@ export default function ManageRoomsPage() {
             )}
             <div className="py-6 px-8 flex flex-col h-full">
               <SelectedChatRoomHeader />
-              <ManagingRoomPermissions />
-
+              <RoomPermissionBadges />
               <Tabs defaultValue="posted" className="flex-1 h-full">
                 <TabsList className="w-auto flex md:inline-block h-auto">
                   <TabsTrigger value="posted">Posted Comments</TabsTrigger>
@@ -71,7 +81,7 @@ export default function ManageRoomsPage() {
                 </TabsList>
                 <ScrollArea className="h-full flex flex-col gap-2">
                   <PostedCommentsTabContent value="posted" />
-                  <TabsContent value="pending"></TabsContent>
+                  <PendingCommentsTabContent value="pending" />
                 </ScrollArea>
               </Tabs>
             </div>

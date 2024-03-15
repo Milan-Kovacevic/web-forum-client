@@ -5,16 +5,16 @@ import { AppRoutes } from "@/utils/constants";
 import { SearchIcon } from "lucide-react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Input } from "../ui/input";
-import { ScrollArea } from "../ui/scroll-area";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import RoomSelectorPlaceholder from "./RoomSelectorPlaceholder";
+import { Skeleton } from "@/components/ui/skeleton";
 
-export default function ChatRoomSelector() {
+export default function ChatRoomSelectList() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { loadingRooms, rooms } = useAppSelector((state) => state.rooms);
-  const { room } = useAppSelector((state) => state.singleRoom);
+  const { managedRoom } = useAppSelector((state) => state.manageRoom);
 
   useEffect(() => {
     dispatch(loadRooms());
@@ -36,7 +36,7 @@ export default function ChatRoomSelector() {
       </div>
       <ScrollArea className="my-4 mt-6 flex flex-col gap-2 flex-1">
         {loadingRooms ? (
-          <RoomSelectorPlaceholder />
+          <SelectListPlaceholder />
         ) : (
           <div className="flex flex-col gap-2">
             {rooms.map((item: Room) => (
@@ -46,7 +46,9 @@ export default function ChatRoomSelector() {
                 className={cn(
                   "flex flex-col items-start gap-2 rounded-lg bg-card border p-3.5 text-left text-sm",
                   "transition-colors hover:cursor-pointer hover:bg-accent/60",
-                  item.roomId == room?.roomId ? "bg-muted border-primary" : ""
+                  item.roomId == managedRoom?.roomId
+                    ? "bg-muted border-primary"
+                    : ""
                 )}
               >
                 <div className="flex flex-col items-center gap-1 w-full mx-1">
@@ -69,3 +71,22 @@ export default function ChatRoomSelector() {
     </div>
   );
 }
+
+const SelectListPlaceholder = () => {
+  const numOfItems = 12;
+  const loadingItems = Array.from({ length: numOfItems }, (_, index) => index);
+
+  return (
+    <div className="flex flex-col gap-2">
+      {loadingItems.map((item) => (
+        <div
+          key={item}
+          className="flex flex-col justify-end gap-1.5 w-full border rounded-lg py-4 px-4 transition-colors"
+        >
+          <Skeleton className="h-3.5 w-2/3" />
+          <Skeleton className="h-7 w-11/12" />
+        </div>
+      ))}
+    </div>
+  );
+};
