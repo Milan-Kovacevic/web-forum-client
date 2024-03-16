@@ -10,9 +10,9 @@ import {
   PenLineIcon,
   Trash2Icon,
 } from "lucide-react";
-import RemoveAlertDialog from "../primitives/RemoveAlertDialog";
 import { RoleDictionary } from "@/utils/constants";
 import { formatDateDistance } from "@/utils/utility";
+import ConfirmAlertDialog from "../primitives/ConfirmAlertDialog";
 
 type ManagedCommentCardProps = {
   comment: Comment;
@@ -122,11 +122,13 @@ export const PostedCommentActions = (props: PostedCommentActionsProps) => {
         </Button>
       </EditCommentDialog>
 
-      <RemoveAlertDialog
+      <ConfirmAlertDialog
         isLoading={loadingPostedComments}
         isOpen={removeAlertOpen}
         onOpenChange={setRemoveAlertOpen}
         onConfirm={handleRemoveComment}
+        title="Are you absolutely sure?"
+        subtitle="This action cannot be undone. This will permanently delete selected comment."
       >
         <Button
           disabled={!props.canRemove}
@@ -140,7 +142,7 @@ export const PostedCommentActions = (props: PostedCommentActionsProps) => {
             <CircleSlash2Icon className="h-4 w-4 text-card-foreground/80" />
           )}
         </Button>
-      </RemoveAlertDialog>
+      </ConfirmAlertDialog>
     </div>
   );
 };
@@ -187,11 +189,13 @@ export const PendingCommentActions = (props: PendingCommentActionsProps) => {
         </Button>
       </EditCommentDialog>
 
-      <RemoveAlertDialog
+      <ConfirmAlertDialog
         isLoading={loadingPostedComments}
         isOpen={removeAlertOpen}
         onOpenChange={setRemoveAlertOpen}
         onConfirm={handleBlockComment}
+        title="Are you absolutely sure?"
+        subtitle="This action will block/reject the selected comment."
       >
         <Button
           disabled={!props.canBlock}
@@ -205,7 +209,7 @@ export const PendingCommentActions = (props: PendingCommentActionsProps) => {
             <CircleSlash2Icon className="h-5 w-5 text-card-foreground/80" />
           )}
         </Button>
-      </RemoveAlertDialog>
+      </ConfirmAlertDialog>
     </div>
   );
 };

@@ -77,6 +77,9 @@ export const ApiEndpoints = {
   ROOM_PERMISSIONS: `${API_PREFIX}/Rooms/{roomId}/Permissions`,
   POST_COMMENT: `${API_PREFIX}/Comments/{commentId}/Post`,
   BLOCK_COMMENT: `${API_PREFIX}/Comments/{commentId}/Block`,
+  REGISTRATION_REQUESTS: `${API_PREFIX}/Requests`,
+  APPROVE_REQUEST: `${API_PREFIX}/Requests/{requestId}/Approve`,
+  REJECT_REQUEST: `${API_PREFIX}/Requests/{requestId}/Reject`,
 };
 
 export const RequestMethods = {

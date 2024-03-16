@@ -16,8 +16,8 @@ export default function OtherUserComment(props: OtherUserCommentProps) {
     <div className="flex flex-col">
       <div className="flex gap-3 items-start w-full">
         <div className="flex gap-2 xl:w-10/12 lg:w-full md:w-5/6 w-full">
-          <Avatar className="sm:block hidden text-sm ml-1 mt-3.5 w-11 h-11 rounded-full border shadow-md border-border dark:border-none">
-            <AvatarFallback className="dark:bg-muted/50 bg-background/80">
+          <Avatar className="sm:block hidden text-sm ml-1 mt-3.5 w-11 h-11 rounded-full border shadow-md border-border">
+            <AvatarFallback className="dark:bg-muted/30 bg-background/80">
               <UserRoundIcon className="text-secondary-foreground h-5 w-5" />
             </AvatarFallback>
           </Avatar>
@@ -41,7 +41,7 @@ export default function OtherUserComment(props: OtherUserCommentProps) {
             </div>
 
             <div className="relative self-start h-full w-full">
-              <Card className="py-3 px-5 h-auto sm:min-w-64 min-h-20 w-full shadow-md dark:bg-muted/30 border-border">
+              <Card className="py-3 px-5 h-auto sm:min-w-64 min-h-20 w-full shadow-md dark:bg-muted/30">
                 <p className="text-card-foreground/80 text-sm">
                   {props.comment.content}
                 </p>

@@ -2,7 +2,7 @@ import { Room } from "@/types/models/rooms";
 import { ReactNode } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { removeRoom } from "@/redux/rooms/roomsThunks";
-import RemoveAlertDialog from "@/components/primitives/RemoveAlertDialog";
+import ConfirmALertDialog from "@/components/primitives/ConfirmAlertDialog";
 
 type RemoveRoomDialogProps = {
   children: ReactNode;
@@ -20,12 +20,14 @@ export default function RemoveRoomDialog(props: RemoveRoomDialogProps) {
   };
 
   return (
-    <RemoveAlertDialog
+    <ConfirmALertDialog
       isLoading={loadingDialog}
       children={props.children}
       isOpen={props.isOpen}
       onOpenChange={props.onOpenChange}
       onConfirm={handleRoomRemove}
+      title="Are you absolutely sure?"
+      subtitle="This action cannot be undone. This will permanently delete selected chat room and all of its comments."
     />
   );
 }

@@ -15,6 +15,7 @@ import persistStore from "redux-persist/es/persistStore";
 import authSlice from "@/redux/identity/authSlice";
 import singleRoomSlice from "@/redux/rooms/singleRoomSlice";
 import manageRoomSlice from "@/redux/rooms/manageRoomSlice";
+import requestsSlice from "@/redux/users/requestsSlice";
 
 const persistConfig = {
   key: "identity",
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
   auth: authSlice,
   identity: persistedIdentityReducer,
   manageRoom: manageRoomSlice,
+  requests: requestsSlice,
 });
 
 export const store = configureStore({

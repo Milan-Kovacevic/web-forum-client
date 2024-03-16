@@ -4,16 +4,15 @@ import {
   PenLineIcon,
   SaveIcon,
   Trash2Icon,
-  UserRoundIcon,
   XIcon,
 } from "lucide-react";
 import { Comment } from "@/types/models/comments";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "../ui/textarea";
+import { Textarea } from "@/components/ui/textarea";
 import { SetStateAction, useState } from "react";
 import { cn } from "@/lib/utils";
-import { Avatar, AvatarFallback } from "../ui/avatar";
-import RemoveAlertDialog from "../primitives/RemoveAlertDialog";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import ConfirmAlertDialog from "@/components/primitives/ConfirmAlertDialog";
 import { useAppSelector } from "@/hooks/useRedux";
 import { formatDateDistance } from "@/utils/utility";
 
@@ -61,16 +60,16 @@ export default function OwnUserComment(props: MyCommentProps) {
     <div className="flex flex-col">
       <div className="flex flex-row w-full gap-1">
         <div className="flex gap-2 xl:w-10/12 lg:w-full md:w-5/6 w-full">
-          <Avatar className="sm:block hidden text-sm ml-1 mt-4 w-11 h-11 rounded-full border shadow-md dark:border-none dark:bg-accent/20 bg-accent/10 border-secondary">
-            <AvatarFallback className="dark:bg-muted/10">
-              <UserRoundIcon className="text-secondary-foreground h-5 w-5" />
+          <Avatar className="sm:block hidden text-sm ml-1 mt-4 w-11 h-11 rounded-full border shadow-md dark:border-none dark:bg-muted/40 border-secondary">
+            <AvatarFallback className="dark:bg-accent/40 bg-accent">
+              ME
             </AvatarFallback>
           </Avatar>
           <div className="w-full">
             <div className="mb-1 flex flex-wrap justify-between items-end self-start">
               <div className="flex gap-0 h-7 self-end">
-                <p className="ml-1 mb-0.5 text-xs font-medium text-secondary-foreground self-end">
-                  You: {props.comment.userDisplayName}
+                <p className="ml-1 text-sm font-normal text-accent-foreground/70 self-end">
+                  {props.comment.userDisplayName}
                 </p>
                 {isEditing && editContent !== props.comment.content && (
                   <div className="ml-2 h-6 self-end">
@@ -107,7 +106,7 @@ export default function OwnUserComment(props: MyCommentProps) {
 
                   <Card
                     className={cn(
-                      "w-full shadow-md dark:bg-accent/60 bg-accent border-secondary dark:border-primary py-3 px-4 sm:min-w-64 min-h-20",
+                      "w-full shadow-md dark:bg-accent/60 bg-accent border-secondary py-3 px-4 sm:min-w-64 min-h-20",
                       !props.comment.datePosted
                         ? "opacity-10 border-primary border-2"
                         : ""
@@ -159,11 +158,13 @@ export default function OwnUserComment(props: MyCommentProps) {
                   )}
                 </Button>
               ) : (
-                <RemoveAlertDialog
+                <ConfirmAlertDialog
                   isLoading={loadingComments}
                   isOpen={removeAlertOpen}
                   onOpenChange={setRemoveAlertOpen}
                   onConfirm={handleRemoveComment}
+                  title="Are you absolutely sure?"
+                  subtitle="This action cannot be undone. This will permanently delete selected comment."
                 >
                   <Button
                     disabled={!props.canRemove}
@@ -173,7 +174,7 @@ export default function OwnUserComment(props: MyCommentProps) {
                   >
                     <Trash2Icon className="h-4 w-4 text-card-foreground/80" />
                   </Button>
-                </RemoveAlertDialog>
+                </ConfirmAlertDialog>
               )}
             </div>
           )}

@@ -23,6 +23,7 @@ import { AppRoutes } from "@/utils/constants";
 import { LockIcon } from "lucide-react";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 export default function ManageRoomsPage() {
   const { managedRoom } = useAppSelector((state) => state.manageRoom);
@@ -48,18 +49,18 @@ export default function ManageRoomsPage() {
     }
   }, [id]);
 
-  var widerScreenWidth = window.matchMedia("(min-width: 700px)");
+  const isDesktop = useMediaQuery("(min-width: 768px)");
 
   return (
     <div className="h-full w-full flex max-w-screen-2xl sm:p-8 py-4 px-2 mx-auto">
       <div className="px-6 flex-1 my-2 h-full">
         <ResizablePanelGroup
-          direction={widerScreenWidth.matches ? "horizontal" : "vertical"}
+          direction={isDesktop ? "horizontal" : "vertical"}
           className="w-full dark:shadow-sm shadow-lg dark:shadow-accent rounded-lg border border-border h-screen"
           style={{ height: undefined }} // reset of radix style
         >
           <ResizablePanel
-            className="lg:max-w-xl md:min-w-72 !overflow-y-auto"
+            className="lg:max-w-xl lg:min-w-72 !overflow-y-auto"
             defaultSize={25}
           >
             <ChatRoomSelectList />
