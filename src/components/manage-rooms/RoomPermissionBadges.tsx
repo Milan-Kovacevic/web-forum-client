@@ -25,7 +25,7 @@ export default function RoomPermissionBadges() {
         </p>
       )}
       {loadingRoomPermissions ? (
-        <div className="h-[50px]">
+        <div className="h-[25px]">
           <ItemLoader className="justify-start ml-4" />
         </div>
       ) : (

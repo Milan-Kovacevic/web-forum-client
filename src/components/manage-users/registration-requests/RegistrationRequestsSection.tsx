@@ -38,7 +38,7 @@ export default function RegistrationRequestsSection() {
 
   return (
     <section className="w-full md:h-full h-[500px]">
-      <ScrollArea className="flex flex-col gap-2 h-full md:max-w-md w-full">
+      <ScrollArea className="flex flex-col gap-2 h-full w-full">
         {((!loadingRequests && registrationRequests.length > 0) ||
           loadingRequests) && (
           <div className="w-full h-full">
@@ -48,7 +48,7 @@ export default function RegistrationRequestsSection() {
                 Pending registration requests
               </h2>
             </div>
-            <div>
+            <div className="flex flex-col gap-3 px-2">
               {loadingRequests ? (
                 <RegistrationRequestsLoader />
               ) : (

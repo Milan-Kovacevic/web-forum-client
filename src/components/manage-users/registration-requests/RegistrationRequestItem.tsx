@@ -2,6 +2,12 @@ import ConfirmAlertDialog from "@/components/primitives/ConfirmAlertDialog";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useAppSelector } from "@/hooks/useRedux";
 import { RegistrationRequest } from "@/types/models/users";
 import { formatDateDistance } from "@/utils/utility";
@@ -32,7 +38,7 @@ export default function RegistrationRequestItem(
   return (
     <Card
       key={props.request.requestId}
-      className="py-3 px-4 flex flex-col gap-2 hover:border-primary w-full"
+      className="py-3 px-4 flex flex-col gap-2 hover:border-primary w-full shadow-md"
     >
       <div className="flex-1 flex flex-row gap-3.5 w-full">
         <div className="flex flex-col flex-wrap items-center gap-1">
@@ -41,15 +47,24 @@ export default function RegistrationRequestItem(
               <UserIcon className="text-accent-foreground" />
             </AvatarFallback>
           </Avatar>
-          <div className="flex flex-row gap-3 items-center line-clamp-2">
-            <p className="text-sm font-medium leading-none text-accent-foreground mb-0.5 text-wrap max-w-24">
-              @{props.request.username}
-            </p>
+          <div className="flex flex-row gap-3 items-center line-clamp-1 text-center">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <p className="text-xs font-medium leading-none w-36 text-center text-accent-foreground mb-0.5 text-wrap">
+                    @{props.request.username}
+                  </p>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Username: {props.request.username}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </div>
 
         <div className="flex-1 self-stretch flex flex-wrap items-center justify-between gap-1 mt-1">
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-2">
             <p className="text-muted-foreground text-xs">
               {formatDateDistance(props.request.submitDate)}
             </p>
@@ -57,7 +72,7 @@ export default function RegistrationRequestItem(
               <p className="text-base font-medium leading-none">
                 {props.request.userDisplayName}
               </p>
-              <p className="text-sm flex text-muted-foreground">
+              <p className="text-xs flex text-muted-foreground">
                 {props.request.userEmail ?? "No email..."}
               </p>
             </div>
