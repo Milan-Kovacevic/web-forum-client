@@ -112,7 +112,7 @@ export const PostedCommentActions = (props: PostedCommentActionsProps) => {
           disabled={!props.canEdit}
           size="sm"
           variant="secondary"
-          className="h-8 px-3 mt-1"
+          className="h-8 px-3 mt-1 w-full"
         >
           {props.canEdit ? (
             <PenLineIcon className="h-4 w-4 text-card-foreground/80" />
@@ -134,7 +134,7 @@ export const PostedCommentActions = (props: PostedCommentActionsProps) => {
           disabled={!props.canRemove}
           size="sm"
           variant="secondary"
-          className="h-8 px-3"
+          className="h-8 px-3 w-full"
         >
           {props.canRemove ? (
             <Trash2Icon className="h-4 w-4 text-card-foreground/80" />
@@ -179,7 +179,7 @@ export const PendingCommentActions = (props: PendingCommentActionsProps) => {
           disabled={!props.canPost}
           size="sm"
           variant="secondary"
-          className="h-8 px-3 mt-1"
+          className="h-8 px-3 mt-1 w-full"
         >
           {props.canPost ? (
             <MessageCirclePlusIcon className="h-5 w-5 text-card-foreground/80" />
@@ -201,7 +201,7 @@ export const PendingCommentActions = (props: PendingCommentActionsProps) => {
           disabled={!props.canBlock}
           size="sm"
           variant="secondary"
-          className="h-8 px-3"
+          className="h-8 px-3 w-full"
         >
           {props.canBlock ? (
             <MessageCircleXIcon className="h-5 w-5 text-card-foreground/80" />

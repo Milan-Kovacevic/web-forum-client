@@ -58,6 +58,11 @@ export const AppRoutes: Record<
     path: "/users/manage",
     roles: AdminOnly,
   },
+  MANAGE_SINGLE_USER: {
+    displayName: "Manage User",
+    path: "/users/manage/:id",
+    roles: AdminOnly,
+  },
 };
 
 const API_PREFIX = environments().apiResourcePrefix;

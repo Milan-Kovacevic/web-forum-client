@@ -63,9 +63,11 @@ const UserDetailsCardHeader = () => {
   return (
     <div className="flex flex-col gap-1 mb-3">
       <div className="flex flex-row gap-2 items-center">
-        <p className="text-accent-foreground">{selectedUser?.displayName}</p>
+        <p className="text-accent-foreground sm:text-base text-sm">
+          {selectedUser?.displayName}
+        </p>
         <Separator orientation="vertical" className="h-5" />
-        <p className="text-muted-foreground text-sm">{userRole}</p>
+        <p className="text-muted-foreground sm:text-sm text-xs">{userRole}</p>
       </div>
       <Badge
         variant={selectedUser?.isEnabled ? "secondary" : "outline"}

@@ -35,7 +35,7 @@ export default function RoomPermissionsForm(props: RoomPermissionsFormProps) {
                     />
                     <label
                       htmlFor={field.name}
-                      className="text-sm leading-none"
+                      className="sm:text-sm text-xs leading-none"
                     >
                       Create Comment
                     </label>
@@ -58,7 +58,7 @@ export default function RoomPermissionsForm(props: RoomPermissionsFormProps) {
                     />
                     <label
                       htmlFor={field.name}
-                      className="text-sm leading-none"
+                      className="sm:text-sm text-xs leading-none"
                     >
                       Edit Comment
                     </label>
@@ -81,7 +81,7 @@ export default function RoomPermissionsForm(props: RoomPermissionsFormProps) {
                     />
                     <label
                       htmlFor={field.name}
-                      className="text-sm leading-none"
+                      className="sm:text-sm text-xs leading-none"
                     >
                       Remove Comment
                     </label>
@@ -104,7 +104,7 @@ export default function RoomPermissionsForm(props: RoomPermissionsFormProps) {
                     />
                     <label
                       htmlFor={field.name}
-                      className="text-sm leading-none"
+                      className="sm:text-sm text-xs leading-none"
                     >
                       Post/Approve Comment
                     </label>
@@ -127,7 +127,7 @@ export default function RoomPermissionsForm(props: RoomPermissionsFormProps) {
                     />
                     <label
                       htmlFor={field.name}
-                      className="text-sm leading-none"
+                      className="sm:text-sm text-xs leading-none"
                     >
                       Block/Reject Comment
                     </label>
@@ -140,7 +140,7 @@ export default function RoomPermissionsForm(props: RoomPermissionsFormProps) {
 
         <div className="mt-6 flex flex-row gap-2 ml-auto">
           <Button
-            className=""
+            className="sm:text-sm text-xs sm:h-9 h-8"
             size="sm"
             variant="ghost"
             type="button"
@@ -150,7 +150,7 @@ export default function RoomPermissionsForm(props: RoomPermissionsFormProps) {
           </Button>
           <Button
             disabled={props.isLoading}
-            className=""
+            className="sm:text-sm text-xs sm:h-9 h-8"
             size="sm"
             type="submit"
             variant="default"

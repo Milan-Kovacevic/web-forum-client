@@ -51,7 +51,7 @@ export default function ForumUsersTabContent() {
 }
 
 const ForumUsersListPlaceholder = () => {
-  const numOfItems = 12;
+  const numOfItems = 10;
   const loadingItems = Array.from({ length: numOfItems }, (_, index) => index);
 
   return (

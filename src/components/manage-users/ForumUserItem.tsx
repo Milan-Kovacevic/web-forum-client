@@ -21,7 +21,7 @@ import {
 import { ChangeUserAccountInput } from "@/types/inputs/user-inputs";
 import { RoleType } from "@/types/models/application";
 import { RegisteredUser } from "@/types/models/users";
-import { RoleDictionary, RoleIdResolver } from "@/utils/constants";
+import { AppRoutes, RoleDictionary, RoleIdResolver } from "@/utils/constants";
 import {
   ChevronDownIcon,
   PencilIcon,
@@ -32,6 +32,8 @@ import {
   XIcon,
 } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 type ForumUserItemProps = {
   user: RegisteredUser;
   isSelected: boolean;
@@ -44,6 +46,7 @@ export default function ForumUserItem(props: ForumUserItemProps) {
   const isRootAdmin = userRole.type === "RootAdmin";
   const [activeRole, setActiveRole] = useState<RoleType>(userRole.type);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleEditUser = () => {
     if (!isEditing) setEditing(true);
@@ -69,7 +72,9 @@ export default function ForumUserItem(props: ForumUserItemProps) {
   };
 
   const handleUserSelected = () => {
-    dispatch(loadSingleForumUser(props.user.userId));
+    navigate(
+      AppRoutes.MANAGE_SINGLE_USER.path.replace(":id", props.user.userId)
+    );
   };
 
   return (
@@ -85,7 +90,7 @@ export default function ForumUserItem(props: ForumUserItemProps) {
             <UserIcon className="text-accent-foreground h-6 w-6" />
           </AvatarFallback>
         </Avatar>
-        <div className="flex flex-row flex-1">
+        <div className="flex flex-row flex-wrap flex-1 gap-1">
           <div className="flex-1">
             <div className="flex flex-row items-center gap-1">
               <p className="font-medium mb-0.5">{props.user.displayName}</p>
@@ -94,7 +99,7 @@ export default function ForumUserItem(props: ForumUserItemProps) {
                   variant="ghost"
                   size="sm"
                   onClick={handleEditUser}
-                  className="h-7 px-2.5"
+                  className="h-7 px-2.5 self-start"
                 >
                   {isEditing ? (
                     <SaveIcon className="h-3.5 w-3.5 text-primary animate-pulse" />

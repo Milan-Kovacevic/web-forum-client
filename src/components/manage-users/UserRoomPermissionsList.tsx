@@ -120,10 +120,10 @@ export default function UserRoomPermissionsList() {
       ) : (
         <>
           <div className="flex flex-row items-center gap-2 mb-3">
-            <p className="text-sm text-muted-foreground">
+            <p className="sm:text-sm text-xs text-muted-foreground">
               User Permissions for:{" "}
             </p>
-            <span className="text-base font-medium text-accent-foreground/80">
+            <span className="sm:text-base text-sm font-medium text-accent-foreground/80">
               {selectedRoom?.name}
             </span>
           </div>

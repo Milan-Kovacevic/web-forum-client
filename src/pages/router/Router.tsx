@@ -54,6 +54,10 @@ const router = createBrowserRouter([
                 path: AppRoutes.MANAGE_USERS.path,
                 element: <ManageUsersPage />,
               },
+              {
+                path: AppRoutes.MANAGE_SINGLE_USER.path,
+                element: <ManageUsersPage />,
+              },
             ],
           },
           // Routes for admins and moderators

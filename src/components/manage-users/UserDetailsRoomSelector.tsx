@@ -42,7 +42,7 @@ export default function UserDetailsRoomSelector() {
       <div className="flex flex-row gap-3 items-center">
         <Button
           size="sm"
-          className="h-8 px-3 text-sm font-medium"
+          className="sm:h-8 h-7 sm:px-3 px-2.5 sm:text-sm text-xs font-medium"
           variant="secondary"
           onClick={() => setDialogOpen(true)}
         >

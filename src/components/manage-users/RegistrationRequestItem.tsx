@@ -38,20 +38,20 @@ export default function RegistrationRequestItem(
   return (
     <Card
       key={props.request.requestId}
-      className="py-3 px-4 flex flex-col gap-2 hover:border-primary w-full shadow-md"
+      className="py-3 px-4 flex flex-col flex-wrap gap-2 hover:border-primary w-full shadow-md"
     >
-      <div className="flex-1 flex flex-row gap-3.5 w-full">
+      <div className="flex-1 flex sm:flex-row flex-col gap-3.5 w-full">
         <div className="flex flex-col flex-wrap items-center gap-1">
           <Avatar className="h-12 w-12">
             <AvatarFallback>
               <UserIcon className="text-accent-foreground" />
             </AvatarFallback>
           </Avatar>
-          <div className="flex flex-row gap-3 items-center line-clamp-1 text-center">
+          <div className="flex flex-row gap-3 items-center  line-clamp-1 text-center">
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <p className="text-xs font-medium leading-none text-center text-accent-foreground mb-0.5 w-28 text-wrap">
+                  <p className="text-xs font-medium leading-none text-center text-accent-foreground mb-0.5 sm:w-28 text-wrap">
                     @{props.request.username}
                   </p>
                 </TooltipTrigger>
@@ -63,8 +63,8 @@ export default function RegistrationRequestItem(
           </div>
         </div>
 
-        <div className="flex-1 self-stretch flex flex-wrap items-center justify-between gap-1">
-          <div className="flex flex-col gap-2">
+        <div className="flex-1 self-stretch flex sm:flex-row flex-wrap items-center sm:justify-between justify-center gap-1">
+          <div className="flex flex-col gap-2 mr-auto ">
             <p className="text-muted-foreground text-xs">
               {formatDateDistance(props.request.submitDate)}
             </p>
@@ -78,7 +78,7 @@ export default function RegistrationRequestItem(
             </div>
           </div>
 
-          <div className="flex justify-center items-center mr-1 sm:mt-0 mt-4">
+          <div className="flex justify-center items-center mr-1 sm:mt-0">
             <ConfirmAlertDialog
               isLoading={loadingRequestDialog}
               isOpen={showAcceptDialog}
