@@ -1,18 +1,16 @@
-import ItemLoader from "@/components/primitives/ItemLoader";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import {
   acceptRegistrationRequest,
   blockRegistrationRequest,
   loadRegistrationRequests,
 } from "@/redux/users/userThunks";
-import { CircleIcon } from "lucide-react";
 import { useEffect } from "react";
 import RegistrationRequestItem from "./RegistrationRequestItem";
 import { clearRequestsAction } from "@/redux/users/requestsSlice";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { TabsContent } from "@/components/ui/tabs";
 
-export default function RegistrationRequestsSection() {
+export default function RegistrationRequestsTabContent() {
   const { loadingRequests, registrationRequests, requestAction } =
     useAppSelector((state) => state.requests);
   const dispatch = useAppDispatch();
@@ -37,39 +35,31 @@ export default function RegistrationRequestsSection() {
   }
 
   return (
-    <section className="w-full md:h-full h-[500px]">
-      <ScrollArea className="flex flex-col gap-2 h-full w-full">
-        {((!loadingRequests && registrationRequests.length > 0) ||
-          loadingRequests) && (
-          <div className="w-full h-full">
-            <div className="mb-3 ml-1 flex flex-row items-center gap-1.5">
-              <CircleIcon className="h-3 w-3 animate-bounce" />
-              <h2 className="text-base font-medium text-accent-foreground">
-                Pending registration requests
-              </h2>
-            </div>
-            <div className="flex flex-col gap-3 px-2">
-              {loadingRequests ? (
-                <RegistrationRequestsLoader />
-              ) : (
-                registrationRequests.map((item) => (
-                  <RegistrationRequestItem
-                    request={item}
-                    key={item.requestId}
-                    onRequestProcessed={handleRequestProcessed}
-                  />
-                ))
-              )}
-            </div>
+    <TabsContent value="requests" className="h-full w-full">
+      {((!loadingRequests && registrationRequests.length > 0) ||
+        loadingRequests) && (
+        <div className="w-full h-full">
+          <div className="flex flex-col gap-2 px-1">
+            {loadingRequests ? (
+              <RegistrationRequestsLoader />
+            ) : (
+              registrationRequests.map((item) => (
+                <RegistrationRequestItem
+                  request={item}
+                  key={item.requestId}
+                  onRequestProcessed={handleRequestProcessed}
+                />
+              ))
+            )}
           </div>
-        )}
-      </ScrollArea>
-    </section>
+        </div>
+      )}
+    </TabsContent>
   );
 }
 
 const RegistrationRequestsLoader = () => {
-  const numOfItems = 6;
+  const numOfItems = 12;
   const loadingItems = Array.from({ length: numOfItems }, (_, index) => index);
 
   return (

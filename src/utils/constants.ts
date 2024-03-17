@@ -80,6 +80,10 @@ export const ApiEndpoints = {
   REGISTRATION_REQUESTS: `${API_PREFIX}/Requests`,
   APPROVE_REQUEST: `${API_PREFIX}/Requests/{requestId}/Approve`,
   REJECT_REQUEST: `${API_PREFIX}/Requests/{requestId}/Reject`,
+  USERS: `${API_PREFIX}/Users`,
+  SINGLE_USER: `${API_PREFIX}/Users/{userId}`,
+  CHANGE_USER_ACCOUNT: `${API_PREFIX}/Users/{userId}/Change`,
+  USER_ROOM_PERMISSIONS: `${API_PREFIX}/Users/{userId}/Rooms/{roomId}/Permissions`,
 };
 
 export const RequestMethods = {
@@ -87,6 +91,7 @@ export const RequestMethods = {
   POST: "POST",
   PUT: "PUT",
   DELETE: "DELETE",
+  PATCH: "PATCH",
 };
 
 export const ExternalAuthEndpoints = {
@@ -100,7 +105,14 @@ export const RoleDictionary: Record<number, Role> = {
   1: { type: "Regular", name: "Forum User" },
   2: { type: "Moderator", name: "Forum Moderator" },
   3: { type: "Admin", name: "Administrator" },
-  4: { type: "RootAdmin", name: "Administrator" },
+  4: { type: "RootAdmin", name: "Root Administrator" },
+};
+
+export const RoleIdResolver: Record<RoleType, number> = {
+  Regular: 1,
+  Moderator: 2,
+  Admin: 3,
+  RootAdmin: 4,
 };
 
 export const PermissionDictionary: Record<number, Permission> = {

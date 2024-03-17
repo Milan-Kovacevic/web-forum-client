@@ -81,7 +81,7 @@ export default function ManageRoomsPage() {
               <SelectedChatRoomHeader />
               <RoomPermissionBadges />
               <Tabs defaultValue="posted" className="h-full flex flex-col">
-                <TabsList className="w-auto hidden flex-wrap md:inline-block h-auto">
+                <TabsList className="w-auto mr-auto flex-wrap md:inline-block h-auto">
                   <TabsTrigger value="posted">Posted Comments</TabsTrigger>
                   <TabsTrigger value="pending">Pending Comments</TabsTrigger>
                 </TabsList>

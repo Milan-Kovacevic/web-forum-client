@@ -51,7 +51,7 @@ export default function RegistrationRequestItem(
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <p className="text-xs font-medium leading-none w-36 text-center text-accent-foreground mb-0.5 text-wrap">
+                  <p className="text-xs font-medium leading-none text-center text-accent-foreground mb-0.5 w-28 text-wrap">
                     @{props.request.username}
                   </p>
                 </TooltipTrigger>
@@ -63,7 +63,7 @@ export default function RegistrationRequestItem(
           </div>
         </div>
 
-        <div className="flex-1 self-stretch flex flex-wrap items-center justify-between gap-1 mt-1">
+        <div className="flex-1 self-stretch flex flex-wrap items-center justify-between gap-1">
           <div className="flex flex-col gap-2">
             <p className="text-muted-foreground text-xs">
               {formatDateDistance(props.request.submitDate)}
@@ -79,34 +79,31 @@ export default function RegistrationRequestItem(
           </div>
 
           <div className="flex justify-center items-center mr-1 sm:mt-0 mt-4">
-            <div>
-              <ConfirmAlertDialog
-                isLoading={loadingRequestDialog}
-                isOpen={showAcceptDialog}
-                onOpenChange={setShowAcceptDialog}
-                onConfirm={handleAcceptRequest}
-                title="Are you absolutely sure?"
-                subtitle="This action will accept/approve selected request."
-              >
-                <Button size="sm" variant="ghost">
-                  <CheckIcon className="h-4 w-4 text-accent-foreground" />
-                </Button>
-              </ConfirmAlertDialog>
-            </div>
-            <div>
-              <ConfirmAlertDialog
-                isLoading={loadingRequestDialog}
-                isOpen={showBlockDialog}
-                onOpenChange={setShowBlockDialog}
-                onConfirm={handleBlockRequest}
-                title="Are you absolutely sure?"
-                subtitle="This action will block/reject selected request."
-              >
-                <Button size="sm" variant="ghost">
-                  <XIcon className="h-4 w-4 text-accent-foreground" />
-                </Button>
-              </ConfirmAlertDialog>
-            </div>
+            <ConfirmAlertDialog
+              isLoading={loadingRequestDialog}
+              isOpen={showAcceptDialog}
+              onOpenChange={setShowAcceptDialog}
+              onConfirm={handleAcceptRequest}
+              title="Are you absolutely sure?"
+              subtitle="This action will accept/approve selected request."
+            >
+              <Button size="sm" variant="ghost">
+                <CheckIcon className="h-4 w-4 text-accent-foreground" />
+              </Button>
+            </ConfirmAlertDialog>
+
+            <ConfirmAlertDialog
+              isLoading={loadingRequestDialog}
+              isOpen={showBlockDialog}
+              onOpenChange={setShowBlockDialog}
+              onConfirm={handleBlockRequest}
+              title="Are you absolutely sure?"
+              subtitle="This action will block/reject selected request."
+            >
+              <Button size="sm" variant="ghost">
+                <XIcon className="h-4 w-4 text-accent-foreground" />
+              </Button>
+            </ConfirmAlertDialog>
           </div>
         </div>
       </div>

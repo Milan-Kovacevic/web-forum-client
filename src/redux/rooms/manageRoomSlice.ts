@@ -9,11 +9,9 @@ import {
   approveRoomComment,
   blockRoomComment,
   editAnyRoomComment,
-  editRoomComment,
   loadPendingRoomComments,
   loadPostedRoomComments,
   removeAnyRoomComment,
-  removeRoomComment,
 } from "@/redux/rooms/commentThunks";
 
 interface ManageRoomState {

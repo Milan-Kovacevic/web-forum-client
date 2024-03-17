@@ -1,0 +1,140 @@
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import { useEffect } from "react";
+import RoomPermissionsForm from "../forms/RoomPermissionsForm";
+import { useForm } from "react-hook-form";
+import { RoomPermissionsFormSchema } from "@/schemas/room-permissions-form-schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  changeUserPermissionsForRoom,
+  loadUserPermissionsForRoom,
+} from "@/redux/users/userThunks";
+import { ChangeUserRoomPermissionsInput } from "@/types/inputs/user-inputs";
+
+export default function UserRoomPermissionsList() {
+  const { selectedRoom, selectedUser, loadingUserDetails, roomPermissions } =
+    useAppSelector((state) => state.users);
+  const dispatch = useAppDispatch();
+
+  const defaultValues = {
+    createComment:
+      roomPermissions.find((p) => p.permissionId === 1) !== undefined,
+    editComment:
+      roomPermissions.find((p) => p.permissionId === 2) !== undefined,
+    removeComment:
+      roomPermissions.find((p) => p.permissionId === 3) !== undefined,
+    postComment:
+      roomPermissions.find((p) => p.permissionId === 4) !== undefined,
+    blockComment:
+      roomPermissions.find((p) => p.permissionId === 5) !== undefined,
+  };
+
+  const permissionsForm = useForm<Zod.infer<typeof RoomPermissionsFormSchema>>({
+    resolver: zodResolver(RoomPermissionsFormSchema),
+    defaultValues: defaultValues,
+  });
+
+  useEffect(() => {
+    if (selectedRoom !== null && selectedUser !== null) {
+      dispatch(
+        loadUserPermissionsForRoom({
+          userId: selectedUser.userId,
+          roomId: selectedRoom.roomId,
+        })
+      );
+    }
+  }, [selectedRoom, selectedUser]);
+
+  useEffect(() => {
+    permissionsForm.setValue(
+      "createComment",
+      roomPermissions.find((p) => p.permissionId === 1) !== undefined
+    );
+    permissionsForm.setValue(
+      "editComment",
+      roomPermissions.find((p) => p.permissionId === 2) !== undefined
+    );
+    permissionsForm.setValue(
+      "removeComment",
+      roomPermissions.find((p) => p.permissionId === 3) !== undefined
+    );
+    permissionsForm.setValue(
+      "postComment",
+      roomPermissions.find((p) => p.permissionId === 4) !== undefined
+    );
+    permissionsForm.setValue(
+      "blockComment",
+      roomPermissions.find((p) => p.permissionId === 5) !== undefined
+    );
+  }, [roomPermissions]);
+
+  const handleCancelChanges = () => {
+    permissionsForm.setValue(
+      "createComment",
+      roomPermissions.find((p) => p.permissionId === 1) !== undefined
+    );
+    permissionsForm.setValue(
+      "editComment",
+      roomPermissions.find((p) => p.permissionId === 2) !== undefined
+    );
+    permissionsForm.setValue(
+      "removeComment",
+      roomPermissions.find((p) => p.permissionId === 3) !== undefined
+    );
+    permissionsForm.setValue(
+      "postComment",
+      roomPermissions.find((p) => p.permissionId === 4) !== undefined
+    );
+    permissionsForm.setValue(
+      "blockComment",
+      roomPermissions.find((p) => p.permissionId === 5) !== undefined
+    );
+  };
+  const handleSavePermissions = (
+    data: Zod.infer<typeof RoomPermissionsFormSchema>
+  ) => {
+    if (!selectedUser || !selectedRoom) return;
+
+    var permissions: number[] = [];
+    if (data.createComment) permissions.push(1);
+    if (data.editComment) permissions.push(2);
+    if (data.removeComment) permissions.push(3);
+    if (data.postComment) permissions.push(4);
+    if (data.blockComment) permissions.push(5);
+
+    var input: ChangeUserRoomPermissionsInput = {
+      userId: selectedUser.userId,
+      roomId: selectedRoom.roomId,
+      permissions: permissions,
+    };
+    dispatch(changeUserPermissionsForRoom(input));
+  };
+
+  return (
+    <div className="flex flex-col mt-2">
+      {selectedRoom === null ? (
+        <div>
+          <p className="text-muted-foreground text-sm mt-2">
+            Select the specific room to view user permissions...
+          </p>
+        </div>
+      ) : (
+        <>
+          <div className="flex flex-row items-center gap-2 mb-3">
+            <p className="text-sm text-muted-foreground">
+              User Permissions for:{" "}
+            </p>
+            <span className="text-base font-medium text-accent-foreground/80">
+              {selectedRoom?.name}
+            </span>
+          </div>
+          <RoomPermissionsForm
+            form={permissionsForm}
+            isLoading={loadingUserDetails}
+            onCancel={handleCancelChanges}
+            onSaveChanges={handleSavePermissions}
+          />
+        </>
+      )}
+    </div>
+  );
+}
