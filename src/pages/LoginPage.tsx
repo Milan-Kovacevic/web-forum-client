@@ -23,6 +23,7 @@ import {
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { externalLogin, login, getMyInfo } from "@/redux/identity/authThunks";
 import { cancelVerification, clearSignUp } from "@/redux/identity/authSlice";
+import { isValidLoginProvider } from "@/utils/utility";
 
 export default function LoginPage() {
   const { authenticated } = useAppSelector((state) => state.identity);
@@ -85,7 +86,8 @@ export default function LoginPage() {
 
   useEffect(() => {
     const checkForCallbackQueryParams = () => {
-      const queryParams = new URLSearchParams(location.search);
+      const queryParams = new URLSearchParams(window.location.search);
+
       const code = queryParams.get("code");
       const state = queryParams.get("state");
       const error = queryParams.get("error");
@@ -94,9 +96,12 @@ export default function LoginPage() {
       if (!state) return;
       if (sessionStorage.getItem(AUTH_XSRF_TOKEN_STORAGE_KEY) != state) return;
 
+      var provider: string = state.split("-")[0];
+      if (!isValidLoginProvider(provider)) return;
+
       if (code) {
         sessionStorage.removeItem(AUTH_XSRF_TOKEN_STORAGE_KEY);
-        dispatch(externalLogin({ code: code, provider: "GitHub" }));
+        dispatch(externalLogin({ code: code, provider: provider }));
       } else if (error && errorDescription) {
         setTimeout(() => {
           toast.error(error, {

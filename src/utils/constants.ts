@@ -106,7 +106,7 @@ export const RequestMethods = {
 
 export const ExternalAuthEndpoints = {
   GITHUB: "https://github.com/login/oauth/authorize",
-  GOOGLE: "Google",
+  GOOGLE: "https://accounts.google.com/o/oauth2/v2/auth",
   FACEBOOK: "Facebook",
 };
 

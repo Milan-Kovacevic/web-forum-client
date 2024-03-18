@@ -2,5 +2,6 @@
   "baseApiPath": "https://localhost:7500",
   "apiResourcePrefix": "/api",
   "githubClientId": "b7983166d26eaa04e923",
-  "githubRedirectUrl": "https://localhost:3000/login"
+  "googleClientId": "590747355958-ekj9qvcdp788rep9pmmq11l3e4fio1h3.apps.googleusercontent.com",
+  "redirectUrl": "https://localhost:3000/login"
 }

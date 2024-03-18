@@ -2,5 +2,6 @@
   "baseApiPath": "",
   "apiResourcePrefix": "",
   "githubClientId": "",
-  "githubRedirectUrl": ""
+  "googleClientId": "",
+  "redirectUrl": ""
 }

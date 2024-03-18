@@ -4,14 +4,14 @@ import {
   ACCESS_TOKEN_STORAGE_KEY,
   REFRESH_TOKEN_STORAGE_KEY,
 } from "@/utils/constants";
-import { AuthToken } from "@/models/responses/authentication";
+import { Tokens } from "@/types/models/authentication";
 
 const axiosConfiguration = {
   baseURL: environments().baseApiPath,
 };
 
 const refreshUserTokens = async (accessToken: string, refreshToken: string) => {
-  const response = await axios.post<AuthToken>(
+  const response = await axios.post<Tokens>(
     "/api/Refresh",
     {
       accessToken: accessToken,

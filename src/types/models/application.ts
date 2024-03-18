@@ -27,7 +27,7 @@ export type Role = {
   type: RoleType;
   name: string;
 };
-
+// Used in dictionary
 export type Permission = {
   name: string;
   type: PermissionType;

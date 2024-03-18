@@ -6,20 +6,35 @@ import {
 } from "@/utils/constants";
 
 import environments from "@/environments/config";
+import { LoginProvider } from "@/types/models/application";
 
 type SocialAuthenticationProps = {
   isLoading: boolean;
 };
 
 const GITHUB_CLIENT_ID = environments().githubClientId;
-const GITHUB_REDIRECT_URL = environments().githubRedirectUrl;
+const GOOGLE_CLIENT_ID = environments().googleClientId;
+const REDIRECT_URL = environments().redirectUrl;
 
 export default function SocialAuthentication(props: SocialAuthenticationProps) {
-  const onGithubLogin = () => {
+  const handleGithubLogin = () => {
     var xsrfToken = crypto.randomUUID();
-    sessionStorage.setItem(AUTH_XSRF_TOKEN_STORAGE_KEY, xsrfToken);
+    var provider: LoginProvider = "GitHub";
+    var state = `${provider}-${xsrfToken}`;
+    sessionStorage.setItem(AUTH_XSRF_TOKEN_STORAGE_KEY, state);
     parent.window.open(
-      `${ExternalAuthEndpoints.GITHUB}?client_id=${GITHUB_CLIENT_ID}&state=${xsrfToken}&redirect_uri=${GITHUB_REDIRECT_URL}`,
+      `${ExternalAuthEndpoints.GITHUB}?client_id=${GITHUB_CLIENT_ID}&state=${state}&redirect_uri=${REDIRECT_URL}`,
+      "_parent"
+    );
+  };
+
+  const handleGoogleLogin = () => {
+    var xsrfToken = crypto.randomUUID();
+    var provider: LoginProvider = "Google";
+    var state = `${provider}-${xsrfToken}`;
+    sessionStorage.setItem(AUTH_XSRF_TOKEN_STORAGE_KEY, state);
+    parent.window.open(
+      `${ExternalAuthEndpoints.GOOGLE}?client_id=${GOOGLE_CLIENT_ID}&state=${state}&redirect_uri=${REDIRECT_URL}&scope=profile&response_type=code`,
       "_parent"
     );
   };
@@ -32,7 +47,7 @@ export default function SocialAuthentication(props: SocialAuthenticationProps) {
         size="sm"
         variant="outline"
         type="button"
-        onClick={onGithubLogin}
+        onClick={handleGithubLogin}
       >
         {props.isLoading ? (
           <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
@@ -47,6 +62,7 @@ export default function SocialAuthentication(props: SocialAuthenticationProps) {
         size="sm"
         variant="outline"
         type="button"
+        onClick={handleGoogleLogin}
       >
         {props.isLoading ? (
           <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />

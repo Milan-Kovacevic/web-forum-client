@@ -25,7 +25,7 @@ type ConfirmAlertDialogProps = {
 export default function ConfirmAlertDialog(props: ConfirmAlertDialogProps) {
   return (
     <AlertDialog open={props.isOpen} onOpenChange={props.onOpenChange}>
-      <AlertDialogTrigger>{props.children}</AlertDialogTrigger>
+      <AlertDialogTrigger asChild>{props.children}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{props.title}</AlertDialogTitle>
