@@ -11,7 +11,7 @@ import {
 import { MessageSquareShareIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
-import { setSelectedRoom } from "@/redux/users/usersSlice";
+import { setManagedUserChatRoom } from "@/redux/users/manageUserSlice";
 import { Room } from "@/types/models/rooms";
 
 export default function UserDetailsRoomSelector() {
@@ -33,7 +33,7 @@ export default function UserDetailsRoomSelector() {
   }, []);
 
   const handleRoomSelected = (room: Room) => {
-    dispatch(setSelectedRoom(room));
+    dispatch(setManagedUserChatRoom(room));
     setDialogOpen(false);
   };
 

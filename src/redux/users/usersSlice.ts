@@ -1,31 +1,21 @@
-import { RegisteredUser, SingleRegisteredUser } from "@/types/models/users";
+import { RegisteredUser } from "@/types/models/users";
 import { createSlice } from "@reduxjs/toolkit";
 import {
   changeUserAccountInfo,
-  changeUserPermissionsForRoom,
   loadForumUsers,
-  loadSingleForumUser,
-  loadUserPermissionsForRoom,
 } from "@/redux/users/userThunks";
-import { Room, RoomPermission } from "@/types/models/rooms";
 
 interface UsersState {
   registeredUsers: RegisteredUser[];
-  selectedUser: SingleRegisteredUser | null;
-  selectedRoom: Room | null;
-  roomPermissions: RoomPermission[];
   loadingUsers: boolean;
-  loadingUserDetails: boolean;
+  selectedUser: RegisteredUser | null;
   editedUser: boolean;
 }
 
 const initialState: UsersState = {
   registeredUsers: [],
-  selectedUser: null,
-  selectedRoom: null,
-  roomPermissions: [],
   loadingUsers: false,
-  loadingUserDetails: false,
+  selectedUser: null,
   editedUser: false,
 };
 
@@ -36,8 +26,8 @@ const usersSlice = createSlice({
     clearEditedUser(state) {
       state.editedUser = false;
     },
-    setSelectedRoom(state, action) {
-      state.selectedRoom = action.payload;
+    setSelectedUser(state, action) {
+      state.selectedUser = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -50,24 +40,6 @@ const usersSlice = createSlice({
     });
     builder.addCase(loadForumUsers.rejected, (state) => {
       state.loadingUsers = false;
-    });
-
-    builder.addCase(loadSingleForumUser.pending, (state) => {
-      state.loadingUserDetails = true;
-    });
-    builder.addCase(loadSingleForumUser.rejected, (state) => {
-      state.loadingUserDetails = false;
-    });
-    builder.addCase(loadSingleForumUser.fulfilled, (state, action) => {
-      state.selectedUser = action.payload;
-      state.loadingUserDetails = false;
-    });
-
-    builder.addCase(loadUserPermissionsForRoom.fulfilled, (state, action) => {
-      state.roomPermissions = action.payload;
-    });
-    builder.addCase(changeUserPermissionsForRoom.fulfilled, (state) => {
-      state.editedUser = true;
     });
 
     builder.addCase(changeUserAccountInfo.pending, (state) => {
@@ -83,5 +55,5 @@ const usersSlice = createSlice({
   },
 });
 
-export const { clearEditedUser, setSelectedRoom } = usersSlice.actions;
+export const { clearEditedUser, setSelectedUser } = usersSlice.actions;
 export default usersSlice.reducer;

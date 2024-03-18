@@ -9,24 +9,32 @@ import { RoleDictionary } from "@/utils/constants";
 import ItemLoader from "../primitives/ItemLoader";
 import { useEffect } from "react";
 import { loadSingleForumUser } from "@/redux/users/userThunks";
+import { setSelectedUser } from "@/redux/users/usersSlice";
 
 export default function SelectedUserDetailsCard() {
-  const { selectedUser, loadingUserDetails, editedUser } = useAppSelector(
-    (state) => state.users
+  const { selectedUser, editedUser } = useAppSelector((state) => state.users);
+  const { managedUser, loadingManagedUser } = useAppSelector(
+    (state) => state.manageUser
   );
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (editedUser && selectedUser !== null) {
+    if (
+      editedUser &&
+      selectedUser !== null &&
+      managedUser !== null &&
+      selectedUser.userId === managedUser.userId
+    ) {
       dispatch(loadSingleForumUser(selectedUser?.userId));
+      dispatch(setSelectedUser(null));
     }
   }, [editedUser]);
 
   return (
     <Card className="w-full h-min shadow-md dark:bg-muted/30">
-      {loadingUserDetails ? (
+      {loadingManagedUser ? (
         <UserDetailsCardLoader />
-      ) : selectedUser == null ? (
+      ) : managedUser == null ? (
         <UserNotSelectedPlaceholder />
       ) : (
         <div className="p-8 flex flex-col gap-2 min-h-96">
@@ -57,24 +65,24 @@ const UserNotSelectedPlaceholder = () => (
 );
 
 const UserDetailsCardHeader = () => {
-  const { selectedUser } = useAppSelector((state) => state.users);
-  const userRole = RoleDictionary[selectedUser?.roleId ?? 0].name;
+  const { managedUser } = useAppSelector((state) => state.manageUser);
+  const userRole = RoleDictionary[managedUser?.roleId ?? 0].name;
 
   return (
     <div className="flex flex-col gap-1 mb-3">
       <div className="flex flex-row gap-2 items-center">
         <p className="text-accent-foreground sm:text-base text-sm">
-          {selectedUser?.displayName}
+          {managedUser?.displayName}
         </p>
         <Separator orientation="vertical" className="h-5" />
         <p className="text-muted-foreground sm:text-sm text-xs">{userRole}</p>
       </div>
       <Badge
-        variant={selectedUser?.isEnabled ? "secondary" : "outline"}
+        variant={managedUser?.isEnabled ? "secondary" : "outline"}
         className="font-normal h-6 px-2.5 w-auto self-start text-xs"
       >
         <span className="ml-1 font-medium">
-          {selectedUser?.isEnabled ? "Enabled" : "Disabled"}
+          {managedUser?.isEnabled ? "Enabled" : "Disabled"}
         </span>
       </Badge>
     </div>

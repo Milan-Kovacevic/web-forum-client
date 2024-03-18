@@ -1,5 +1,10 @@
 import environments from "@/environments/config";
-import { Permission, Role, RoleType } from "@/types/models/application";
+import {
+  Permission,
+  PermissionType,
+  Role,
+  RoleType,
+} from "@/types/models/application";
 
 export const ACCESS_TOKEN_STORAGE_KEY = "forum_access_token";
 export const REFRESH_TOKEN_STORAGE_KEY = "forum_refresh_token";
@@ -146,4 +151,12 @@ export const PermissionDictionary: Record<number, Permission> = {
     description: "Reject posted comment",
     type: "BlockComment",
   },
+};
+
+export const PermissionIdResolver: Record<PermissionType, number> = {
+  CreateComment: 1,
+  EditComment: 2,
+  RemoveComment: 3,
+  PostComment: 4,
+  BlockComment: 5,
 };

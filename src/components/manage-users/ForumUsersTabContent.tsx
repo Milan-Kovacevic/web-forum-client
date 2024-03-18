@@ -9,8 +9,10 @@ import { SearchIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 export default function ForumUsersTabContent() {
-  const { registeredUsers, loadingUsers, editedUser, selectedUser } =
-    useAppSelector((state) => state.users);
+  const { registeredUsers, loadingUsers, editedUser } = useAppSelector(
+    (state) => state.users
+  );
+  const { managedUser } = useAppSelector((state) => state.manageUser);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -41,7 +43,7 @@ export default function ForumUsersTabContent() {
             <ForumUserItem
               key={item.userId}
               user={item}
-              isSelected={selectedUser?.userId === item.userId}
+              isSelected={managedUser?.userId === item.userId}
             />
           ))
         )}

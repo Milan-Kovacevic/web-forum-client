@@ -140,6 +140,7 @@ export default function RoomPermissionsForm(props: RoomPermissionsFormProps) {
 
         <div className="mt-6 flex flex-row gap-2 ml-auto">
           <Button
+            disabled={props.isLoading}
             className="sm:text-sm text-xs sm:h-9 h-8"
             size="sm"
             variant="ghost"
@@ -156,7 +157,7 @@ export default function RoomPermissionsForm(props: RoomPermissionsFormProps) {
             variant="default"
           >
             {props.isLoading && (
-              <Icons.Spinner className="h-4 w-4 animate-spin" />
+              <Icons.Spinner className="h-4 w-4 animate-spin mr-2" />
             )}
             Save Changes
           </Button>

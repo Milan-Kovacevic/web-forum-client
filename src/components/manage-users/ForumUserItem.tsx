@@ -14,10 +14,8 @@ import { Separator } from "@/components/ui/separator";
 import { Toggle } from "@/components/ui/toggle";
 import { useAppDispatch } from "@/hooks/useRedux";
 import { cn } from "@/lib/utils";
-import {
-  changeUserAccountInfo,
-  loadSingleForumUser,
-} from "@/redux/users/userThunks";
+import { changeUserAccountInfo } from "@/redux/users/userThunks";
+import { setSelectedUser } from "@/redux/users/usersSlice";
 import { ChangeUserAccountInput } from "@/types/inputs/user-inputs";
 import { RoleType } from "@/types/models/application";
 import { RegisteredUser } from "@/types/models/users";
@@ -41,7 +39,7 @@ type ForumUserItemProps = {
 
 export default function ForumUserItem(props: ForumUserItemProps) {
   const [isEditing, setEditing] = useState(false);
-  const [isEnabled, setEnabled] = useState(props.user.isEnabled);
+  const [isUserEnabled, setUserEnabled] = useState(props.user.isEnabled);
   const userRole = RoleDictionary[props.user.roleId];
   const isRootAdmin = userRole.type === "RootAdmin";
   const [activeRole, setActiveRole] = useState<RoleType>(userRole.type);
@@ -54,12 +52,13 @@ export default function ForumUserItem(props: ForumUserItemProps) {
       var changeAccountInfoInput: ChangeUserAccountInput = {
         userId: props.user.userId,
       };
-      if (isEnabled !== props.user.isEnabled) {
-        changeAccountInfoInput.isEnabled = isEnabled;
+      if (isUserEnabled !== props.user.isEnabled) {
+        changeAccountInfoInput.isEnabled = isUserEnabled;
       }
       if (activeRole !== userRole.type) {
         changeAccountInfoInput.role = RoleIdResolver[activeRole];
       }
+      dispatch(setSelectedUser(props.user));
       dispatch(changeUserAccountInfo(changeAccountInfoInput));
       setEditing(false);
     }
@@ -67,7 +66,7 @@ export default function ForumUserItem(props: ForumUserItemProps) {
 
   const handleCancelEdit = () => {
     setEditing(false);
-    setEnabled(props.user.isEnabled);
+    setUserEnabled(props.user.isEnabled);
     setActiveRole(userRole.type);
   };
 
@@ -124,23 +123,23 @@ export default function ForumUserItem(props: ForumUserItemProps) {
             <div className="w-auto">
               {!isEditing ? (
                 <Badge
-                  variant={isEnabled ? "secondary" : "outline"}
+                  variant={isUserEnabled ? "secondary" : "outline"}
                   className="font-normal h-6 px-2.5"
                 >
                   Status:{" "}
                   <span className="ml-1 font-medium">
-                    {isEnabled ? "Enabled" : "Disabled"}
+                    {isUserEnabled ? "Enabled" : "Disabled"}
                   </span>
                 </Badge>
               ) : (
                 <Toggle
-                  pressed={isEnabled}
-                  onClick={() => setEnabled(!isEnabled)}
+                  pressed={isUserEnabled}
+                  onClick={() => setUserEnabled(!isUserEnabled)}
                   size="sm"
                   className="rounded-xl h-6 text-xs px-2.5"
                   variant="outline"
                 >
-                  {isEnabled ? "User enabled" : "User disabled"}
+                  {isUserEnabled ? "User enabled" : "User disabled"}
                 </Toggle>
               )}
             </div>
