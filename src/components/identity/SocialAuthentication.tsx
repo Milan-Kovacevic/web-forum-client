@@ -14,6 +14,7 @@ type SocialAuthenticationProps = {
 
 const GITHUB_CLIENT_ID = environments().githubClientId;
 const GOOGLE_CLIENT_ID = environments().googleClientId;
+const FACEBOOK_CLIENT_ID = environments().facebookClientId;
 const REDIRECT_URL = environments().redirectUrl;
 
 export default function SocialAuthentication(props: SocialAuthenticationProps) {
@@ -35,6 +36,17 @@ export default function SocialAuthentication(props: SocialAuthenticationProps) {
     sessionStorage.setItem(AUTH_XSRF_TOKEN_STORAGE_KEY, state);
     parent.window.open(
       `${ExternalAuthEndpoints.GOOGLE}?client_id=${GOOGLE_CLIENT_ID}&state=${state}&redirect_uri=${REDIRECT_URL}&scope=profile&response_type=code`,
+      "_parent"
+    );
+  };
+
+  const handleFacebookLogin = () => {
+    var xsrfToken = crypto.randomUUID();
+    var provider: LoginProvider = "Facebook";
+    var state = `${provider}-${xsrfToken}`;
+    sessionStorage.setItem(AUTH_XSRF_TOKEN_STORAGE_KEY, state);
+    parent.window.open(
+      `${ExternalAuthEndpoints.FACEBOOK}?client_id=${FACEBOOK_CLIENT_ID}&state=${state}&redirect_uri=${REDIRECT_URL}`,
       "_parent"
     );
   };
@@ -77,6 +89,7 @@ export default function SocialAuthentication(props: SocialAuthenticationProps) {
         size="sm"
         variant="outline"
         type="button"
+        onClick={handleFacebookLogin}
       >
         {props.isLoading ? (
           <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />

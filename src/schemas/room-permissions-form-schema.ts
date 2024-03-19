@@ -1,11 +1,11 @@
 import { z as zod } from "zod";
 
 const RoomPermissionsFormSchema = zod.object({
-  createComment: zod.boolean(),
-  editComment: zod.boolean(),
-  removeComment: zod.boolean(),
-  postComment: zod.boolean(),
-  blockComment: zod.boolean(),
+  CreateComment: zod.boolean(),
+  EditComment: zod.boolean(),
+  RemoveComment: zod.boolean(),
+  PostComment: zod.boolean(),
+  BlockComment: zod.boolean(),
 });
 
 export { RoomPermissionsFormSchema };

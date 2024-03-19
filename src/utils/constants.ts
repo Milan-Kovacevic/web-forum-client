@@ -20,13 +20,11 @@ export const EveryRole: RoleType[] = [
   "Admin",
   "RootAdmin",
 ];
-
 export const AdminAndModerator: RoleType[] = [
   "Moderator",
   "Admin",
   "RootAdmin",
 ];
-
 export const AdminOnly: RoleType[] = ["Admin", "RootAdmin"];
 export const RootOnly: RoleType[] = ["RootAdmin"];
 
@@ -107,7 +105,7 @@ export const RequestMethods = {
 export const ExternalAuthEndpoints = {
   GITHUB: "https://github.com/login/oauth/authorize",
   GOOGLE: "https://accounts.google.com/o/oauth2/v2/auth",
-  FACEBOOK: "Facebook",
+  FACEBOOK: "https://www.facebook.com/v19.0/dialog/oauth",
 };
 
 export const RoleDictionary: Record<number, Role> = {
@@ -130,26 +128,31 @@ export const PermissionDictionary: Record<number, Permission> = {
     name: "Create Comment",
     description: "Post a new comment",
     type: "CreateComment",
+    roles: EveryRole,
   },
   2: {
     name: "Edit Comment",
     description: "Edit your comment",
     type: "EditComment",
+    roles: EveryRole,
   },
   3: {
     name: "Remove Comment",
     description: "Remove posted comment",
     type: "RemoveComment",
+    roles: EveryRole,
   },
   4: {
     name: "Post Comment",
     description: "Approve posted comment",
     type: "PostComment",
+    roles: AdminAndModerator,
   },
   5: {
     name: "Block Comment",
     description: "Reject posted comment",
     type: "BlockComment",
+    roles: AdminAndModerator,
   },
 };
 
@@ -160,3 +163,11 @@ export const PermissionIdResolver: Record<PermissionType, number> = {
   PostComment: 4,
   BlockComment: 5,
 };
+
+export const PermissionsList: Permission[] = [
+  PermissionDictionary[1],
+  PermissionDictionary[2],
+  PermissionDictionary[3],
+  PermissionDictionary[4],
+  PermissionDictionary[5],
+];

@@ -31,7 +31,7 @@ export default function SelectedUserDetailsCard() {
   }, [editedUser]);
 
   return (
-    <Card className="w-full h-min shadow-md dark:bg-muted/30">
+    <Card className="w-full h-min flex-1 shadow-md dark:bg-muted/30">
       {loadingManagedUser ? (
         <UserDetailsCardLoader />
       ) : managedUser == null ? (

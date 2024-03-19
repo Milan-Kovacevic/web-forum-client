@@ -9,6 +9,12 @@ import {
   loadUserPermissionsForRoom,
 } from "@/redux/users/userThunks";
 import { ChangeUserRoomPermissionsInput } from "@/types/inputs/user-inputs";
+import {
+  PermissionIdResolver,
+  PermissionsList,
+  RoleDictionary,
+} from "@/utils/constants";
+import { Permission } from "@/types/models/application";
 
 export default function UserRoomPermissionsList() {
   const {
@@ -20,18 +26,16 @@ export default function UserRoomPermissionsList() {
   } = useAppSelector((state) => state.manageUser);
   const dispatch = useAppDispatch();
 
-  const defaultValues = {
-    createComment:
-      userPermissions.find((p) => p.permissionId === 1) !== undefined,
-    editComment:
-      userPermissions.find((p) => p.permissionId === 2) !== undefined,
-    removeComment:
-      userPermissions.find((p) => p.permissionId === 3) !== undefined,
-    postComment:
-      userPermissions.find((p) => p.permissionId === 4) !== undefined,
-    blockComment:
-      userPermissions.find((p) => p.permissionId === 5) !== undefined,
-  };
+  const defaultValues: { [key: string]: boolean } = PermissionsList.reduce(
+    (acc: { [key: string]: boolean }, permission: Permission) => {
+      acc[permission.type] =
+        userPermissions.find(
+          (p) => p.permissionId === PermissionIdResolver[permission.type]
+        ) !== undefined;
+      return acc;
+    },
+    {}
+  );
 
   const permissionsForm = useForm<Zod.infer<typeof RoomPermissionsFormSchema>>({
     resolver: zodResolver(RoomPermissionsFormSchema),
@@ -50,61 +54,38 @@ export default function UserRoomPermissionsList() {
   }, [selectedRoom, managedUser]);
 
   useEffect(() => {
-    permissionsForm.setValue(
-      "createComment",
-      userPermissions.find((p) => p.permissionId === 1) !== undefined
-    );
-    permissionsForm.setValue(
-      "editComment",
-      userPermissions.find((p) => p.permissionId === 2) !== undefined
-    );
-    permissionsForm.setValue(
-      "removeComment",
-      userPermissions.find((p) => p.permissionId === 3) !== undefined
-    );
-    permissionsForm.setValue(
-      "postComment",
-      userPermissions.find((p) => p.permissionId === 4) !== undefined
-    );
-    permissionsForm.setValue(
-      "blockComment",
-      userPermissions.find((p) => p.permissionId === 5) !== undefined
-    );
+    PermissionsList.forEach((item) => {
+      permissionsForm.setValue(
+        item.type,
+        userPermissions.find(
+          (p) => p.permissionId === PermissionIdResolver[item.type]
+        ) !== undefined
+      );
+    });
   }, [userPermissions]);
 
   const handleCancelChanges = () => {
-    permissionsForm.setValue(
-      "createComment",
-      userPermissions.find((p) => p.permissionId === 1) !== undefined
-    );
-    permissionsForm.setValue(
-      "editComment",
-      userPermissions.find((p) => p.permissionId === 2) !== undefined
-    );
-    permissionsForm.setValue(
-      "removeComment",
-      userPermissions.find((p) => p.permissionId === 3) !== undefined
-    );
-    permissionsForm.setValue(
-      "postComment",
-      userPermissions.find((p) => p.permissionId === 4) !== undefined
-    );
-    permissionsForm.setValue(
-      "blockComment",
-      userPermissions.find((p) => p.permissionId === 5) !== undefined
-    );
+    PermissionsList.forEach((item) => {
+      permissionsForm.setValue(
+        item.type,
+        userPermissions.find(
+          (p) => p.permissionId === PermissionIdResolver[item.type]
+        ) !== undefined
+      );
+    });
   };
+
   const handleSavePermissions = (
     data: Zod.infer<typeof RoomPermissionsFormSchema>
   ) => {
     if (!managedUser || !selectedRoom) return;
 
     var permissions: number[] = [];
-    if (data.createComment) permissions.push(1);
-    if (data.editComment) permissions.push(2);
-    if (data.removeComment) permissions.push(3);
-    if (data.postComment) permissions.push(4);
-    if (data.blockComment) permissions.push(5);
+    if (data.CreateComment) permissions.push(1);
+    if (data.EditComment) permissions.push(2);
+    if (data.RemoveComment) permissions.push(3);
+    if (data.PostComment) permissions.push(4);
+    if (data.BlockComment) permissions.push(5);
 
     var input: ChangeUserRoomPermissionsInput = {
       userId: managedUser.userId,
@@ -116,7 +97,7 @@ export default function UserRoomPermissionsList() {
 
   return (
     <div className="flex flex-col mt-2">
-      {selectedRoom === null ? (
+      {selectedRoom === null || managedUser === null ? (
         <div>
           <p className="text-muted-foreground text-sm mt-2">
             Select the specific room to view user permissions...
@@ -134,6 +115,7 @@ export default function UserRoomPermissionsList() {
           </div>
           <RoomPermissionsForm
             form={permissionsForm}
+            userRole={RoleDictionary[managedUser.roleId].type}
             isLoading={loadingManagedUser || loadingUserPermissions}
             onCancel={handleCancelChanges}
             onSaveChanges={handleSavePermissions}

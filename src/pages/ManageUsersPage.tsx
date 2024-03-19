@@ -33,18 +33,18 @@ export default function ManageUsersPage() {
 
   return (
     <div className="h-full w-full flex max-w-screen-2xl sm:p-8 py-4 px-2 mx-auto">
-      <div className="px-6 flex-1 my-2 h-screen">
+      <div className="px-6 flex-1 w-full flex flex-col my-2 h-full">
         <ManageUsersPageHeader />
-        <div className="flex lg:flex-row flex-col w-full gap-10 h-auto">
+        <div className="flex flex-1 lg:flex-row flex-col w-full gap-10 h-full">
           <Tabs
             defaultValue="users"
-            className="max-h-screen h-auto w-full flex flex-col items-start"
+            className="flex-1 w-full flex flex-col items-start"
           >
             <TabsList className="w-auto flex flex-wrap items-start h-auto mb-2">
               <TabsTrigger value="users">Registered Users</TabsTrigger>
               <TabsTrigger value="requests">Registration Requests</TabsTrigger>
             </TabsList>
-            <ScrollArea className="h-full w-full">
+            <ScrollArea className="h-full w-full flex-1 max-h-screen">
               <ForumUsersTabContent />
               <RegistrationRequestsTabContent />
             </ScrollArea>
