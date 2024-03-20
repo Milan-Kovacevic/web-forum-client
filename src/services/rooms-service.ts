@@ -41,7 +41,7 @@ const getRoom = async (roomId: string) => {
   return sendAxiosRequest<void, Room>({
     url: ApiEndpoints.SINGLE_ROOM.replace("{roomId}", roomId),
     method: RequestMethods.GET,
-    requireAuth: false,
+    requireAuth: true,
   }).then((response) => response.data);
 };
 
