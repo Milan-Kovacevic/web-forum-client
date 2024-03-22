@@ -1,40 +1,67 @@
 import { Room } from "@/types/models/rooms";
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import {
   createRoom,
   editRoom,
-  loadRooms,
+  getAllRooms,
   removeRoom,
-} from "@/redux/rooms/roomsThunks";
+} from "@/redux/rooms/roomThunks";
+import { ReduxThunksTypeNames } from "@/utils/constants";
 
 interface RoomsState {
   loadingRooms: boolean;
   loadingDialog: boolean;
   rooms: Room[];
-  finishedAction?: "Create" | "Edit" | "Delete" | null;
 }
 
 const initialState: RoomsState = {
   loadingRooms: false,
   loadingDialog: false,
   rooms: [],
-  finishedAction: null,
 };
 
+const handleRoomCreated = (
+  state: RoomsState,
+  action: PayloadAction<Room, string>
+) => {
+  state.rooms.push(action.payload);
+  state.loadingDialog = false;
+};
+
+const handleRoomEdited = (
+  state: RoomsState,
+  action: PayloadAction<Room, string>
+) => {
+  var id = state.rooms.findIndex((x) => x.roomId === action.payload.roomId);
+  if (id) {
+    state.rooms[id] = action.payload;
+  }
+  state.loadingDialog = false;
+};
+
+const handleRoomRemoved = (
+  state: RoomsState,
+  action: PayloadAction<string, string>
+) => {
+  var filteredRooms = state.rooms.filter((r) => r.roomId !== action.payload);
+  state.rooms = [...filteredRooms];
+  state.loadingDialog = false;
+};
+
+const handleActionRejected = (state: RoomsState) => {
+  state.loadingRooms = false;
+  state.loadingDialog = false;
+};
+const matchRoomThunkRejected = (action: any) =>
+  action.type.endsWith(`${ReduxThunksTypeNames.ROOMS}/rejected`);
+
 const roomsSlice = createSlice({
-  name: "rooms",
+  name: ReduxThunksTypeNames.ROOMS,
   initialState: initialState,
-  reducers: {
-    clearRoomsState(state) {
-      state.loadingRooms = false;
-      state.loadingDialog = false;
-      state.finishedAction = null;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(loadRooms.pending, (state) => {
+    builder.addCase(getAllRooms.pending, (state) => {
       state.loadingRooms = true;
-      return state;
     });
     builder.addCase(createRoom.pending, (state) => {
       state.loadingDialog = true;
@@ -45,37 +72,17 @@ const roomsSlice = createSlice({
     builder.addCase(removeRoom.pending, (state) => {
       state.loadingDialog = true;
     });
-    builder.addCase(loadRooms.fulfilled, (state, action) => {
+
+    builder.addCase(getAllRooms.fulfilled, (state, action) => {
       state.rooms = action.payload;
       state.loadingRooms = false;
-      return state;
     });
-    builder.addCase(createRoom.fulfilled, (state, action) => {
-      state.finishedAction = "Create";
-      state.rooms.push(action.payload);
-      state.loadingDialog = false;
-    });
-    builder.addCase(editRoom.fulfilled, (state, action) => {
-      state.finishedAction = "Edit";
-      var id = state.rooms.findIndex((x) => x.roomId === action.payload.roomId);
-      if (id) {
-        state.rooms[id] = action.payload;
-      }
-      state.loadingDialog = false;
-    });
-    builder.addCase(removeRoom.fulfilled, (state) => {
-      state.finishedAction = "Delete";
-      state.loadingDialog = false;
-    });
-    builder.addMatcher(
-      (action) => action.type.endsWith("/rejected"),
-      (state) => {
-        state.loadingRooms = false;
-        state.loadingDialog = false;
-      }
-    );
+    builder.addCase(createRoom.fulfilled, handleRoomCreated);
+    builder.addCase(editRoom.fulfilled, handleRoomEdited);
+    builder.addCase(removeRoom.fulfilled, handleRoomRemoved);
+
+    builder.addMatcher(matchRoomThunkRejected, handleActionRejected);
   },
 });
 
-export const { clearRoomsState } = roomsSlice.actions;
 export default roomsSlice.reducer;

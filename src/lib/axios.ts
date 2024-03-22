@@ -1,6 +1,5 @@
 import axios, {
   AxiosError,
-  AxiosRequestConfig,
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from "axios";
@@ -39,7 +38,7 @@ type FailedRequestQueueItem = {
 };
 
 const failedRequestQueue: FailedRequestQueueItem[] = [];
-let isRefreshingToken = false;
+var isRefreshingToken: boolean;
 
 export default {
   getAxios: (useAuthentication: boolean) => {
@@ -63,6 +62,7 @@ export default {
         if (originalRequest && error.response?.status == 401) {
           //If already sent request to refresh token, queue the request
           if (!isRefreshingToken) {
+            console.log("Test " + originalRequest.url);
             try {
               isRefreshingToken = true;
               const refreshToken = localStorage.getItem(
@@ -76,12 +76,7 @@ export default {
                 originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
                 failedRequestQueue.forEach(
                   async ({ config, resolve, reject }) => {
-                    try {
-                      const response = await axiosInstance.request(config);
-                      return resolve(response);
-                    } catch (err) {
-                      return reject(err);
-                    }
+                    await axios.request(config).then(resolve).catch(reject);
                   }
                 );
 

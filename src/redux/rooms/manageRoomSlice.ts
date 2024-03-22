@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   loadMyRoomPermissions,
   loadManagedRoom,
-} from "@/redux/rooms/roomsThunks";
+} from "@/redux/rooms/roomThunks";
 import { Comment } from "@/types/models/comments";
 import {
   approveRoomComment,

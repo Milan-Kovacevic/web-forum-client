@@ -39,10 +39,10 @@ const handleAxiosError = (error: AxiosError) => {
   if (error.response) {
     var response: AxiosResponse = error.response;
     if (response.status === 401) {
-      showInfoToast(
-        "Login required",
-        "Your login session is invalid or expired."
-      );
+      // showInfoToast(
+      //   "Login required",
+      //   "Your login session is invalid or expired."
+      // );
     } else if (response.status === 403) {
       showErrorToast(
         "Forbidden",

@@ -1,6 +1,6 @@
 import { Room, RoomPermission } from "@/types/models/rooms";
 import { createSlice } from "@reduxjs/toolkit";
-import { loadMyRoomPermissions, getRoom } from "./roomsThunks";
+import { loadMyRoomPermissions, getRoom } from "./roomThunks";
 import { Comment } from "@/types/models/comments";
 import {
   editRoomComment,

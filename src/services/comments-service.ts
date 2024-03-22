@@ -9,7 +9,7 @@ import {
 
 const getUserCommentsForRoom = async (roomId: string) => {
   return sendAxiosRequest<void, Comment[]>({
-    url: ApiEndpoints.USER_ROOM_COMMENTS.replace("roomId", roomId),
+    url: ApiEndpoints.USER_ROOM_COMMENTS.replace("{roomId}", roomId),
     method: RequestMethods.GET,
     requireAuth: true,
   }).then((response) => response.data);
@@ -17,7 +17,7 @@ const getUserCommentsForRoom = async (roomId: string) => {
 
 const getPendingRoomComments = async (roomId: string) => {
   return sendAxiosRequest<void, Comment[]>({
-    url: ApiEndpoints.PENDING_ROOM_COMMENTS.replace("roomId", roomId),
+    url: ApiEndpoints.PENDING_ROOM_COMMENTS.replace("{roomId}", roomId),
     method: RequestMethods.GET,
     requireAuth: true,
   }).then((response) => response.data);
@@ -25,7 +25,7 @@ const getPendingRoomComments = async (roomId: string) => {
 
 const getPostedRoomComments = async (roomId: string) => {
   return sendAxiosRequest<void, Comment[]>({
-    url: ApiEndpoints.POSTED_ROOM_COMMENTS.replace("roomId", roomId),
+    url: ApiEndpoints.POSTED_ROOM_COMMENTS.replace("{roomId}", roomId),
     method: RequestMethods.GET,
     requireAuth: true,
   }).then((response) => response.data);

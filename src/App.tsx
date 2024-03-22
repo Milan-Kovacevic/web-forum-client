@@ -1,8 +1,8 @@
 import { RouterProvider } from "react-router-dom";
-import router from "@/pages/router/Router";
+import router from "@/router/Router";
 import "./index.css";
-import { ThemeProvider } from "./pages/shared/ThemeProvider";
-import { APP_THEME_STORAGE_KEY, LIGHT_THEME } from "./utils/constants";
+import { ThemeProvider } from "@/pages/shared/ThemeProvider";
+import { APP_THEME_STORAGE_KEY, LIGHT_THEME } from "@/utils/constants";
 import { Provider } from "react-redux";
 import { store, persistor } from "@/lib/redux";
 import { PersistGate } from "redux-persist/integration/react";

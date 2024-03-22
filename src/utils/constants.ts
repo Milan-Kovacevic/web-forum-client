@@ -171,3 +171,7 @@ export const PermissionsList: Permission[] = [
   PermissionDictionary[4],
   PermissionDictionary[5],
 ];
+
+export const ReduxThunksTypeNames = {
+  ROOMS: "rooms",
+};
