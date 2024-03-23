@@ -34,7 +34,7 @@ const OwnUserComment = (props: OwnUserCommentProps) => {
   const [isEditing, setEditing] = useState(false);
   const [removeAlertOpen, setRemoveAlertOpen] = useState(false);
   const [editContent, setEditContent] = useState(props.comment.content);
-  const { loadingComments } = useAppSelector((state) => state.singleRoom);
+  const { loadingRoomComments } = useAppSelector((state) => state.roomDetails);
 
   const handleEditComment = () => {
     if (!isEditing) {
@@ -165,7 +165,7 @@ const OwnUserComment = (props: OwnUserCommentProps) => {
                 </Button>
               ) : (
                 <ConfirmAlertDialog
-                  isLoading={loadingComments}
+                  isLoading={loadingRoomComments}
                   isOpen={removeAlertOpen}
                   onOpenChange={setRemoveAlertOpen}
                   onConfirm={handleRemoveComment}

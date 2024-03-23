@@ -8,11 +8,11 @@ import {
   CommentFormSchema,
 } from "@/schemas/comment-form-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { postNewRoomComment } from "@/redux/rooms/commentThunks";
+import { createNewRoomComment } from "@/redux/rooms/commentThunks";
 
 export default function CommentInputTextarea() {
-  const { loadingComments, permissions, room } = useAppSelector(
-    (state) => state.singleRoom
+  const { loadingRoomComments, myPermissions, selectedRoom } = useAppSelector(
+    (state) => state.roomDetails
   );
   const dispatch = useAppDispatch();
   const [canPostComment, setCanPostComment] = useState(false);
@@ -23,19 +23,22 @@ export default function CommentInputTextarea() {
 
   useEffect(() => {
     var canPost =
-      permissions.find(
+      myPermissions.find(
         (item) =>
           PermissionDictionary[item.permissionId].type == "CreateComment"
       ) !== undefined;
     setCanPostComment(canPost);
-  }, [permissions]);
+  }, [myPermissions]);
 
   const handleCommentPosted = (
     formData: Zod.infer<typeof CommentFormSchema>
   ) => {
-    if (!room) return;
+    if (!selectedRoom) return;
     dispatch(
-      postNewRoomComment({ roomId: room?.roomId, content: formData.content })
+      createNewRoomComment({
+        roomId: selectedRoom.roomId,
+        content: formData.content,
+      })
     );
     commentForm.reset();
   };
@@ -44,8 +47,8 @@ export default function CommentInputTextarea() {
     <div className="flex sm:flex-row flex-col items-center gap-2">
       <CommentForm
         form={commentForm}
-        isDisabled={loadingComments || !canPostComment}
-        isLoading={loadingComments}
+        isDisabled={loadingRoomComments || !canPostComment}
+        isLoading={loadingRoomComments}
         onCommentSend={handleCommentPosted}
       />
     </div>

@@ -29,14 +29,18 @@ export const editRoom = createAsyncThunk(
 
 export const removeRoom = createAsyncThunk(
   `removeRoom/${ROOM_THUNKS_TYPE_NAME}`,
-  (roomId: string) => {
-    return roomsService.removeRoom(roomId).then(() => roomId);
+  async (roomId: string) => {
+    await roomsService.removeRoom(roomId);
+    return roomId;
   }
 );
 
-export const getRoom = createAsyncThunk("getRoom/rooms", (roomId: string) => {
-  return roomsService.getRoom(roomId);
-});
+export const getRoom = createAsyncThunk(
+  `getRoom/${ROOM_THUNKS_TYPE_NAME}`,
+  (roomId: string) => {
+    return roomsService.getRoom(roomId);
+  }
+);
 
 export const loadManagedRoom = createAsyncThunk(
   "loadManagedRoom/rooms",
@@ -45,8 +49,8 @@ export const loadManagedRoom = createAsyncThunk(
   }
 );
 
-export const loadMyRoomPermissions = createAsyncThunk(
-  "loadMyRoomPermissions/singleRoom",
+export const getMyRoomPermissions = createAsyncThunk(
+  `getMyRoomPermissions/${ReduxThunksTypeNames.ROOM_DETAILS}`,
   (roomId: string) => {
     return permissionsService.getRoomPermissions(roomId);
   }

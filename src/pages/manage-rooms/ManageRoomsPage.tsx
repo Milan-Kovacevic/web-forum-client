@@ -17,7 +17,7 @@ import {
 } from "@/redux/rooms/commentThunks";
 import {
   loadManagedRoom,
-  loadMyRoomPermissions,
+  getMyRoomPermissions,
 } from "@/redux/rooms/roomThunks";
 import { AppRoutes } from "@/utils/constants";
 import { LockIcon } from "lucide-react";
@@ -45,7 +45,7 @@ export default function ManageRoomsPage() {
       dispatch(loadManagedRoom(id));
       dispatch(loadPostedRoomComments(id));
       dispatch(loadPendingRoomComments(id));
-      dispatch(loadMyRoomPermissions(id));
+      dispatch(getMyRoomPermissions(id));
     }
   }, [id]);
 

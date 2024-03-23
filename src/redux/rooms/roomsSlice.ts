@@ -10,13 +10,13 @@ import { ReduxThunksTypeNames } from "@/utils/constants";
 
 interface RoomsState {
   loadingRooms: boolean;
-  loadingDialog: boolean;
+  loadingRoomDialog: boolean;
   rooms: Room[];
 }
 
 const initialState: RoomsState = {
   loadingRooms: false,
-  loadingDialog: false,
+  loadingRoomDialog: false,
   rooms: [],
 };
 
@@ -25,7 +25,7 @@ const handleRoomCreated = (
   action: PayloadAction<Room, string>
 ) => {
   state.rooms.push(action.payload);
-  state.loadingDialog = false;
+  state.loadingRoomDialog = false;
 };
 
 const handleRoomEdited = (
@@ -33,10 +33,10 @@ const handleRoomEdited = (
   action: PayloadAction<Room, string>
 ) => {
   var id = state.rooms.findIndex((x) => x.roomId === action.payload.roomId);
-  if (id) {
+  if (id >= 0 && id < state.rooms.length) {
     state.rooms[id] = action.payload;
   }
-  state.loadingDialog = false;
+  state.loadingRoomDialog = false;
 };
 
 const handleRoomRemoved = (
@@ -45,12 +45,12 @@ const handleRoomRemoved = (
 ) => {
   var filteredRooms = state.rooms.filter((r) => r.roomId !== action.payload);
   state.rooms = [...filteredRooms];
-  state.loadingDialog = false;
+  state.loadingRoomDialog = false;
 };
 
 const handleActionRejected = (state: RoomsState) => {
   state.loadingRooms = false;
-  state.loadingDialog = false;
+  state.loadingRoomDialog = false;
 };
 const matchRoomThunkRejected = (action: any) =>
   action.type.endsWith(`${ReduxThunksTypeNames.ROOMS}/rejected`);
@@ -64,13 +64,13 @@ const roomsSlice = createSlice({
       state.loadingRooms = true;
     });
     builder.addCase(createRoom.pending, (state) => {
-      state.loadingDialog = true;
+      state.loadingRoomDialog = true;
     });
     builder.addCase(editRoom.pending, (state) => {
-      state.loadingDialog = true;
+      state.loadingRoomDialog = true;
     });
     builder.addCase(removeRoom.pending, (state) => {
-      state.loadingDialog = true;
+      state.loadingRoomDialog = true;
     });
 
     builder.addCase(getAllRooms.fulfilled, (state, action) => {

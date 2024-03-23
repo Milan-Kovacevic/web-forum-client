@@ -17,8 +17,8 @@ type RoomPermissionsProps = {
 };
 
 export default function RoomPermissionsCard(props: RoomPermissionsProps) {
-  const { loadingPermissions, permissions } = useAppSelector(
-    (state) => state.singleRoom
+  const { loadingMyPermissions, myPermissions } = useAppSelector(
+    (state) => state.roomDetails
   );
   const { identity } = useAppSelector((state) => state.identity);
   const role = identity?.roleName;
@@ -30,20 +30,20 @@ export default function RoomPermissionsCard(props: RoomPermissionsProps) {
         <UserInfoHeader role={role} displayName={displayName} />
       )}
 
-      {loadingPermissions ? (
+      {loadingMyPermissions ? (
         <div className="h-[100px]">
           <ItemLoader />
         </div>
       ) : (
         <>
-          {permissions.length > 0 ? (
+          {myPermissions.length > 0 ? (
             <div>
               <h3 className="text-accent-foreground font-normal text-sm mb-2">
                 Your room permissions:
               </h3>
 
               <div className="flex flex-col gap-0.5 ml-2">
-                {permissions.map((item) => (
+                {myPermissions.map((item) => (
                   <PermissionItem key={item.permissionId} item={item} />
                 ))}
               </div>

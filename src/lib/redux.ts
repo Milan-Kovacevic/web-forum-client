@@ -13,7 +13,7 @@ import {
 import identitySlice from "@/redux/identity/identitySlice";
 import persistStore from "redux-persist/es/persistStore";
 import authSlice from "@/redux/identity/authSlice";
-import singleRoomSlice from "@/redux/rooms/singleRoomSlice";
+import roomDetailsSlice from "@/redux/rooms/roomDetailsSlice";
 import manageRoomSlice from "@/redux/rooms/manageRoomSlice";
 import requestsSlice from "@/redux/users/requestsSlice";
 import usersSlice from "@/redux/users/usersSlice";
@@ -28,7 +28,7 @@ const persistConfig = {
 const persistedIdentityReducer = persistReducer(persistConfig, identitySlice);
 const rootReducer = combineReducers({
   rooms: roomsSlice,
-  singleRoom: singleRoomSlice,
+  roomDetails: roomDetailsSlice,
   auth: authSlice,
   identity: persistedIdentityReducer,
   manageRoom: manageRoomSlice,

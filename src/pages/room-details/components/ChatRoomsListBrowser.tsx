@@ -13,7 +13,9 @@ type ChatRoomsListBrowserProps = {
 
 export default function ChatRoomsListBrowser(props: ChatRoomsListBrowserProps) {
   const { rooms, loadingRooms } = useAppSelector((state) => state.rooms);
-  const { room } = useAppSelector((state) => state.singleRoom);
+  const { selectedRoom, loadingRoom } = useAppSelector(
+    (state) => state.roomDetails
+  );
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -32,7 +34,9 @@ export default function ChatRoomsListBrowser(props: ChatRoomsListBrowserProps) {
         <p className="font-medium text-base sm:text-lg">Discover Other Rooms</p>
       </div>
       <div className="flex flex-col gap-1 w-full ml-2">
-        {loadingRooms && <span>Loading...</span>}
+        {loadingRooms && (
+          <span className="text-sm italic ml-3">Loading...</span>
+        )}
         {!loadingRooms &&
           rooms.map((item) => (
             <div
@@ -41,10 +45,11 @@ export default function ChatRoomsListBrowser(props: ChatRoomsListBrowserProps) {
                 handleRoomSelected(item);
               }}
               className={cn(
-                "flex flex-col font-medium items-start gap-2 border rounded-lg text-sm p-3 hover:cursor-pointer",
-                item.roomId === room?.roomId
+                "flex flex-col font-medium items-start gap-2 border rounded-lg text-sm p-3 hover:cursor-pointer transition-all",
+                item.roomId === selectedRoom?.roomId
                   ? "border-primary bg-muted dark:bg-muted/50 hover:dark:bg-muted/30 hover:bg-muted/60"
-                  : "dark:border-muted/60 border-muted hover:bg-muted/60 hover:dark:bg-muted/30"
+                  : "dark:border-muted/60 border-muted hover:bg-muted/60 hover:dark:bg-muted/30",
+                loadingRoom ? "pointer-events-none opacity-50" : ""
               )}
             >
               <p className="ml-3 text-sm font-medium text-accent-foreground">

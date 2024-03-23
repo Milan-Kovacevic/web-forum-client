@@ -44,7 +44,7 @@ type RemoveRoomDialogProps = {
 };
 
 const CreateRoom = (props: CreateRoomDialogProps) => {
-  const { loadingDialog } = useAppSelector((state) => state.rooms);
+  const { loadingRoomDialog } = useAppSelector((state) => state.rooms);
   const dispatch = useAppDispatch();
 
   const createRoomForm = useForm<zod.infer<typeof SubmitRoomFormSchema>>({
@@ -64,7 +64,7 @@ const CreateRoom = (props: CreateRoomDialogProps) => {
     <Dialog
       open={props.isOpen}
       onOpenChange={props.onOpenChange}
-      defaultOpen={!loadingDialog}
+      defaultOpen={!loadingRoomDialog}
     >
       <DialogTrigger asChild>{props.children}</DialogTrigger>
       <DialogContent className="sm:max-w-[460px] px-8 py-7">
@@ -77,7 +77,7 @@ const CreateRoom = (props: CreateRoomDialogProps) => {
         <SubmitRoomForm
           form={createRoomForm}
           onFormSubmit={handleRoomCreate}
-          isLoading={loadingDialog}
+          isLoading={loadingRoomDialog}
         />
       </DialogContent>
     </Dialog>
@@ -85,7 +85,7 @@ const CreateRoom = (props: CreateRoomDialogProps) => {
 };
 
 const EditRoom = (props: EditRoomDialogProps) => {
-  const { loadingDialog } = useAppSelector((state) => state.rooms);
+  const { loadingRoomDialog } = useAppSelector((state) => state.rooms);
 
   const editRoomForm = useForm<Zod.infer<typeof SubmitRoomFormSchema>>({
     resolver: zodResolver(SubmitRoomFormSchema),
@@ -105,7 +105,7 @@ const EditRoom = (props: EditRoomDialogProps) => {
     <Dialog
       open={props.isOpen}
       onOpenChange={props.onOpenChange}
-      defaultOpen={!loadingDialog}
+      defaultOpen={!loadingRoomDialog}
     >
       <DialogTrigger asChild>{props.children}</DialogTrigger>
       <DialogContent className="sm:max-w-[460px] px-8 py-7">
@@ -118,7 +118,7 @@ const EditRoom = (props: EditRoomDialogProps) => {
         <SubmitRoomForm
           form={editRoomForm}
           onFormSubmit={handleSaveRoomChanges}
-          isLoading={loadingDialog}
+          isLoading={loadingRoomDialog}
         />
       </DialogContent>
     </Dialog>
@@ -126,7 +126,7 @@ const EditRoom = (props: EditRoomDialogProps) => {
 };
 
 const RemoveRoom = (props: RemoveRoomDialogProps) => {
-  const { loadingDialog } = useAppSelector((state) => state.rooms);
+  const { loadingRoomDialog } = useAppSelector((state) => state.rooms);
 
   const handleRemoveConfirmed = async () => {
     props.onRemoveRoom(props.room);
@@ -134,7 +134,7 @@ const RemoveRoom = (props: RemoveRoomDialogProps) => {
 
   return (
     <ConfirmAlertDialog
-      isLoading={loadingDialog}
+      isLoading={loadingRoomDialog}
       children={props.children}
       isOpen={props.isOpen}
       onOpenChange={props.onOpenChange}

@@ -4,8 +4,8 @@ import RoomComments from "@/pages/room-details/components/RoomCommentsSection";
 import RoomBasicInfoSection from "@/pages/room-details/components/RoomBasicInfoSection";
 import RoomPermissionsCard from "@/pages/room-details/components/RoomPermissionsCard";
 import { useAppDispatch } from "@/hooks/useRedux";
-import { loadUserCommentsForRoom } from "@/redux/rooms/commentThunks";
-import { loadMyRoomPermissions } from "@/redux/rooms/roomThunks";
+import { getUserCommentsForRoom } from "@/redux/rooms/commentThunks";
+import { getMyRoomPermissions } from "@/redux/rooms/roomThunks";
 import { getRoom } from "@/redux/rooms/roomThunks";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -17,8 +17,8 @@ export default function RoomDetailsPage() {
   useEffect(() => {
     if (id) {
       dispatch(getRoom(id));
-      dispatch(loadUserCommentsForRoom(id));
-      dispatch(loadMyRoomPermissions(id));
+      dispatch(getUserCommentsForRoom(id));
+      dispatch(getMyRoomPermissions(id));
     }
   }, [id]);
 

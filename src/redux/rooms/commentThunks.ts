@@ -4,6 +4,7 @@ import {
   EditCommentInput,
   PostCommentInput,
 } from "@/types/inputs/comment-inputs";
+import { ReduxThunksTypeNames } from "@/utils/constants";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const loadPendingRoomComments = createAsyncThunk(
@@ -20,24 +21,31 @@ export const loadPostedRoomComments = createAsyncThunk(
   }
 );
 
-export const loadUserCommentsForRoom = createAsyncThunk(
-  "loadUserComments/singleRoom",
+export const getUserCommentsForRoom = createAsyncThunk(
+  `getCommentsForRoom/${ReduxThunksTypeNames.ROOM_DETAILS}/${ReduxThunksTypeNames.COMMENTS}`,
   (roomId: string) => {
     return commentsService.getUserCommentsForRoom(roomId);
   }
 );
 
-export const postNewRoomComment = createAsyncThunk(
-  "postNewRoomComment/singleRoom",
+export const createNewRoomComment = createAsyncThunk(
+  `createNewRoomComment/${ReduxThunksTypeNames.ROOM_DETAILS}/${ReduxThunksTypeNames.COMMENTS}`,
   (input: CreateCommentInput) => {
     return commentsService.createNewComment(input);
   }
 );
 
+export const editRoomComment = createAsyncThunk(
+  `editRoomComment/${ReduxThunksTypeNames.ROOM_DETAILS}/${ReduxThunksTypeNames.COMMENTS}`,
+  (input: EditCommentInput) => {
+    return commentsService.editComment(input);
+  }
+);
+
 export const removeRoomComment = createAsyncThunk(
-  "removeRoomComment/singleRoom",
+  `removeRoomComment/${ReduxThunksTypeNames.ROOM_DETAILS}/${ReduxThunksTypeNames.COMMENTS}`,
   (commentId: string) => {
-    return commentsService.removeComment(commentId);
+    return commentsService.removeComment(commentId).then(() => commentId);
   }
 );
 
@@ -45,13 +53,6 @@ export const removeAnyRoomComment = createAsyncThunk(
   "removeRoomComment/singleRoom",
   (commentId: string) => {
     return commentsService.removeComment(commentId);
-  }
-);
-
-export const editRoomComment = createAsyncThunk(
-  "editRoomComment/singleRoom",
-  (input: EditCommentInput) => {
-    return commentsService.editComment(input);
   }
 );
 
