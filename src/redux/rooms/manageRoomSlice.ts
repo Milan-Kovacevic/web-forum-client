@@ -1,9 +1,6 @@
 import { Room, RoomPermission } from "@/types/models/rooms";
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  getMyRoomPermissions,
-  loadManagedRoom,
-} from "@/redux/rooms/roomThunks";
+import { getMyRoomPermissions, getManagedRoom } from "@/redux/rooms/roomThunks";
 import { Comment } from "@/types/models/comments";
 import {
   approveRoomComment,
@@ -47,13 +44,13 @@ const manageRoomSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(loadManagedRoom.pending, (state) => {
+    builder.addCase(getManagedRoom.pending, (state) => {
       state.loadingManagedRoom = true;
     });
-    builder.addCase(loadManagedRoom.rejected, (state) => {
+    builder.addCase(getManagedRoom.rejected, (state) => {
       state.loadingManagedRoom = false;
     });
-    builder.addCase(loadManagedRoom.fulfilled, (state, action) => {
+    builder.addCase(getManagedRoom.fulfilled, (state, action) => {
       state.managedRoom = action.payload;
       state.loadingManagedRoom = false;
     });

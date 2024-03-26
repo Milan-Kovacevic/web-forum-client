@@ -62,7 +62,6 @@ export default {
         if (originalRequest && error.response?.status == 401) {
           //If already sent request to refresh token, queue the request
           if (!isRefreshingToken) {
-            console.log("Test " + originalRequest.url);
             try {
               isRefreshingToken = true;
               const refreshToken = localStorage.getItem(

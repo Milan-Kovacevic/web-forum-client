@@ -5,7 +5,18 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), basicSsl()],
+  server: {
+    https: {},
+    port: 3000,
+  },
+  plugins: [
+    react(),
+    basicSsl({
+      name: "webforum",
+      domains: ["localhost"],
+      certDir: "./src/assets/cert",
+    }),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

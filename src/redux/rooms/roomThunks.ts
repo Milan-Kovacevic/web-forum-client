@@ -42,8 +42,8 @@ export const getRoom = createAsyncThunk(
   }
 );
 
-export const loadManagedRoom = createAsyncThunk(
-  "loadManagedRoom/rooms",
+export const getManagedRoom = createAsyncThunk(
+  `getManagedRoom/${ROOM_THUNKS_TYPE_NAME}`,
   (roomId: string) => {
     return roomsService.getRoom(roomId);
   }
