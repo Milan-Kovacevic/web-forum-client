@@ -182,9 +182,9 @@ export const PendingCommentActions = (props: PendingCommentActionsProps) => {
           className="h-8 px-3 mt-1 w-full"
         >
           {props.canPost ? (
-            <MessageCirclePlusIcon className="h-5 w-5 text-card-foreground/80" />
+            <MessageCirclePlusIcon className="h-4 w-4 text-card-foreground/80" />
           ) : (
-            <CircleSlash2Icon className="h-5 w-5 text-card-foreground/80" />
+            <CircleSlash2Icon className="h-4 w-4 text-card-foreground/80" />
           )}
         </Button>
       </EditCommentDialog>
@@ -204,9 +204,9 @@ export const PendingCommentActions = (props: PendingCommentActionsProps) => {
           className="h-8 px-3 w-full"
         >
           {props.canBlock ? (
-            <MessageCircleXIcon className="h-5 w-5 text-card-foreground/80" />
+            <MessageCircleXIcon className="h-4 w-4 text-card-foreground/80" />
           ) : (
-            <CircleSlash2Icon className="h-5 w-5 text-card-foreground/80" />
+            <CircleSlash2Icon className="h-4 w-4 text-card-foreground/80" />
           )}
         </Button>
       </ConfirmAlertDialog>
